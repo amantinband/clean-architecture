@@ -1,0 +1,9 @@
+@host=http://localhost:5001
+
+POST {{host}}/reminders
+Content-Type: application/json
+
+{
+    "text": "let's do it",
+    "dateTime": "2023-12-26"
+}

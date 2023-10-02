@@ -1,0 +1,4 @@
+@host=http://localhost:5001
+@reminderId=5fe2eb07-982e-48fd-b316-97ac88de264a
+
+GET {{host}}/reminders/{{reminderId}}
