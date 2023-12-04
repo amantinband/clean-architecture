@@ -407,5 +407,8 @@ dotnet_diagnostic.SA1313.severity = none
 # SA1518: File may not end with a newline character
 dotnet_diagnostic.SA1518.severity = none
 
+# SA1402: File may only contain a single type
+dotnet_diagnostic.SA1402.severity = none
+
 [**/Migrations/*]
 generated_code = true

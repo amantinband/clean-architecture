@@ -6,7 +6,7 @@ public static class CalendarFactory
 {
     public static Calendar Create(DateOnly date, int numEvents, Guid? id = null)
     {
-        var calendar = new Calendar(id ?? UserConstants.CalendarId);
+        var calendar = Calendar.Empty();
 
         calendar.SetEventCount(date, numEvents);
 

@@ -51,7 +51,7 @@ public class AppDbContext(DbContextOptions options, IHttpContextAccessor _httpCo
 
     private void AddDomainEventsToOfflineProcessingQueue(List<IDomainEvent> domainEvents)
     {
-        Queue<IDomainEvent> domainEventsQueue = _httpContextAccessor.HttpContext.Items.TryGetValue(EventualConsistencyMiddleware.DomainEventsKey, out var value) &&
+        Queue<IDomainEvent> domainEventsQueue = _httpContextAccessor.HttpContext!.Items.TryGetValue(EventualConsistencyMiddleware.DomainEventsKey, out var value) &&
             value is Queue<IDomainEvent> existingDomainEvents
             ? existingDomainEvents
             : new();

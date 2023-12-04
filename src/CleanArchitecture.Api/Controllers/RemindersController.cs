@@ -22,7 +22,7 @@ public class RemindersController(ISender _mediator) : ApiController
             reminder => CreatedAtAction(
                 actionName: nameof(GetReminder),
                 routeValues: new { ReminderId = reminder.Id },
-                value: reminder),
+                value: new ReminderResponse(reminder.Text, reminder.DateTime)),
             Problem);
     }
 

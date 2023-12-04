@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
+    app.AddInfrastructureMiddleware();
+
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();

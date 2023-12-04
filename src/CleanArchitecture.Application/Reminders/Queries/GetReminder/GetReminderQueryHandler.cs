@@ -7,7 +7,10 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Reminders.Queries.GetReminder;
 
-public class GetReminderQueryHandler(IRemindersRepository _remindersRepository, ICurrentUserProvider _currentUserProvider) : IRequestHandler<GetReminderQuery, ErrorOr<Reminder>>
+public class GetReminderQueryHandler(
+    IRemindersRepository _remindersRepository,
+    ICurrentUserProvider _currentUserProvider)
+        : IRequestHandler<GetReminderQuery, ErrorOr<Reminder>>
 {
     public async Task<ErrorOr<Reminder>> Handle(GetReminderQuery query, CancellationToken cancellationToken)
     {

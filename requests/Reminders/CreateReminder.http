@@ -1,7 +1,9 @@
 @host=http://localhost:5001
+@token=
 
 POST {{host}}/reminders
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "text": "let's do it",

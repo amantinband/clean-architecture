@@ -11,7 +11,7 @@ namespace CleanArchitecture.Domain.UnitTests.Users;
 public class UserTests
 {
     [Theory]
-    [MemberData(nameof(PlanTypes))]
+    [MemberData(nameof(ListPlanTypes))]
     public void SetReminder_WhenLessThanDailyRemindersLimit_ShouldSetReminder(PlanType planType)
     {
         // Arrange
@@ -32,7 +32,7 @@ public class UserTests
     }
 
     [Theory]
-    [MemberData(nameof(PlanTypes))]
+    [MemberData(nameof(ListPlanTypes))]
     public void SetReminder_WhenReachedDailyRemindersLimit_ShouldNotSetReminder(PlanType planType)
     {
         // Arrange
@@ -52,5 +52,15 @@ public class UserTests
         setReminderResult.FirstError.Should().Be(UserErrors.CannotCreateMoreRemindersThanPlanAllows);
     }
 
-    public static TheoryData<PlanType> PlanTypes = [PlanType.Basic, PlanType.Pro];
+    public static TheoryData<PlanType> ListPlanTypes()
+    {
+        TheoryData<PlanType> theoryData = [];
+
+        foreach (var planType in PlanType.List)
+        {
+            theoryData.Add(planType);
+        }
+
+        return theoryData;
+    }
 }

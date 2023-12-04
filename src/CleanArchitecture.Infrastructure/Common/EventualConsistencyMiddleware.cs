@@ -34,7 +34,7 @@ public class EventualConsistencyMiddleware
 
                 await transaction.CommitAsync();
             }
-            catch (EventualConsistencyException)
+            catch (Exception)
             {
             }
             finally

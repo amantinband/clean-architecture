@@ -28,6 +28,8 @@ public class CreateReminderCommandHandler(IUsersRepository _usersRepository, ICu
             return setReminderResult.Errors;
         }
 
+        await _usersRepository.UpdateAsync(user);
+
         return reminder;
     }
 }

@@ -9,18 +9,19 @@ namespace CleanArchitecture.Domain.Users;
 public class User : Entity
 {
     private readonly int _maxDailyReminders;
-    private readonly PlanType _plan = null!;
-    private readonly string _fullName = null!;
     private readonly Calendar _calendar = null!;
-
     private readonly List<Guid> _reminderIds = [];
+
+    public string FullName { get; } = null!;
+
+    public PlanType Plan { get; } = null!;
 
     public User(PlanType planType, string fullName, Calendar? calendar = null, Guid? id = null)
         : base(id ?? Guid.NewGuid())
     {
         _maxDailyReminders = planType.GetMaxDailyReminders();
-        _plan = planType;
-        _fullName = fullName;
+        Plan = planType;
+        FullName = fullName;
         _calendar = calendar ?? Calendar.Empty();
     }
 
@@ -30,6 +31,8 @@ public class User : Entity
         {
             return UserErrors.CannotCreateMoreRemindersThanPlanAllows;
         }
+
+        _calendar.IncrementEventCount(DateOnly.FromDateTime(reminder.DateTime.Date));
 
         _reminderIds.Add(reminder.Id);
 
@@ -42,7 +45,7 @@ public class User : Entity
     {
         var dailyReminderCount = _calendar.GetNumEventsOnDay(dateTime.Date);
 
-        return dailyReminderCount >= _plan.GetMaxDailyReminders() || dailyReminderCount == int.MaxValue;
+        return dailyReminderCount >= Plan.GetMaxDailyReminders() || dailyReminderCount == int.MaxValue;
     }
 
     private User()

@@ -1,22 +1,15 @@
-using CleanArchitecture.Domain.Common;
-
 namespace CleanArchitecture.Domain.Users;
 
-public class Calendar : Entity
+public class Calendar
 {
     /// <summary>
-    /// day -> num events
+    /// day -> num events.
     /// </summary>
     private readonly Dictionary<DateOnly, int> _calendar = [];
 
-    public Calendar(Guid? id = null)
-        : base(id ?? Guid.NewGuid())
-    {
-    }
-
     public static Calendar Empty()
     {
-        return new Calendar(Guid.NewGuid());
+        return new Calendar();
     }
 
     public void IncrementEventCount(DateOnly date)

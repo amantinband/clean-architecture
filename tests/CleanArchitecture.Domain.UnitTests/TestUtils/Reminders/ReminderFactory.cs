@@ -10,6 +10,7 @@ public static class ReminderFactory
         Guid? id = null)
     {
         return new Reminder(
+            Guid.NewGuid(), // todo: fix
             text,
             dateTime ?? ReminderConstants.DateTime,
             id ?? ReminderConstants.Id);

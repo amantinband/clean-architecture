@@ -1,3 +1,6 @@
+using CleanArchitecture.Api.Services;
+using CleanArchitecture.Application.Common.Interfaces;
+
 namespace CleanArchitecture.Api;
 
 public static class DependencyInjection
@@ -9,6 +12,8 @@ public static class DependencyInjection
         services.AddSwaggerGen();
 
         services.AddHttpContextAccessor();
+
+        services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
 
         return services;
     }
