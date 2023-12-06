@@ -9,6 +9,6 @@ public class ReminderSetEventHandler(IRemindersRepository _remindersRepository) 
 {
     public async Task Handle(ReminderSetEvent @event, CancellationToken cancellationToken)
     {
-        await _remindersRepository.AddReminderAsync(@event.Reminder);
+        await _remindersRepository.AddAsync(@event.Reminder);
     }
 }

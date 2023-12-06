@@ -1,4 +1,0 @@
-@host=http://localhost:5001
-@userId=0fec059b-9a78-4bdd-a01d-6a25d30dee08
-
-GET {{host}}/users/{{userId}}

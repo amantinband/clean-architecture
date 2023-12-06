@@ -16,13 +16,8 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder.Property(u => u.Id)
             .ValueGeneratedNever();
 
-        builder.Property("_maxDailyReminders")
-            .HasColumnName("MaxDailyReminders");
-
         builder.OwnsOne<Calendar>("_calendar", cb =>
         {
-            cb.WithOwner().HasForeignKey("UserId");
-
             cb.Property<Dictionary<DateOnly, int>>("_calendar")
                 .HasColumnName("CalendarDictionary")
                 .HasValueJsonConverter();
@@ -32,11 +27,19 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
             .HasColumnName("ReminderIds")
             .HasListOfIdsConverter();
 
-        builder.Property(u => u.FullName);
+        builder.Property(u => u.FirstName);
 
-        builder.Property(u => u.Plan)
-            .HasConversion(
-                plan => plan.Name,
-                name => PlanType.FromName(name, false));
+        builder.Property(u => u.LastName);
+
+        builder.OwnsOne(u => u.Subscription, sb =>
+        {
+            sb.Property(s => s.Id)
+                .HasColumnName("SubscriptionId");
+
+            sb.Property(s => s.SubscriptionType)
+                .HasConversion(
+                    v => v.Name,
+                    v => SubscriptionType.FromName(v, false));
+        });
     }
 }

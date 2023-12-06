@@ -42,17 +42,13 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Plan")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("_maxDailyReminders")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("MaxDailyReminders");
 
                     b.Property<string>("_reminderIds")
                         .IsRequired()
@@ -66,6 +62,27 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
             modelBuilder.Entity("CleanArchitecture.Domain.Users.User", b =>
                 {
+                    b.OwnsOne("CleanArchitecture.Domain.Subscriptions.Subscription", "Subscription", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("TEXT")
+                                .HasColumnName("SubscriptionId");
+
+                            b1.Property<string>("SubscriptionType")
+                                .IsRequired()
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.OwnsOne("CleanArchitecture.Domain.Users.Calendar", "_calendar", b1 =>
                         {
                             b1.Property<Guid>("UserId")
@@ -83,6 +100,9 @@ namespace CleanArchitecture.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
                         });
+
+                    b.Navigation("Subscription")
+                        .IsRequired();
 
                     b.Navigation("_calendar");
                 });

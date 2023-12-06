@@ -1,5 +1,6 @@
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Reminders;
+using CleanArchitecture.Domain.Subscriptions;
 using CleanArchitecture.Domain.Users.Events;
 
 using ErrorOr;
@@ -8,20 +9,25 @@ namespace CleanArchitecture.Domain.Users;
 
 public class User : Entity
 {
-    private readonly int _maxDailyReminders;
     private readonly Calendar _calendar = null!;
     private readonly List<Guid> _reminderIds = [];
 
-    public string FullName { get; } = null!;
+    public string FirstName { get; } = null!;
+    public string LastName { get; } = null!;
 
-    public PlanType Plan { get; } = null!;
+    public Subscription Subscription { get; } = null!;
 
-    public User(PlanType planType, string fullName, Calendar? calendar = null, Guid? id = null)
-        : base(id ?? Guid.NewGuid())
+    public User(
+        Guid id,
+        string firstName,
+        string lastName,
+        Subscription subscription,
+        Calendar? calendar = null)
+            : base(id)
     {
-        _maxDailyReminders = planType.GetMaxDailyReminders();
-        Plan = planType;
-        FullName = fullName;
+        FirstName = firstName;
+        LastName = lastName;
+        Subscription = subscription;
         _calendar = calendar ?? Calendar.Empty();
     }
 
@@ -45,7 +51,7 @@ public class User : Entity
     {
         var dailyReminderCount = _calendar.GetNumEventsOnDay(dateTime.Date);
 
-        return dailyReminderCount >= Plan.GetMaxDailyReminders() || dailyReminderCount == int.MaxValue;
+        return dailyReminderCount >= Subscription.SubscriptionType.GetMaxDailyReminders() || dailyReminderCount == int.MaxValue;
     }
 
     private User()

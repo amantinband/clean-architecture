@@ -1,4 +1,4 @@
-using CleanArchitecture.Infrastructure.Common;
+using CleanArchitecture.Infrastructure.Common.Middleware;
 
 using Microsoft.AspNetCore.Builder;
 

@@ -30,9 +30,10 @@ namespace CleanArchitecture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    FullName = table.Column<string>(type: "TEXT", nullable: false),
-                    Plan = table.Column<string>(type: "TEXT", nullable: false),
-                    MaxDailyReminders = table.Column<int>(type: "INTEGER", nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", nullable: false),
+                    Subscription_SubscriptionType = table.Column<string>(type: "TEXT", nullable: false),
+                    SubscriptionId = table.Column<Guid>(type: "TEXT", nullable: false),
                     ReminderIds = table.Column<string>(type: "TEXT", nullable: false),
                     CalendarDictionary = table.Column<string>(type: "TEXT", nullable: true)
                 },

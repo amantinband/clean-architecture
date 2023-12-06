@@ -14,7 +14,7 @@ public class GetReminderQueryHandler(
 {
     public async Task<ErrorOr<Reminder>> Handle(GetReminderQuery query, CancellationToken cancellationToken)
     {
-        var reminder = await _remindersRepository.GetReminderByIdAsync(query.ReminderId);
+        var reminder = await _remindersRepository.GetByIdAsync(query.ReminderId);
 
         if (reminder is null)
         {

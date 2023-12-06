@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
 
-namespace CleanArchitecture.Contracts.Users;
+namespace CleanArchitecture.Contracts.Common;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum PlanType
+public enum SubscriptionType
 {
     Basic,
     Pro,

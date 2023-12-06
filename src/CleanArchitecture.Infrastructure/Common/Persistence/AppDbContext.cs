@@ -1,6 +1,7 @@
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Reminders;
 using CleanArchitecture.Domain.Users;
+using CleanArchitecture.Infrastructure.Common.Middleware;
 
 using MediatR;
 

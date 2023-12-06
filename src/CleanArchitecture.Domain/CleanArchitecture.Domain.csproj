@@ -10,6 +10,7 @@
     <PackageReference Include="ardalis.smartenum" />
     <PackageReference Include="erroror" />
     <PackageReference Include="MediatR" />
+    <PackageReference Include="throw" />
   </ItemGroup>
 
 </Project>

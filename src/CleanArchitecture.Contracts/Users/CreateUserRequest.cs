@@ -1,3 +1,3 @@
 namespace CleanArchitecture.Contracts.Users;
 
-public record CreateUserRequest(string FullName, PlanType PlanType);
+public record CreateUserRequest(Guid Id, string FirstName, string LastName, SubscriptionType SubscriptionType);

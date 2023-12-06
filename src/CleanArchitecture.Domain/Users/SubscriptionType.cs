@@ -2,11 +2,11 @@ using Ardalis.SmartEnum;
 
 namespace CleanArchitecture.Domain.Users;
 
-public class PlanType(string name, int value)
-    : SmartEnum<PlanType>(name, value)
+public class SubscriptionType(string name, int value)
+    : SmartEnum<SubscriptionType>(name, value)
 {
-    public static PlanType Basic = new(nameof(Basic), 0);
-    public static PlanType Pro = new(nameof(Pro), 1);
+    public static readonly SubscriptionType Basic = new(nameof(Basic), 0);
+    public static readonly SubscriptionType Pro = new(nameof(Pro), 1);
 
     public int GetMaxDailyReminders() => Name switch
     {

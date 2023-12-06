@@ -1,9 +1,0 @@
-@host=http://localhost:5001
-
-POST {{host}}/users
-Content-Type: application/json
-
-{
-    "FullName": "Amichai Mantinband",
-    "PlanType": "Pro"
-}

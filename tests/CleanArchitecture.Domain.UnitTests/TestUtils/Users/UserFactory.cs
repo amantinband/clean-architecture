@@ -5,15 +5,12 @@ namespace CleanArchitecture.Domain.UnitTests.TestUtils.Users;
 public static class UserFactory
 {
     public static User Create(
-        PlanType? planType = null,
-        string fullName = UserConstants.FullName,
+        SubscriptionType? SubscriptionType = null,
+        string firstName = UserConstants.FirstName,
+        string lastName = UserConstants.LastName,
         Calendar? calendar = null,
         Guid? id = null)
     {
-        return new User(
-            planType ?? UserConstants.Plan,
-            fullName,
-            calendar ?? UserConstants.Calendar,
-            id ?? UserConstants.Id);
+        return default!;
     }
 }

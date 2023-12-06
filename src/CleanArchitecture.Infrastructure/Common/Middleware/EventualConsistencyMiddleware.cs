@@ -4,18 +4,11 @@ using MediatR;
 
 using Microsoft.AspNetCore.Http;
 
-namespace CleanArchitecture.Infrastructure.Common;
+namespace CleanArchitecture.Infrastructure.Common.Middleware;
 
-public class EventualConsistencyMiddleware
+public class EventualConsistencyMiddleware(RequestDelegate _next)
 {
     public const string DomainEventsKey = "DomainEventsKey";
-
-    private readonly RequestDelegate _next;
-
-    public EventualConsistencyMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
 
     public async Task InvokeAsync(HttpContext context, IPublisher publisher, AppDbContext dbContext)
     {

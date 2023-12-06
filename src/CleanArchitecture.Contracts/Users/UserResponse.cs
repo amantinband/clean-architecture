@@ -2,5 +2,6 @@ namespace CleanArchitecture.Contracts.Users;
 
 public record UserResponse(
     Guid Id,
-    string FullName,
-    PlanType PlanType);
+    string FirstName,
+    string LastName,
+    SubscriptionType SubscriptionType);

@@ -11,15 +11,15 @@ namespace CleanArchitecture.Domain.UnitTests.Users;
 public class UserTests
 {
     [Theory]
-    [MemberData(nameof(ListPlanTypes))]
-    public void SetReminder_WhenLessThanDailyRemindersLimit_ShouldSetReminder(PlanType planType)
+    [MemberData(nameof(ListSubscriptionTypes))]
+    public void SetReminder_WhenLessThanDailyRemindersLimit_ShouldSetReminder(SubscriptionType SubscriptionType)
     {
         // Arrange
         var calendar = CalendarFactory.Create(
             date: DateOnly.FromDateTime(ReminderConstants.DateTime.DateTime),
-            numEvents: planType.GetMaxDailyReminders() - 1);
+            numEvents: SubscriptionType.GetMaxDailyReminders() - 1);
 
-        var user = UserFactory.Create(planType: planType, calendar: calendar);
+        var user = UserFactory.Create(SubscriptionType: SubscriptionType, calendar: calendar);
 
         var reminder = ReminderFactory.Create(dateTime: ReminderConstants.DateTime);
 
@@ -32,15 +32,15 @@ public class UserTests
     }
 
     [Theory]
-    [MemberData(nameof(ListPlanTypes))]
-    public void SetReminder_WhenReachedDailyRemindersLimit_ShouldNotSetReminder(PlanType planType)
+    [MemberData(nameof(ListSubscriptionTypes))]
+    public void SetReminder_WhenReachedDailyRemindersLimit_ShouldNotSetReminder(SubscriptionType SubscriptionType)
     {
         // Arrange
         var calendar = CalendarFactory.Create(
             date: DateOnly.FromDateTime(ReminderConstants.DateTime.Date),
-            numEvents: planType.GetMaxDailyReminders());
+            numEvents: SubscriptionType.GetMaxDailyReminders());
 
-        var user = UserFactory.Create(planType: planType, calendar: calendar);
+        var user = UserFactory.Create(SubscriptionType: SubscriptionType, calendar: calendar);
 
         var reminder = ReminderFactory.Create(dateTime: ReminderConstants.DateTime);
 
@@ -52,13 +52,13 @@ public class UserTests
         setReminderResult.FirstError.Should().Be(UserErrors.CannotCreateMoreRemindersThanPlanAllows);
     }
 
-    public static TheoryData<PlanType> ListPlanTypes()
+    public static TheoryData<SubscriptionType> ListSubscriptionTypes()
     {
-        TheoryData<PlanType> theoryData = [];
+        TheoryData<SubscriptionType> theoryData = [];
 
-        foreach (var planType in PlanType.List)
+        foreach (var subscriptionType in SubscriptionType.List)
         {
-            theoryData.Add(planType);
+            theoryData.Add(subscriptionType);
         }
 
         return theoryData;

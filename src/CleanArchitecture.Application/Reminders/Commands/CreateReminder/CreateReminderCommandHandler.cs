@@ -1,5 +1,6 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Reminders;
+using CleanArchitecture.Domain.Users;
 
 using ErrorOr;
 
@@ -13,14 +14,16 @@ public class CreateReminderCommandHandler(IUsersRepository _usersRepository, ICu
     public async Task<ErrorOr<Reminder>> Handle(CreateReminderCommand command, CancellationToken cancellationToken)
     {
         var currentUser = _currentUserProvider.GetCurrentUser();
+
+        var reminder = new Reminder(currentUser.Id, command.Text, command.DateTime);
+
         var user = await _usersRepository.GetByIdAsync(currentUser.Id);
 
         if (user is null)
         {
-            return Error.Unexpected(description: "User corresponding to current user not found");
+            return Error.NotFound(description: "Subscription not found");
         }
 
-        var reminder = new Reminder(user.Id, command.Text, command.DateTime);
         var setReminderResult = user.SetReminder(reminder);
 
         if (setReminderResult.IsError)
