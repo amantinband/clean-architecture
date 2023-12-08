@@ -1,0 +1,13 @@
+{
+    "rest-client.environmentVariables": {
+        "$shared": {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQW1pY2hhaSIsImZhbWlseV9uYW1lIjoiTWFudGluYmFuZCIsImVtYWlsIjoiYW1pY2hhaUBtYW50aW5iYW5kLmNvbSIsImlkIjoiYmFlOTNiZjUtOWUzYy00N2IzLWFhY2UtMzAzNDY1M2I2YmIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJwZXJtaXNzaW9ucyI6WyJzZXQ6cmVtaW5kZXIiLCJnZXQ6cmVtaW5kZXIiLCJkaXNtaXNzOnJlbWluZGVyIl0sImV4cCI6MTcwMTk3NDY1NSwiaXNzIjoiUmVtaW5kZXJTZXJ2aWNlIiwiYXVkIjoiUmVtaW5kZXJTZXJ2aWNlIn0.o17QYC0t34vk7JYE4EuOQJ2SKlRerFdpzIkpfKPc_LQ",
+            "userId": "bae93bf5-9e3c-47b3-aace-3034653b6bb2",
+            "subscriptionId": "d443e80e-c0a2-44a3-8361-18f2cc546dc3",
+            "reminderId": "63cb89f4-3fac-481a-ab65-ed41d9aaac3e"
+        },
+        "dev": {
+            "host": "http://localhost:5001",
+        }
+    }
+}

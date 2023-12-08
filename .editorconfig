@@ -410,5 +410,8 @@ dotnet_diagnostic.SA1518.severity = none
 # SA1402: File may only contain a single type
 dotnet_diagnostic.SA1402.severity = none
 
+# SA1601: Partial elements should be documented
+dotnet_diagnostic.SA1601.severity = none
+
 [**/Migrations/*]
 generated_code = true
