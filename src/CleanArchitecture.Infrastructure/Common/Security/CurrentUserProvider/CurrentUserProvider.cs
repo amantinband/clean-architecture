@@ -16,7 +16,6 @@ public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : IC
         _httpContextAccessor.HttpContext.ThrowIfNull();
 
         var id = Guid.Parse(GetSingleClaimValue("id"));
-
         var permissions = GetClaimValues("permissions");
         var roles = GetClaimValues(ClaimTypes.Role);
         var firstName = GetSingleClaimValue(JwtRegisteredClaimNames.Name);

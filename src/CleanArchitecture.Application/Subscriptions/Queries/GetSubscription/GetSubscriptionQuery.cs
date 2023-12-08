@@ -5,5 +5,5 @@ using ErrorOr;
 
 namespace CleanArchitecture.Application.Subscriptions.Queries.GetSubscription;
 
-public record GetSubscriptionQuery(Guid UserId, Guid SubscriptionId)
+public record GetSubscriptionQuery(Guid UserId)
     : IAuthorizeableRequest<ErrorOr<SubscriptionResult>>;

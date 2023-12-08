@@ -50,20 +50,8 @@ public class SubscriptionsController(IMediator _mediator) : ApiController
             Problem);
     }
 
-    [HttpGet("{subscriptionId:guid}")]
-    public async Task<IActionResult> GetSubscription(Guid userId, Guid subscriptionId)
-    {
-        var query = new GetSubscriptionQuery(userId, subscriptionId);
-
-        var result = await _mediator.Send(query);
-
-        return result.Match(
-            user => Ok(ToDto(user)),
-            Problem);
-    }
-
     [HttpGet]
-    public async Task<IActionResult> ListSubscriptions(Guid userId)
+    public async Task<IActionResult> GetSubscription(Guid userId)
     {
         var query = new GetSubscriptionQuery(userId);
 

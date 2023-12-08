@@ -1,2 +1,2 @@
-GET {{host}}/users/{{userId}}/subscriptions/{{subscriptionId}}
+GET {{host}}/users/{{userId}}/subscriptions
 Authorization: Bearer {{token}}
