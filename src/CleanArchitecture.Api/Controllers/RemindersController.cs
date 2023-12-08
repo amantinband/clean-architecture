@@ -1,6 +1,9 @@
-using CleanArchitecture.Application.Reminders.Commands.CreateReminder;
+using CleanArchitecture.Application.Reminders.Commands.DismissReminder;
+using CleanArchitecture.Application.Reminders.Commands.SetReminder;
 using CleanArchitecture.Application.Reminders.Queries.GetReminder;
+using CleanArchitecture.Application.Reminders.Queries.ListReminders;
 using CleanArchitecture.Contracts.Reminders;
+using CleanArchitecture.Domain.Reminders;
 
 using MediatR;
 
@@ -8,33 +11,60 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.Api.Controllers;
 
-[Route("reminders")]
+[Route("users/{userId:guid}/subscriptions/{subscriptionId:guid}/reminders")]
 public class RemindersController(ISender _mediator) : ApiController
 {
     [HttpPost]
-    public async Task<IActionResult> CreateReminder(CreateReminderRequest request)
+    public async Task<IActionResult> CreateReminder(Guid userId, Guid subscriptionId, CreateReminderRequest request)
     {
-        var createReminderCommand = new CreateReminderCommand(request.Text, request.DateTime);
+        var command = new SetReminderCommand(userId, subscriptionId, request.Text, request.DateTime);
 
-        var createReminderResult = await _mediator.Send(createReminderCommand);
+        var result = await _mediator.Send(command);
 
-        return createReminderResult.Match(
+        return result.Match(
             reminder => CreatedAtAction(
                 actionName: nameof(GetReminder),
-                routeValues: new { ReminderId = reminder.Id },
-                value: new ReminderResponse(reminder.Text, reminder.DateTime)),
+                routeValues: new { UserId = userId, SubscriptionId = subscriptionId, ReminderId = reminder.Id },
+                value: ToDto(reminder)),
+            Problem);
+    }
+
+    [HttpPost("{reminderId:guid}/dismiss")]
+    public async Task<IActionResult> DismissReminder(Guid userId, Guid subscriptionId, Guid reminderId)
+    {
+        var command = new DismissReminderCommand(userId, subscriptionId, reminderId);
+
+        var result = await _mediator.Send(command);
+
+        return result.Match(
+            _ => NoContent(),
             Problem);
     }
 
     [HttpGet("{reminderId:guid}")]
-    public async Task<IActionResult> GetReminder(Guid reminderId)
+    public async Task<IActionResult> GetReminder(Guid userId, Guid subscriptionId, Guid reminderId)
     {
-        var getReminderQuery = new GetReminderQuery(reminderId);
+        var query = new GetReminderQuery(userId, subscriptionId, reminderId);
 
-        var getReminderResult = await _mediator.Send(getReminderQuery);
+        var result = await _mediator.Send(query);
 
-        return getReminderResult.Match(
-            reminder => Ok(new ReminderResponse(reminder.Text, reminder.DateTime)),
+        return result.Match(
+            reminder => Ok(ToDto(reminder)),
             Problem);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> ListReminders(Guid userId, Guid subscriptionId)
+    {
+        var query = new ListRemindersQuery(userId, subscriptionId);
+
+        var result = await _mediator.Send(query);
+
+        return result.Match(
+            reminders => Ok(reminders.ConvertAll(ToDto)),
+            Problem);
+    }
+
+    private ReminderResponse ToDto(Reminder reminder) =>
+        new(reminder.Id, reminder.Text, reminder.DateTime);
 }

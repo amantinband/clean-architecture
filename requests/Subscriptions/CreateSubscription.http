@@ -1,10 +1,8 @@
-@host=http://localhost:5001
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQW1pY2hhaSIsImZhbWlseV9uYW1lIjoiTWFudGluYmFuZCIsImVtYWlsIjoiYW1pY2hhaUBtYW50aW5iYW5kLmNvbSIsImlkIjoiNWQ1MGIyNzUtNTU3OS00M2QyLThlYzMtNzMyYWMzZGUzY2EzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJwZXJtaXNzaW9ucyI6WyJjcmVhdGU6cmVtaW5kZXIiLCJkaXNtaXNzOnJlbWluZGVyIl0sImV4cCI6MTcwMTg1NDk5MCwiaXNzIjoiUmVtaW5kZXJTZXJ2aWNlIiwiYXVkIjoiUmVtaW5kZXJTZXJ2aWNlIn0.gsiED-rxXvgFoHpONa1s0E_KvtAd30bYi80KFkW1Pw8
-
-POST {{host}}/subscriptions
+POST {{host}}/users/{{userId}}/subscriptions
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
     "SubscriptionType": "Basic"
+    // "SubscriptionType": "Pro"
 }

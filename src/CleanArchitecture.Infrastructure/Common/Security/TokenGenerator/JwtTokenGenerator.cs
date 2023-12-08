@@ -2,14 +2,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
+using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Users;
-
-using GymManagement.Application.Common.Interfaces;
 
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace GymManagement.Api.Authentication.TokenGenerator;
+namespace CleanArchitecture.Infrastructure.Security.TokenGenerator;
 
 public class JwtTokenGenerator(IOptions<JwtSettings> jwtOptions) : IJwtTokenGenerator
 {

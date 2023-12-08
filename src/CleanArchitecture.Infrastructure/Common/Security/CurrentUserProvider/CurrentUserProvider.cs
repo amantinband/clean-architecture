@@ -1,13 +1,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
-using CleanArchitecture.Domain.Users;
+
+using Microsoft.AspNetCore.Http;
 
 using Throw;
 
-namespace CleanArchitecture.Api.Services;
+namespace CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 
 public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : ICurrentUserProvider
 {

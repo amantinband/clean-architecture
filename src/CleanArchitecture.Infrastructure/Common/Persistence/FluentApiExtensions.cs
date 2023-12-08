@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace GymManagement.Infrastructure.Common.Persistence;
+namespace CleanArchitecture.Infrastructure.Common.Persistence;
 
 public static class FluentApiExtensions
 {

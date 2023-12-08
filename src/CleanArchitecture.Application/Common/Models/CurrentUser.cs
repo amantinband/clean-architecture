@@ -1,5 +1,3 @@
-using CleanArchitecture.Domain.Users;
-
 namespace CleanArchitecture.Application.Common.Models;
 
 public record CurrentUser(

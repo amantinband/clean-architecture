@@ -1,15 +1,15 @@
-@host=http://localhost:5001
-
 POST {{host}}/tokens/generate
 Content-Type: application/json
 
 {
+    "Id": "bae93bf5-9e3c-47b3-aace-3034653b6bb2",
     "FirstName": "Amichai",
     "LastName": "Mantinband",
     "Email": "amichai@mantinband.com",
     "Plan": "Basic",
     "Permissions": [
-        "create:reminder",
+        "set:reminder",
+        "get:reminder",
         "dismiss:reminder"
     ],
     "Roles": [

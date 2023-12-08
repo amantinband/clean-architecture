@@ -13,6 +13,8 @@ public class Subscription : Entity
         SubscriptionType = subscriptionType;
     }
 
+    public static readonly Subscription Canceled = new(new SubscriptionType("Canceled", -1), Guid.Empty);
+
     private Subscription()
     {
     }

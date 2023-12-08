@@ -10,14 +10,11 @@ using MediatR;
 namespace CleanArchitecture.Application.Subscriptions.Commands.CreateSubscription;
 
 public class CreateSubscriptionCommandHandler(
-    ICurrentUserProvider _currentUserProvider,
     IUsersRepository _usersRepository) : IRequestHandler<CreateSubscriptionCommand, ErrorOr<SubscriptionResult>>
 {
     public async Task<ErrorOr<SubscriptionResult>> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
     {
-        var currentUser = _currentUserProvider.GetCurrentUser();
-
-        if (await _usersRepository.GetByIdAsync(currentUser.Id) is not null)
+        if (await _usersRepository.GetByIdAsync(request.UserId, cancellationToken) is not null)
         {
             return Error.Conflict(description: "User already has an active subscription");
         }
@@ -25,12 +22,10 @@ public class CreateSubscriptionCommandHandler(
         var subscription = new Subscription(request.SubscriptionType);
 
         var user = new User(
-            currentUser.Id,
-            currentUser.FirstName,
-            currentUser.LastName,
+            request.UserId,
             subscription);
 
-        await _usersRepository.AddAsync(user);
+        await _usersRepository.AddAsync(user, cancellationToken);
 
         return SubscriptionResult.FromUser(user);
     }

@@ -1,19 +1,20 @@
 using System.Reflection;
 
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.Common.Security;
 
 using ErrorOr;
 
-using GymManagement.Application.Common.Authorization;
-
 using MediatR;
 
-namespace GymManagement.Application.Common.Behaviors;
+namespace CleanArchitecture.Application.Common.Behaviors;
 
-public class AuthorizationBehavior<TRequest, TResponse>(ICurrentUserProvider _currentUserProvider)
-    : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
-        where TResponse : IErrorOr
+public class AuthorizationBehavior<TRequest, TResponse>(
+    IAuthorizationService _authorizationService)
+        : IPipelineBehavior<TRequest, TResponse>
+            where TRequest : IAuthorizeableRequest<TResponse>
+            where TResponse : IErrorOr
 {
     public async Task<TResponse> Handle(
         TRequest request,
@@ -29,26 +30,26 @@ public class AuthorizationBehavior<TRequest, TResponse>(ICurrentUserProvider _cu
             return await next();
         }
 
-        var currentUser = _currentUserProvider.GetCurrentUser();
-
         var requiredPermissions = authorizationAttributes
             .SelectMany(authorizationAttribute => authorizationAttribute.Permissions?.Split(',') ?? [])
             .ToList();
-
-        if (requiredPermissions.Except(currentUser.Permissions).Any())
-        {
-            return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action");
-        }
 
         var requiredRoles = authorizationAttributes
             .SelectMany(authorizationAttribute => authorizationAttribute.Roles?.Split(',') ?? [])
             .ToList();
 
-        if (requiredRoles.Except(currentUser.Roles).Any())
-        {
-            return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action");
-        }
+        var requiredPolicies = authorizationAttributes
+            .SelectMany(authorizationAttribute => authorizationAttribute.Policies?.Split(',') ?? [])
+            .ToList();
 
-        return await next();
+        var authorizationResult = _authorizationService.AuthorizeCurrentUser(
+            request,
+            requiredRoles,
+            requiredPermissions,
+            requiredPolicies);
+
+        return authorizationResult.IsError
+            ? (dynamic)authorizationResult.Errors
+            : await next();
     }
 }

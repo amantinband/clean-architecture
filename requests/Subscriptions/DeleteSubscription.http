@@ -1,0 +1,2 @@
+DELETE {{host}}/users/{{userId}}/subscriptions/{{subscriptionId}}
+Authorization: Bearer {{token}}

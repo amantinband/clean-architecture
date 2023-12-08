@@ -25,11 +25,11 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Text")
-                        .IsRequired()
+                    b.Property<Guid>("SubscriptionId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -40,14 +40,6 @@ namespace CleanArchitecture.Infrastructure.Migrations
             modelBuilder.Entity("CleanArchitecture.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("_reminderIds")

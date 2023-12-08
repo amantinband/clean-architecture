@@ -1,9 +1,9 @@
+using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Subscriptions.Common;
 
 using ErrorOr;
 
-using MediatR;
-
 namespace CleanArchitecture.Application.Subscriptions.Queries.GetSubscription;
 
-public record GetSubscriptionQuery : IRequest<ErrorOr<SubscriptionResult>>;
+public record GetSubscriptionQuery(Guid UserId, Guid SubscriptionId)
+    : IAuthorizeableRequest<ErrorOr<SubscriptionResult>>;

@@ -1,8 +1,7 @@
 using CleanArchitecture.Application.Authentication.Queries.Login;
+using CleanArchitecture.Application.Common.Interfaces;
 
 using ErrorOr;
-
-using GymManagement.Application.Common.Interfaces;
 
 using MediatR;
 

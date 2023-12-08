@@ -1,6 +1,5 @@
 using CleanArchitecture.Domain.Users;
-
-using GymManagement.Infrastructure.Common.Persistence;
+using CleanArchitecture.Infrastructure.Common.Persistence;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -26,10 +25,6 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder.Property<List<Guid>>("_reminderIds")
             .HasColumnName("ReminderIds")
             .HasListOfIdsConverter();
-
-        builder.Property(u => u.FirstName);
-
-        builder.Property(u => u.LastName);
 
         builder.OwnsOne(u => u.Subscription, sb =>
         {

@@ -1,8 +1,10 @@
 using ErrorOr;
+
 using FluentValidation;
+
 using MediatR;
 
-namespace GymManagement.Application.Common.Behaviors;
+namespace CleanArchitecture.Application.Common.Behaviors;
 
 public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)
     : IPipelineBehavior<TRequest, TResponse>

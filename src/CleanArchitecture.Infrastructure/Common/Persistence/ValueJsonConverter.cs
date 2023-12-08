@@ -3,7 +3,7 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace GymManagement.Infrastructure.Common.Persistence;
+namespace CleanArchitecture.Infrastructure.Common.Persistence;
 
 public class ValueJsonConverter<T>(ConverterMappingHints? mappingHints = null)
     : ValueConverter<T, string>(

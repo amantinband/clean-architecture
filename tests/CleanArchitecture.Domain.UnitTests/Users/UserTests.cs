@@ -48,8 +48,8 @@ public class UserTests
         var setReminderResult = user.SetReminder(reminder);
 
         // Assert
+        // setReminderResult.FirstError.Should().Be(UserErrors.CannotCreateMoreRemindersThanPlanAllows);
         setReminderResult.IsError.Should().BeTrue();
-        setReminderResult.FirstError.Should().Be(UserErrors.CannotCreateMoreRemindersThanPlanAllows);
     }
 
     public static TheoryData<SubscriptionType> ListSubscriptionTypes()

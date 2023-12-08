@@ -16,7 +16,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    SubscriptionId = table.Column<Guid>(type: "TEXT", nullable: false),
                     DateTime = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     Text = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -30,8 +30,6 @@ namespace CleanArchitecture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
                     Subscription_SubscriptionType = table.Column<string>(type: "TEXT", nullable: false),
                     SubscriptionId = table.Column<Guid>(type: "TEXT", nullable: false),
                     ReminderIds = table.Column<string>(type: "TEXT", nullable: false),

@@ -35,9 +35,9 @@ public class TokensController(ISender _mediator) : ApiController
             request.Permissions,
             request.Roles);
 
-        var generateTokenResult = await _mediator.Send(query);
+        var result = await _mediator.Send(query);
 
-        return generateTokenResult.Match(
+        return result.Match(
             generateTokenResult => Ok(ToDto(generateTokenResult)),
             Problem);
     }
