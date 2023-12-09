@@ -416,5 +416,8 @@ dotnet_diagnostic.SA1601.severity = none
 # IDE1006: Prefix '_' is not expected
 dotnet_diagnostic.IDE1006.severity = none
 
+# SA1615: Element return value should be documented
+dotnet_diagnostic.SA1615.severity = none
+
 [**/Migrations/*]
 generated_code = true

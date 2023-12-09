@@ -17,7 +17,7 @@ public class RemindersController(ISender _mediator) : ApiController
     [HttpPost]
     public async Task<IActionResult> CreateReminder(Guid userId, Guid subscriptionId, CreateReminderRequest request)
     {
-        var command = new SetReminderCommand(userId, subscriptionId, request.Text, request.DateTime);
+        var command = new SetReminderCommand(userId, subscriptionId, request.Text, request.DateTime.UtcDateTime);
 
         var result = await _mediator.Send(command);
 

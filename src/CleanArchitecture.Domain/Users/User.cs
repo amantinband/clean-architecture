@@ -5,6 +5,8 @@ using CleanArchitecture.Domain.Users.Events;
 
 using ErrorOr;
 
+using Throw;
+
 namespace CleanArchitecture.Domain.Users;
 
 public class User : Entity
@@ -30,6 +32,8 @@ public class User : Entity
         {
             return Error.NotFound("Subscription not found");
         }
+
+        reminder.SubscriptionId.Throw().IfNotEquals(Subscription.Id);
 
         if (HasReachedDailyReminderLimit(reminder.DateTime))
         {

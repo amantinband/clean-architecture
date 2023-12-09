@@ -9,5 +9,5 @@ using ErrorOr;
 namespace CleanArchitecture.Application.Reminders.Commands.SetReminder;
 
 [Authorize(Permissions = Permission.Reminder.Set, Policies = Policy.SelfOrAdmin)]
-public record SetReminderCommand(Guid UserId, Guid SubscriptionId, string Text, DateTimeOffset DateTime)
+public record SetReminderCommand(Guid UserId, Guid SubscriptionId, string Text, DateTime DateTime)
     : IAuthorizeableRequest<ErrorOr<Reminder>>;

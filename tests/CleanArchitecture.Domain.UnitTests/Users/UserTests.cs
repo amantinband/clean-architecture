@@ -1,65 +1,55 @@
-using CleanArchitecture.Domain.UnitTests.TestUtils.Reminders;
-using CleanArchitecture.Domain.UnitTests.TestUtils.Users;
+using CleanArchitecture.Domain.Subscriptions;
 using CleanArchitecture.Domain.Users;
 
 using ErrorOr;
 
 using FluentAssertions;
 
+using TestCommon.Reminders;
+using TestCommon.Users;
+
 namespace CleanArchitecture.Domain.UnitTests.Users;
 
 public class UserTests
 {
     [Theory]
-    [MemberData(nameof(ListSubscriptionTypes))]
-    public void SetReminder_WhenLessThanDailyRemindersLimit_ShouldSetReminder(SubscriptionType SubscriptionType)
+    [MemberData(nameof(ListSubscriptionsWithLimit))]
+    public void SetReminder_WhenMoreThanSubscriptionAllows_ShouldFail(SubscriptionType subscriptionType)
     {
         // Arrange
-        var calendar = CalendarFactory.Create(
-            date: DateOnly.FromDateTime(ReminderConstants.DateTime.DateTime),
-            numEvents: SubscriptionType.GetMaxDailyReminders() - 1);
+        // Create user
+        var subscription = SubscriptionFactory.CreateSubscription(subscriptionType: subscriptionType);
+        var user = UserFactory.CreateUser(subscription: subscription);
 
-        var user = UserFactory.Create(SubscriptionType: SubscriptionType, calendar: calendar);
-
-        var reminder = ReminderFactory.Create(dateTime: ReminderConstants.DateTime);
-
-        // Act
-        var setReminderResult = user.SetReminder(reminder);
-
-        // Assert
-        setReminderResult.IsError.Should().BeFalse();
-        setReminderResult.Value.Should().Be(Result.Success);
-    }
-
-    [Theory]
-    [MemberData(nameof(ListSubscriptionTypes))]
-    public void SetReminder_WhenReachedDailyRemindersLimit_ShouldNotSetReminder(SubscriptionType SubscriptionType)
-    {
-        // Arrange
-        var calendar = CalendarFactory.Create(
-            date: DateOnly.FromDateTime(ReminderConstants.DateTime.Date),
-            numEvents: SubscriptionType.GetMaxDailyReminders());
-
-        var user = UserFactory.Create(SubscriptionType: SubscriptionType, calendar: calendar);
-
-        var reminder = ReminderFactory.Create(dateTime: ReminderConstants.DateTime);
+        // Create max number of daily reminders + 1
+        var reminders = Enumerable.Range(0, subscriptionType.GetMaxDailyReminders() + 1)
+            .Select(_ => ReminderFactory.CreateReminder(id: Guid.NewGuid(), subscriptionId: subscription.Id));
 
         // Act
-        var setReminderResult = user.SetReminder(reminder);
+        var setReminderResults = reminders.Select(user.SetReminder).ToList();
 
         // Assert
-        // setReminderResult.FirstError.Should().Be(UserErrors.CannotCreateMoreRemindersThanPlanAllows);
-        setReminderResult.IsError.Should().BeTrue();
+        var allButLastSetReminderResults = setReminderResults[..^1];
+
+        allButLastSetReminderResults.Should().AllSatisfy(
+            setReminderResult => setReminderResult.Value.Should().Be(Result.Success));
+
+        var lastReminder = setReminderResults.Last();
+
+        lastReminder.IsError.Should().BeTrue();
+        lastReminder.FirstError.Should().Be(UserErrors.CannotCreateMoreRemindersThanSubscriptionAllows);
     }
 
-    public static TheoryData<SubscriptionType> ListSubscriptionTypes()
+    /// <summary>
+    /// This is completely redundant as there is only one subscription with a limit.
+    /// I added this here just so you have a copy-paste method for your own usage.
+    /// </summary>
+    public static TheoryData<SubscriptionType> ListSubscriptionsWithLimit()
     {
         TheoryData<SubscriptionType> theoryData = [];
 
-        foreach (var subscriptionType in SubscriptionType.List)
-        {
-            theoryData.Add(subscriptionType);
-        }
+        SubscriptionType.List.Except([SubscriptionType.Pro]).ToList()
+            .ForEach(theoryData.Add);
 
         return theoryData;
     }

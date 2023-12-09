@@ -4,7 +4,7 @@ public static partial class Permission
 {
     public static class Subscription
     {
-        public const string CreateSubscription = "create:subscription";
-        public const string DeleteSubscription = "delete:subscription";
+        public const string Create = "create:subscription";
+        public const string Delete = "delete:subscription";
     }
 }

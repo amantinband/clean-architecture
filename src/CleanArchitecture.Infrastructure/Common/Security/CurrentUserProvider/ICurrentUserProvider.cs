@@ -1,4 +1,4 @@
-using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
 
 namespace CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 
