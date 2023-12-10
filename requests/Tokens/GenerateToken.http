@@ -10,7 +10,8 @@ Content-Type: application/json
     "Permissions": [
         "set:reminder",
         "get:reminder",
-        "dismiss:reminder"
+        "dismiss:reminder",
+        "create:subscription"
     ],
     "Roles": [
         "Admin"

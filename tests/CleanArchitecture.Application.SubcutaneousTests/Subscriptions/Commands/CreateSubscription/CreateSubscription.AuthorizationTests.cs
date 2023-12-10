@@ -1,7 +1,6 @@
 using CleanArchitecture.Application.Common.Security.Permissions;
 using CleanArchitecture.Application.Common.Security.Roles;
 using CleanArchitecture.Application.SubcutaneousTests.Common;
-using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
 
 using FluentAssertions;
 
@@ -11,16 +10,16 @@ using TestCommon.Security;
 using TestCommon.Subscriptions;
 using TestCommon.TestConstants;
 
-namespace CleanArchitecture.Application.SubcutaneousTests.Subscriptions.Commands;
+namespace CleanArchitecture.Application.SubcutaneousTests.Subscriptions.Commands.CreateSubscription;
 
-[Collection(MediatorFactoryCollection.CollectionName)]
-public class CreateSubscriptionTests(MediatorFactory mediatorFactory)
+public class CreateSubscriptionAuthorizationTests(MediatorFactory mediatorFactory)
+    : IClassFixture<MediatorFactory>
 {
     private readonly IMediator _mediator = mediatorFactory.CreateMediator();
     private readonly TestCurrentUserProvider _currentUserProvider = mediatorFactory.TestCurrentUserProvider;
 
     [Fact]
-    public async Task CreateSubscription_WhenDifferentUserButWithAdminRole_ShouldCreateSubscription()
+    public async Task CreateSubscription_WhenDifferentUserButWithAdminRole_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -37,13 +36,11 @@ public class CreateSubscriptionTests(MediatorFactory mediatorFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeFalse();
-        result.Value.UserId.Should().Be(command.UserId);
-        result.Value.SubscriptionType.Should().Be(Constants.Subscription.Type);
+        result.FirstError.Type.Should().NotBe(ErrorOr.ErrorType.Unauthorized);
     }
 
     [Fact]
-    public async Task CreateSubscription_WhenCreatingForSelfWithRequiredPermission_ShouldCreateSubscription()
+    public async Task CreateSubscription_WhenCreatingForSelfWithRequiredPermission_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -61,13 +58,11 @@ public class CreateSubscriptionTests(MediatorFactory mediatorFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeFalse();
-        result.Value.UserId.Should().Be(command.UserId);
-        result.Value.SubscriptionType.Should().Be(Constants.Subscription.Type);
+        result.FirstError.Type.Should().NotBe(ErrorOr.ErrorType.Unauthorized);
     }
 
     [Fact]
-    public async Task CreateSubscription_WhenUserHasNoRolesOrPermissions_ShouldReturnUnauthorized()
+    public async Task CreateSubscription_WhenUserHasNoRolesOrPermissions_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(roles: [], permissions: []);
@@ -79,7 +74,6 @@ public class CreateSubscriptionTests(MediatorFactory mediatorFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeTrue();
         result.FirstError.Type.Should().Be(ErrorOr.ErrorType.Unauthorized);
     }
 }

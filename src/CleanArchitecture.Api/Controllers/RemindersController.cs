@@ -66,5 +66,5 @@ public class RemindersController(ISender _mediator) : ApiController
     }
 
     private ReminderResponse ToDto(Reminder reminder) =>
-        new(reminder.Id, reminder.Text, reminder.DateTime);
+        new(reminder.Id, reminder.Text, reminder.DateTime, reminder.IsDismissed);
 }

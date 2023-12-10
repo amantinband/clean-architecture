@@ -29,8 +29,8 @@ public class SqliteTestDatabase : IDisposable
             .UseSqlite(Connection)
             .Options;
 
-        var context = new AppDbContext(options, null!, null!);
-
+        using var context = new AppDbContext(options, null!, null!);
+        context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
     }
 

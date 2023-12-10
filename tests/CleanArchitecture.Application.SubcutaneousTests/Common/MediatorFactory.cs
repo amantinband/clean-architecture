@@ -2,6 +2,8 @@ using CleanArchitecture.Api;
 using CleanArchitecture.Infrastructure.Common;
 using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 
+using FluentAssertions;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Hosting;
@@ -47,7 +49,7 @@ public class MediatorFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLif
         {
             services
                 .RemoveAll<ICurrentUserProvider>()
-                .AddSingleton<ICurrentUserProvider>(TestCurrentUserProvider);
+                .AddScoped<ICurrentUserProvider>(_ => TestCurrentUserProvider);
 
             services
                 .RemoveAll<DbContextOptions<AppDbContext>>()

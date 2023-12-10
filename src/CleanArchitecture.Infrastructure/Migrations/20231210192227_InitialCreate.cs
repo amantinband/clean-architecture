@@ -17,8 +17,9 @@ namespace CleanArchitecture.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     SubscriptionId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    DateTime = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    Text = table.Column<string>(type: "TEXT", nullable: false)
+                    DateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Text = table.Column<string>(type: "TEXT", nullable: false),
+                    IsDismissed = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

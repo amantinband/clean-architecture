@@ -20,6 +20,6 @@ public static class CurrentUserFactory
             lastName,
             email,
             permissions ?? Constants.User.Permissions,
-            roles ?? Constants.User.Permissions);
+            roles ?? Constants.User.Roles);
     }
 }

@@ -22,8 +22,11 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("DateTime")
+                    b.Property<DateTime>("DateTime")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDismissed")
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("SubscriptionId")
                         .HasColumnType("TEXT");

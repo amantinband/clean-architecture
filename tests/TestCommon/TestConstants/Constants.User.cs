@@ -19,6 +19,7 @@ public static partial class Constants
             Permission.Reminder.Dismiss,
             Permission.Subscription.Create,
             Permission.Subscription.Delete,
+            Permission.Subscription.Get,
         ];
 
         public static readonly List<string> Roles =
