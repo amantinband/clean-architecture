@@ -1,20 +1,9 @@
-using CleanArchitecture.Application.SubcutaneousTests.Common;
-
-using ErrorOr;
-
-using FluentAssertions;
-
-using MediatR;
-
-using TestCommon.Reminders;
-using TestCommon.Subscriptions;
-
 namespace CleanArchitecture.Application.SubcutaneousTests.Subscriptions.Commands.CancelSubscription;
 
-public class CancelSubscriptionTests(MediatorFactory mediatorFactory)
-    : IClassFixture<MediatorFactory>
+[Collection(WebAppFactoryCollection.CollectionName)]
+public class CancelSubscriptionTests(WebAppFactory webAppFactory)
 {
-    private readonly IMediator _mediator = mediatorFactory.CreateMediator();
+    private readonly IMediator _mediator = webAppFactory.CreateMediator();
 
     [Fact]
     public async Task CancelSubscription_WhenSubscriptionExists_ShouldCancelSubscription()

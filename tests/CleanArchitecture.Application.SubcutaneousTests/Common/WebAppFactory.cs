@@ -2,10 +2,6 @@ using CleanArchitecture.Api;
 using CleanArchitecture.Infrastructure.Common;
 using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 
-using FluentAssertions;
-
-using MediatR;
-
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -13,21 +9,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-using TestCommon.Security;
-
 namespace CleanArchitecture.Application.SubcutaneousTests.Common;
 
-public class MediatorFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLifetime
+public class WebAppFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLifetime
 {
-    public TestCurrentUserProvider TestCurrentUserProvider { get; set; } = new();
-
-    private SqliteTestDatabase _testDatabase = null!;
+    public TestCurrentUserProvider TestCurrentUserProvider { get; private set; } = new();
+    public SqliteTestDatabase TestDatabase { get; set; } = null!;
 
     public IMediator CreateMediator()
     {
         var serviceScope = Services.CreateScope();
 
-        _testDatabase.ResetDatabase();
+        TestDatabase.ResetDatabase();
 
         return serviceScope.ServiceProvider.GetRequiredService<IMediator>();
     }
@@ -36,14 +29,14 @@ public class MediatorFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLif
 
     public new Task DisposeAsync()
     {
-        _testDatabase.Dispose();
+        TestDatabase.Dispose();
 
         return Task.CompletedTask;
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        _testDatabase = SqliteTestDatabase.CreateAndInitialize();
+        TestDatabase = SqliteTestDatabase.CreateAndInitialize();
 
         builder.ConfigureTestServices(services =>
         {
@@ -53,7 +46,7 @@ public class MediatorFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLif
 
             services
                 .RemoveAll<DbContextOptions<AppDbContext>>()
-                .AddDbContext<AppDbContext>((sp, options) => options.UseSqlite(_testDatabase.Connection));
+                .AddDbContext<AppDbContext>((sp, options) => options.UseSqlite(TestDatabase.Connection));
         });
     }
 }

@@ -14,7 +14,7 @@ public class DeleteReminderCommandHandler(
     {
         var reminder = await _remindersRepository.GetByIdAsync(request.ReminderId, cancellationToken);
 
-        var user = await _usersRepository.GetByIdAsync(request.ReminderId, cancellationToken);
+        var user = await _usersRepository.GetByIdAsync(request.UserId, cancellationToken);
 
         if (reminder is null || user is null)
         {

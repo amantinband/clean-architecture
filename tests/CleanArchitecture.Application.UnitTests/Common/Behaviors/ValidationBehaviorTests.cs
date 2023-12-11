@@ -2,18 +2,10 @@ using CleanArchitecture.Application.Common.Behaviors;
 using CleanArchitecture.Application.Reminders.Commands.SetReminder;
 using CleanArchitecture.Domain.Reminders;
 
-using ErrorOr;
-
-using FluentAssertions;
-
 using FluentValidation;
 using FluentValidation.Results;
 
 using MediatR;
-
-using NSubstitute;
-
-using TestCommon.Reminders;
 
 namespace CleanArchitecture.Application.UnitTests.Common.Behaviors;
 

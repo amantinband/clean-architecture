@@ -1,22 +1,19 @@
 using CleanArchitecture.Application.Common.Security.Permissions;
 using CleanArchitecture.Application.Common.Security.Roles;
-using CleanArchitecture.Application.SubcutaneousTests.Common;
-
-using FluentAssertions;
-
-using MediatR;
-
-using TestCommon.Security;
-using TestCommon.Subscriptions;
-using TestCommon.TestConstants;
 
 namespace CleanArchitecture.Application.SubcutaneousTests.Subscriptions.Commands.CreateSubscription;
 
-public class CreateSubscriptionAuthorizationTests(MediatorFactory mediatorFactory)
-    : IClassFixture<MediatorFactory>
+public class CreateSubscriptionAuthorizationTests
 {
-    private readonly IMediator _mediator = mediatorFactory.CreateMediator();
-    private readonly TestCurrentUserProvider _currentUserProvider = mediatorFactory.TestCurrentUserProvider;
+    private readonly IMediator _mediator;
+    private readonly TestCurrentUserProvider _currentUserProvider;
+
+    public CreateSubscriptionAuthorizationTests()
+    {
+        var webAppFactory = new WebAppFactory();
+        _mediator = webAppFactory.CreateMediator();
+        _currentUserProvider = webAppFactory.TestCurrentUserProvider;
+    }
 
     [Fact]
     public async Task CreateSubscription_WhenDifferentUserButWithAdminRole_ShouldAuthorize()
@@ -36,7 +33,7 @@ public class CreateSubscriptionAuthorizationTests(MediatorFactory mediatorFactor
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().NotBe(ErrorOr.ErrorType.Unauthorized);
+        result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
     }
 
     [Fact]
@@ -58,7 +55,7 @@ public class CreateSubscriptionAuthorizationTests(MediatorFactory mediatorFactor
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().NotBe(ErrorOr.ErrorType.Unauthorized);
+        result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
     }
 
     [Fact]
@@ -74,6 +71,6 @@ public class CreateSubscriptionAuthorizationTests(MediatorFactory mediatorFactor
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().Be(ErrorOr.ErrorType.Unauthorized);
+        result.FirstError.Type.Should().Be(ErrorType.Unauthorized);
     }
 }

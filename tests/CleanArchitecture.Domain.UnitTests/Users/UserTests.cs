@@ -1,12 +1,4 @@
-using CleanArchitecture.Domain.Subscriptions;
 using CleanArchitecture.Domain.Users;
-
-using ErrorOr;
-
-using FluentAssertions;
-
-using TestCommon.Reminders;
-using TestCommon.Users;
 
 namespace CleanArchitecture.Domain.UnitTests.Users;
 
@@ -28,12 +20,13 @@ public class UserTests
         // Act
         var setReminderResults = reminders.Select(user.SetReminder).ToList();
 
-        // Assert
+        // Assert all reminders set successfully
         var allButLastSetReminderResults = setReminderResults[..^1];
 
         allButLastSetReminderResults.Should().AllSatisfy(
             setReminderResult => setReminderResult.Value.Should().Be(Result.Success));
 
+        // Assert settings last reminder returned conflict
         var lastReminder = setReminderResults.Last();
 
         lastReminder.IsError.Should().BeTrue();

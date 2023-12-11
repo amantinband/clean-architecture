@@ -1,18 +1,9 @@
-using CleanArchitecture.Application.SubcutaneousTests.Common;
-
-using FluentAssertions;
-
-using MediatR;
-
-using TestCommon.Subscriptions;
-using TestCommon.TestConstants;
-
 namespace CleanArchitecture.Application.SubcutaneousTests.Subscriptions.Commands.CreateSubscription;
 
-public class CreateSubscriptionTests(MediatorFactory mediatorFactory)
-    : IClassFixture<MediatorFactory>
+[Collection(WebAppFactoryCollection.CollectionName)]
+public class CreateSubscriptionTests(WebAppFactory webAppFactory)
 {
-    private readonly IMediator _mediator = mediatorFactory.CreateMediator();
+    private readonly IMediator _mediator = webAppFactory.CreateMediator();
 
     [Fact]
     public async Task CreateSubscription_WhenNoSubscription_ShouldCreateSubscription()
@@ -25,8 +16,11 @@ public class CreateSubscriptionTests(MediatorFactory mediatorFactory)
 
         // Assert
         result.IsError.Should().BeFalse();
-        result.Value.UserId.Should().Be(Constants.User.Id);
-        result.Value.SubscriptionType.Should().Be(Constants.Subscription.Type);
+        result.Value.AssertCreatedFrom(command);
+
+        var getSubscriptionResult = await _mediator.GetSubscription();
+        getSubscriptionResult.IsError.Should().BeFalse();
+        getSubscriptionResult.Value.Should().BeEquivalentTo(result.Value);
     }
 
     [Fact]
@@ -41,10 +35,9 @@ public class CreateSubscriptionTests(MediatorFactory mediatorFactory)
 
         // Assert
         firstResult.IsError.Should().BeFalse();
-        firstResult.Value.UserId.Should().Be(Constants.User.Id);
-        firstResult.Value.SubscriptionType.Should().Be(Constants.Subscription.Type);
+        firstResult.Value.AssertCreatedFrom(command);
 
         secondResult.IsError.Should().BeTrue();
-        secondResult.FirstError.Type.Should().Be(ErrorOr.ErrorType.Conflict);
+        secondResult.FirstError.Type.Should().Be(ErrorType.Conflict);
     }
 }

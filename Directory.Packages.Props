@@ -5,6 +5,7 @@
   <ItemGroup>
     <!-- ASP.NET -->
     <PackageVersion Include="FluentValidation" Version="11.8.1" />
+    <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />

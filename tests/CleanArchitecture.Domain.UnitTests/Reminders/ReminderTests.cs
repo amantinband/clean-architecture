@@ -1,15 +1,9 @@
-using ErrorOr;
-
-using FluentAssertions;
-
-using TestCommon.Reminders;
-
 namespace CleanArchitecture.Domain.UnitTests.Reminders;
 
 public class ReminderTests
 {
     [Fact]
-    public void CreateReminder_WhenConstructedSuccessfully_ShouldHasIsDismissedFalse()
+    public void CreateReminder_WhenConstructedSuccessfully_ShouldHaveIsDismissedFalse()
     {
         // Act
         var reminder = ReminderFactory.CreateReminder();

@@ -1,5 +1,7 @@
 using CleanArchitecture.Application.Common.Behaviors;
 
+using FluentValidation;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Application;
@@ -16,6 +18,7 @@ public static class DependencyInjection
             options.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
+        services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
         return services;
     }
 }

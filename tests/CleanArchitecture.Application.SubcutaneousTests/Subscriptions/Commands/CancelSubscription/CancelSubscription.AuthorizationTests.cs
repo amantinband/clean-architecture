@@ -1,23 +1,18 @@
 using CleanArchitecture.Application.Common.Security.Roles;
-using CleanArchitecture.Application.SubcutaneousTests.Common;
 
-using FluentAssertions;
+namespace CleanArchitecture.Application.SubcutaneousTests.Subscriptions.Commands.CancelSubscription;
 
-using MediatR;
-
-using TestCommon.Security;
-using TestCommon.Subscriptions;
-using TestCommon.TestConstants;
-
-namespace CleanArchitecture.Application.SubcutaneousTests.Subscriptions.Commands.CreateSubscription;
-
-public class CancelSubscriptionAuthorizationTests(MediatorFactory mediatorFactory)
-    : IClassFixture<MediatorFactory>
+public class CancelSubscriptionAuthorizationTests
 {
-    private readonly IMediator _mediator = mediatorFactory.CreateMediator();
-    private readonly TestCurrentUserProvider _currentUserProvider = mediatorFactory.TestCurrentUserProvider;
+    private readonly IMediator _mediator;
+    private readonly TestCurrentUserProvider _currentUserProvider;
 
-    public static TheoryData<Guid> ListGuids() => [];
+    public CancelSubscriptionAuthorizationTests()
+    {
+        var webAppFactory = new WebAppFactory();
+        _mediator = webAppFactory.CreateMediator();
+        _currentUserProvider = webAppFactory.TestCurrentUserProvider;
+    }
 
     [Fact]
     public async Task CancelSubscription_WhenCancelingForSelfWithAdminRole_ShouldAuthorize()
@@ -36,7 +31,7 @@ public class CancelSubscriptionAuthorizationTests(MediatorFactory mediatorFactor
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().NotBe(ErrorOr.ErrorType.Unauthorized);
+        result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
     }
 
     [Fact]
@@ -56,7 +51,7 @@ public class CancelSubscriptionAuthorizationTests(MediatorFactory mediatorFactor
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().Be(ErrorOr.ErrorType.Unauthorized);
+        result.FirstError.Type.Should().Be(ErrorType.Unauthorized);
     }
 
     [Fact]
@@ -76,7 +71,7 @@ public class CancelSubscriptionAuthorizationTests(MediatorFactory mediatorFactor
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().NotBe(ErrorOr.ErrorType.Unauthorized);
+        result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
     }
 
     [Fact]
@@ -96,6 +91,6 @@ public class CancelSubscriptionAuthorizationTests(MediatorFactory mediatorFactor
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().Be(ErrorOr.ErrorType.Unauthorized);
+        result.FirstError.Type.Should().Be(ErrorType.Unauthorized);
     }
 }

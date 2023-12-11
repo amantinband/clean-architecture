@@ -3,16 +3,7 @@ using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Common.Security;
 
-using ErrorOr;
-
-using FluentAssertions;
-
 using MediatR;
-
-using NSubstitute;
-using NSubstitute.Extensions;
-
-using TestCommon.TestConstants;
 
 namespace CleanArchitecture.Application.UnitTests.Common.Behaviors;
 

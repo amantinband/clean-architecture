@@ -1,4 +1,5 @@
 using CleanArchitecture.Application.Reminders.Commands.SetReminder;
+using CleanArchitecture.Application.Reminders.Queries.GetReminder;
 using CleanArchitecture.Application.Reminders.Queries.ListReminders;
 using CleanArchitecture.Domain.Reminders;
 
@@ -16,9 +17,11 @@ public static class MediatorExtensions
         this IMediator mediator,
         SetReminderCommand? command = null)
     {
-        var result = await mediator.Send(command ?? ReminderCommandFactory.CreateSetReminderCommand());
+        command ??= ReminderCommandFactory.CreateSetReminderCommand();
+        var result = await mediator.Send(command);
 
         result.IsError.Should().BeFalse();
+        result.Value.AssertCreatedFrom(command);
 
         return result.Value;
     }
@@ -28,5 +31,13 @@ public static class MediatorExtensions
         ListRemindersQuery? query = null)
     {
         return await mediator.Send(query ?? ReminderQueryFactory.CreateListRemindersQuery());
+    }
+
+    public static async Task<ErrorOr<Reminder>> GetReminder(
+        this IMediator mediator,
+        GetReminderQuery? query = null)
+    {
+        query ??= ReminderQueryFactory.CreateGetReminderQuery(Guid.NewGuid());
+        return await mediator.Send(query);
     }
 }

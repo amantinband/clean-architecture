@@ -16,9 +16,12 @@ public static class MediatorExtensions
         this IMediator mediator,
         CreateSubscriptionCommand? command = null)
     {
-        var result = await mediator.Send(command ?? SubscriptionCommandFactory.CreateCreateSubscriptionCommand());
+        command ??= SubscriptionCommandFactory.CreateCreateSubscriptionCommand();
+
+        var result = await mediator.Send(command);
 
         result.IsError.Should().BeFalse();
+        result.Value.AssertCreatedFrom(command);
 
         return result.Value;
     }
