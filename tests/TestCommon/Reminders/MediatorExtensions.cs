@@ -37,7 +37,7 @@ public static class MediatorExtensions
         this IMediator mediator,
         GetReminderQuery? query = null)
     {
-        query ??= ReminderQueryFactory.CreateGetReminderQuery(Guid.NewGuid());
+        query ??= ReminderQueryFactory.CreateGetReminderQuery();
         return await mediator.Send(query);
     }
 }

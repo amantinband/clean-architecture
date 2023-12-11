@@ -20,13 +20,12 @@ public class GetSubscriptionAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
+            id: Guid.NewGuid(),
             roles: [Role.Admin]);
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionQueryFactory.CreateGetSubscriptionQuery(
-            userId: Guid.NewGuid());
+        var command = SubscriptionQueryFactory.CreateGetSubscriptionQuery();
 
         // Act
         var result = await _mediator.Send(command);
@@ -40,13 +39,12 @@ public class GetSubscriptionAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
+            id: Guid.NewGuid(),
             roles: []);
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionQueryFactory.CreateGetSubscriptionQuery(
-            userId: Guid.NewGuid());
+        var command = SubscriptionQueryFactory.CreateGetSubscriptionQuery();
 
         // Act
         var result = await _mediator.Send(command);
@@ -60,14 +58,12 @@ public class GetSubscriptionAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
             permissions: [],
             roles: []);
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionQueryFactory.CreateGetSubscriptionQuery(
-            userId: Constants.User.Id);
+        var command = SubscriptionQueryFactory.CreateGetSubscriptionQuery();
 
         // Act
         var result = await _mediator.Send(command);
@@ -81,14 +77,12 @@ public class GetSubscriptionAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
             permissions: [Permission.Subscription.Get],
             roles: []);
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionQueryFactory.CreateGetSubscriptionQuery(
-            userId: Constants.User.Id);
+        var command = SubscriptionQueryFactory.CreateGetSubscriptionQuery();
 
         // Act
         var result = await _mediator.Send(command);

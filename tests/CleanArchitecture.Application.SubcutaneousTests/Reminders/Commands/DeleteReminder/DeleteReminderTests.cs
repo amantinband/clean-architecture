@@ -55,8 +55,8 @@ public class DeleteReminderTests(WebAppFactory webAppFactory)
         // Assert side effects took place
         var getReminderResult = await _mediator.GetReminder(
             ReminderQueryFactory.CreateGetReminderQuery(
-                reminderId: reminder.Id,
-                subscriptionId: subscription.Id));
+                subscriptionId: subscription.Id,
+                reminderId: reminder.Id));
 
         getReminderResult.IsError.Should().BeTrue();
         getReminderResult.FirstError.Type.Should().Be(ErrorType.NotFound);

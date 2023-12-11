@@ -17,13 +17,13 @@ public static class ReminderQueryFactory
     }
 
     public static GetReminderQuery CreateGetReminderQuery(
-        Guid reminderId,
         Guid? userId = null,
-        Guid? subscriptionId = null)
+        Guid? subscriptionId = null,
+        Guid? reminderId = null)
     {
         return new GetReminderQuery(
             userId ?? Constants.User.Id,
             subscriptionId ?? Constants.Subscription.Id,
-            reminderId);
+            reminderId ?? Constants.Reminder.Id);
     }
 }

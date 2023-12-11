@@ -1,14 +1,14 @@
 using CleanArchitecture.Application.Common.Security.Permissions;
 using CleanArchitecture.Application.Common.Security.Roles;
 
-namespace CleanArchitecture.Application.SubcutaneousTests.Reminders.Commands.DismissReminder;
+namespace CleanArchitecture.Application.SubcutaneousTests.Reminders.Queries.ListReminders;
 
-public class DismissReminderAuthorizationTests
+public class ListRemindersAuthorizationTests
 {
     private readonly IMediator _mediator;
     private readonly TestCurrentUserProvider _currentUserProvider;
 
-    public DismissReminderAuthorizationTests()
+    public ListRemindersAuthorizationTests()
     {
         var webAppFactory = new WebAppFactory();
         _mediator = webAppFactory.CreateMediator();
@@ -16,7 +16,7 @@ public class DismissReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task DismissReminder_WhenDifferentUserButWithAdminRole_ShouldAuthorize()
+    public async Task ListReminders_WhenDifferentUserButWithAdminRole_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -25,17 +25,17 @@ public class DismissReminderAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = ReminderCommandFactory.CreateDismissReminderCommand();
+        var query = ReminderQueryFactory.CreateListRemindersQuery();
 
         // Act
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(query);
 
         // Assert
         result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
     }
 
     [Fact]
-    public async Task DismissReminder_WhenDifferentUserWithoutAdminRole_ShouldNotAuthorize()
+    public async Task ListReminders_WhenDifferentUserWithoutAdminRole_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -44,48 +44,48 @@ public class DismissReminderAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = ReminderCommandFactory.CreateDismissReminderCommand();
+        var query = ReminderQueryFactory.CreateListRemindersQuery();
 
         // Act
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(query);
 
         // Assert
         result.FirstError.Type.Should().Be(ErrorType.Unauthorized);
     }
 
     [Fact]
-    public async Task DismissReminder_WhenSettingForSelfWithRequiredPermissions_ShouldAuthorize()
+    public async Task ListReminders_WhenListingForSelfWithRequiredPermission_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            permissions: [Permission.Reminder.Dismiss],
-            roles: []);
+            roles: [],
+            permissions: [Permission.Reminder.Get]);
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = ReminderCommandFactory.CreateDismissReminderCommand();
+        var query = ReminderQueryFactory.CreateListRemindersQuery();
 
         // Act
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(query);
 
         // Assert
         result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
     }
 
     [Fact]
-    public async Task DismissReminder_WhenSettingForSelfButWithoutRequiredPermissions_ShouldNotAuthorize()
+    public async Task ListReminders_WhenListingForSelfWithoutRequiredPermission_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            permissions: [],
-            roles: []);
+            roles: [],
+            permissions: []);
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = ReminderCommandFactory.CreateDismissReminderCommand();
+        var query = ReminderQueryFactory.CreateListRemindersQuery();
 
         // Act
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(query);
 
         // Assert
         result.FirstError.Type.Should().Be(ErrorType.Unauthorized);

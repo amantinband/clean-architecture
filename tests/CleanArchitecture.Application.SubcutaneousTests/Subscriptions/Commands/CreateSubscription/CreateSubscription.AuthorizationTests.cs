@@ -20,20 +20,37 @@ public class CreateSubscriptionAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
+            id: Guid.NewGuid(),
             roles: [Role.Admin]);
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand(
-            userId: Guid.NewGuid(),
-            subscriptionType: Constants.Subscription.Type);
+        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand();
 
         // Act
         var result = await _mediator.Send(command);
 
         // Assert
         result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
+    }
+
+    [Fact]
+    public async Task CreateSubscription_WhenDifferentUserWithoutAdminRole_ShouldNotAuthorize()
+    {
+        // Arrange
+        var currentUser = CurrentUserFactory.CreateCurrentUser(
+            id: Guid.NewGuid(),
+            roles: []);
+
+        _currentUserProvider.Returns(currentUser);
+
+        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand();
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        result.FirstError.Type.Should().Be(ErrorType.Unauthorized);
     }
 
     [Fact]
@@ -41,15 +58,12 @@ public class CreateSubscriptionAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
             roles: [],
             permissions: [Permission.Subscription.Create]);
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand(
-            userId: Constants.User.Id,
-            subscriptionType: Constants.Subscription.Type);
+        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand();
 
         // Act
         var result = await _mediator.Send(command);
@@ -59,10 +73,12 @@ public class CreateSubscriptionAuthorizationTests
     }
 
     [Fact]
-    public async Task CreateSubscription_WhenUserHasNoRolesOrPermissions_ShouldNotAuthorize()
+    public async Task CreateSubscription_WhenCreatingForSelfWithoutRequiredPermission_ShouldNotAuthorize()
     {
         // Arrange
-        var currentUser = CurrentUserFactory.CreateCurrentUser(roles: [], permissions: []);
+        var currentUser = CurrentUserFactory.CreateCurrentUser(
+            roles: [],
+            permissions: []);
         _currentUserProvider.Returns(currentUser);
 
         var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand();

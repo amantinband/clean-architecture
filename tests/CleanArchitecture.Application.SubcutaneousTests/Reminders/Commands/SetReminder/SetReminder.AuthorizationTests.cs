@@ -58,7 +58,6 @@ public class SetReminderAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
             permissions: [Permission.Reminder.Set],
             roles: []);
 
@@ -78,7 +77,6 @@ public class SetReminderAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
             permissions: [],
             roles: []);
 

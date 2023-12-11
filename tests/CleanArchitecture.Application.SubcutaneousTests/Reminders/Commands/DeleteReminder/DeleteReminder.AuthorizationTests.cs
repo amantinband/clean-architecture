@@ -58,7 +58,6 @@ public class DeleteReminderAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
             permissions: [Permission.Reminder.Delete],
             roles: []);
 
@@ -78,7 +77,6 @@ public class DeleteReminderAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
             permissions: [],
             roles: []);
 

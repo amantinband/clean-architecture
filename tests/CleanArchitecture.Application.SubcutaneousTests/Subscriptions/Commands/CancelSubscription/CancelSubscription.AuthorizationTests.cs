@@ -19,13 +19,11 @@ public class CancelSubscriptionAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
             roles: [Role.Admin]);
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand(
-            userId: Constants.User.Id);
+        var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand();
 
         // Act
         var result = await _mediator.Send(command);
@@ -39,13 +37,11 @@ public class CancelSubscriptionAuthorizationTests
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
-            id: Constants.User.Id,
             roles: []);
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand(
-            userId: Constants.User.Id);
+        var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand();
 
         // Act
         var result = await _mediator.Send(command);
@@ -64,8 +60,7 @@ public class CancelSubscriptionAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand(
-            userId: Constants.User.Id);
+        var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand();
 
         // Act
         var result = await _mediator.Send(command);
@@ -84,8 +79,7 @@ public class CancelSubscriptionAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand(
-            userId: Constants.User.Id);
+        var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand();
 
         // Act
         var result = await _mediator.Send(command);

@@ -11,10 +11,10 @@ public class GetSubscriptionTests(WebAppFactory webAppFactory)
         // Arrange
         var subscription = await _mediator.CreateSubscription();
 
-        var command = SubscriptionQueryFactory.CreateGetSubscriptionQuery();
+        var query = SubscriptionQueryFactory.CreateGetSubscriptionQuery();
 
         // Act
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(query);
 
         // Assert
         result.IsError.Should().BeFalse();
@@ -25,10 +25,10 @@ public class GetSubscriptionTests(WebAppFactory webAppFactory)
     public async Task GetSubscription_WhenNoSubscription_ShouldReturnNotFound()
     {
         // Arrange
-        var command = SubscriptionQueryFactory.CreateGetSubscriptionQuery();
+        var query = SubscriptionQueryFactory.CreateGetSubscriptionQuery();
 
         // Act
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(query);
 
         // Assert
         result.IsError.Should().BeTrue();
