@@ -10,7 +10,34 @@
 ![](assets/Clean%20Architecture%20Template%20Title.svg)
 
 ---
+
 </div>
+
+- [️Important notice ⚠️](#️important-notice-️)
+- [Give it a star ⭐](#give-it-a-star-)
+- [Domain Overview 🌍](#domain-overview-)
+  - [Basic Subscription](#basic-subscription)
+  - [Pro Subscription](#pro-subscription)
+- [Use Cases / Features 🤓](#use-cases--features-)
+  - [Subscriptions](#subscriptions)
+  - [Reminders](#reminders)
+- [Getting Started 🏃](#getting-started-)
+- [Folder Structure 📁](#folder-structure-)
+- [Authorization 🔐](#authorization-)
+  - [Authorization Types](#authorization-types)
+    - [Role-Based Authorization](#role-based-authorization)
+    - [Permission-Based Authorization](#permission-based-authorization)
+    - [Policy-Based Authorization](#policy-based-authorization)
+  - [Mixing Authorization Types](#mixing-authorization-types)
+- [Testing 📝](#testing-)
+  - [Test Types](#test-types)
+    - [Domain Layer Unit Tests](#domain-layer-unit-tests)
+    - [Application Layer Unit Tests](#application-layer-unit-tests)
+    - [Application Layer Subcutaneous Tests](#application-layer-subcutaneous-tests)
+    - [Presentation Layer Integration Tests](#presentation-layer-integration-tests)
+- [Contribution 🤲](#contribution-)
+- [Credits 🙏](#credits-)
+- [License 🪪](#license-)
 
 # ️Important notice ⚠️
 
@@ -49,6 +76,59 @@ Users with a pro subscription do not have a daily limit on the number of reminde
 1. Set Reminder
 1. Get Reminder
 1. List Reminders
+
+# Getting Started 🏃
+
+1. Run the project `dotnet run --project src/CleanArchitecture.Api`
+1. Navigate to `requests/Tokens/GenerateToken.http` and generate a token.
+
+    ```http
+    POST {{host}}/tokens/generate
+    Content-Type: application/json
+
+    {
+        "Id": "bae93bf5-9e3c-47b3-aace-3034653b6bb2",
+        "FirstName": "Amichai",
+        "LastName": "Mantinband",
+        "Email": "amichai@mantinband.com",
+        "Plan": "Basic",
+        "Permissions": [
+            "set:reminder",
+            "get:reminder",
+            "dismiss:reminder",
+            "create:subscription"
+        ],
+        "Roles": [
+            "Admin"
+        ]
+    }
+    ```
+
+1. Create a subscription
+
+    ```http
+    POST {{host}}/users/{{userId}}/subscriptions
+    Content-Type: application/json
+    Authorization: Bearer {{token}}
+
+    {
+        "SubscriptionType": "Basic"
+    }
+    ```
+
+1. Create a reminder
+
+    ```http
+    POST {{host}}/users/{{userId}}/subscriptions/{{subscriptionId}}/reminders
+    Content-Type: application/json
+    Authorization: Bearer {{token}}
+
+    {
+        "text": "let's do it",
+        "dateTime": "2025-2-26"
+    }
+    ```
+
 
 # Folder Structure 📁
 

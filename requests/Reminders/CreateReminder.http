@@ -3,6 +3,6 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "text": "let's do it 4",
-    "dateTime": "2023-12-26"
+    "text": "let's do it",
+    "dateTime": "2025-2-26"
 }
