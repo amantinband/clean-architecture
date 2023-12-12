@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace CleanArchitecture.Application.Common.Models;
+namespace CleanArchitecture.Application.Common.Security.Request;
 
 public interface IAuthorizeableRequest<T> : IRequest<T>
 {

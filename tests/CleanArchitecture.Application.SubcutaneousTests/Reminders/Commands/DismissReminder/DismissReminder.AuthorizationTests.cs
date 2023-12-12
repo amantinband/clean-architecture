@@ -16,7 +16,7 @@ public class DismissReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task DismissReminder_WhenDifferentUserButWithAdminRole_ShouldAuthorize()
+    public async Task DismissReminderForDifferentUser_WhenIsAdmin_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -35,7 +35,7 @@ public class DismissReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task DismissReminder_WhenDifferentUserWithoutAdminRole_ShouldNotAuthorize()
+    public async Task DismissReminderForDifferentUser_WhenIsNotAdmin_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -54,7 +54,7 @@ public class DismissReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task DismissReminder_WhenSettingForSelfWithRequiredPermissions_ShouldAuthorize()
+    public async Task DismissReminderForSelf_WhenHasRequiredPermissions_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -73,7 +73,7 @@ public class DismissReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task DismissReminder_WhenSettingForSelfButWithoutRequiredPermissions_ShouldNotAuthorize()
+    public async Task DismissReminderForSelf_WhenDoesNotHaveRequiredPermissions_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(

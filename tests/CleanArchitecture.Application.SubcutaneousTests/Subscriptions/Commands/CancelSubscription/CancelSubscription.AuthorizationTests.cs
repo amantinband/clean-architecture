@@ -15,7 +15,7 @@ public class CancelSubscriptionAuthorizationTests
     }
 
     [Fact]
-    public async Task CancelSubscription_WhenCancelingForSelfWithAdminRole_ShouldAuthorize()
+    public async Task CancelSubscriptionForSelf_WhenIsAdmin_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -33,7 +33,7 @@ public class CancelSubscriptionAuthorizationTests
     }
 
     [Fact]
-    public async Task CancelSubscription_WhenCancelingForSelfWithoutAdminRole_ShouldNotAuthorize()
+    public async Task CancelSubscriptionForSelf_WhenIsNotAdmin_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -51,7 +51,7 @@ public class CancelSubscriptionAuthorizationTests
     }
 
     [Fact]
-    public async Task CancelSubscription_WhenDifferentUserWithAdminRole_ShouldAuthorize()
+    public async Task CancelSubscriptionForDifferentUser_WhenIsAdminRole_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -70,7 +70,7 @@ public class CancelSubscriptionAuthorizationTests
     }
 
     [Fact]
-    public async Task CancelSubscription_WhenDifferentUserWithoutAdminRole_ShouldNotAuthorize()
+    public async Task CancelSubscriptionForDifferentUser_WhenIsNotAdmin_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(

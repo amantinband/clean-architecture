@@ -1,5 +1,5 @@
-using CleanArchitecture.Application.Common.Models;
 using CleanArchitecture.Application.Common.Security.Policies;
+using CleanArchitecture.Application.Common.Security.Request;
 using CleanArchitecture.Application.Common.Security.Roles;
 using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
 

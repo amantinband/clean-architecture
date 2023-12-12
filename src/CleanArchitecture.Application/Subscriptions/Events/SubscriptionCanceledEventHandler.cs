@@ -5,10 +5,10 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Subscriptions.Events;
 
-public class SubscriptionDeletedEventHandler(IUsersRepository _usersRepository)
-    : INotificationHandler<SubscriptionDeletedEvent>
+public class SubscriptionCanceledEventHandler(IUsersRepository _usersRepository)
+    : INotificationHandler<SubscriptionCanceledEvent>
 {
-    public async Task Handle(SubscriptionDeletedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(SubscriptionCanceledEvent notification, CancellationToken cancellationToken)
     {
         notification.User.DeleteAllReminders();
 

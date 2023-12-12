@@ -16,7 +16,7 @@ public class GetReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task GetReminder_WhenDifferentUserButWithAdminRole_ShouldAuthorize()
+    public async Task GetReminderForDifferentUser_WhenIsAdmin_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -35,7 +35,7 @@ public class GetReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task GetReminder_WhenDifferentUserWithoutAdminRole_ShouldNotAuthorize()
+    public async Task GetReminderForDifferentUser_WhenIsNotAdmin_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -54,7 +54,7 @@ public class GetReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task GetReminder_WhenGettingForSelfWithRequiredPermission_ShouldAuthorize()
+    public async Task GetReminderForSelf_WhenHasRequiredPermission_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -73,7 +73,7 @@ public class GetReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task GetReminder_WhenGettingForSelfWithoutRequiredPermission_ShouldNotAuthorize()
+    public async Task GetReminderForSelf_WhenDoesNotHaveRequiredPermission_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(

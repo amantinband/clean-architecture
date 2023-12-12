@@ -1,8 +1,4 @@
-using CleanArchitecture.Api;
 using CleanArchitecture.Infrastructure.Common;
-using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
-
-using MediatR;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -11,20 +7,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace CleanArchitecture.Api.IntegrationTests.Common;
+namespace CleanArchitecture.Api.IntegrationTests.Common.WebApplicationFactory;
 
 public class WebAppFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLifetime
 {
-    public HttpClient HttpClient { get; private set; } = null!;
-
     private SqliteTestDatabase _testDatabase = null!;
 
-    public Task InitializeAsync()
+    public AppHttpClient CreateAppHttpClient()
     {
-        HttpClient = CreateClient();
-
-        return Task.CompletedTask;
+        return new AppHttpClient(CreateClient());
     }
+
+    public Task InitializeAsync() => Task.CompletedTask;
 
     public new Task DisposeAsync()
     {

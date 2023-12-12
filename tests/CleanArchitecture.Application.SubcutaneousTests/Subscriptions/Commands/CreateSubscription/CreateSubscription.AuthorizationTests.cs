@@ -16,7 +16,7 @@ public class CreateSubscriptionAuthorizationTests
     }
 
     [Fact]
-    public async Task CreateSubscription_WhenDifferentUserButWithAdminRole_ShouldAuthorize()
+    public async Task CreateSubscriptionForDifferentUser_WhenIsAdmin_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -35,7 +35,7 @@ public class CreateSubscriptionAuthorizationTests
     }
 
     [Fact]
-    public async Task CreateSubscription_WhenDifferentUserWithoutAdminRole_ShouldNotAuthorize()
+    public async Task CreateSubscriptionForDifferentUser_WhenIsNotAdmin_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -54,7 +54,7 @@ public class CreateSubscriptionAuthorizationTests
     }
 
     [Fact]
-    public async Task CreateSubscription_WhenCreatingForSelfWithRequiredPermission_ShouldAuthorize()
+    public async Task CreateSubscriptionForSelf_WhenHasRequiredPermission_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -73,7 +73,7 @@ public class CreateSubscriptionAuthorizationTests
     }
 
     [Fact]
-    public async Task CreateSubscription_WhenCreatingForSelfWithoutRequiredPermission_ShouldNotAuthorize()
+    public async Task CreateSubscriptionForSelf_WhenDoesNotHaveRequiredPermission_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(

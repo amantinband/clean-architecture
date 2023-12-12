@@ -75,7 +75,7 @@ public class User : Entity
 
         Subscription = Subscription.Canceled;
 
-        _domainEvents.Add(new SubscriptionDeletedEvent(this, subscriptionId));
+        _domainEvents.Add(new SubscriptionCanceledEvent(this, subscriptionId));
 
         return Result.Success;
     }

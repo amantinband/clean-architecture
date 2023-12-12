@@ -3,7 +3,7 @@ using CleanArchitecture.Infrastructure.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Api.IntegrationTests.Common;
+namespace CleanArchitecture.Api.IntegrationTests.Common.WebApplicationFactory;
 
 /// <summary>
 /// We're using SQLite so no need to spin an actual database.

@@ -16,7 +16,7 @@ public class DeleteReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task DeleteReminder_WhenDifferentUserButWithAdminRole_ShouldAuthorize()
+    public async Task DeleteReminderForDifferentUser_WhenIsAdmin_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -35,7 +35,7 @@ public class DeleteReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task DeleteReminder_WhenDifferentUserWithoutAdminRole_ShouldNotAuthorize()
+    public async Task DeleteReminderForDifferentUser_WhenIsNotAdmin_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -54,7 +54,7 @@ public class DeleteReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task DeleteReminder_WhenDeletingForSelfWithRequiredPermissions_ShouldAuthorize()
+    public async Task DeleteReminderForSelf_WhenHasRequiredPermissions_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -73,7 +73,7 @@ public class DeleteReminderAuthorizationTests
     }
 
     [Fact]
-    public async Task DeleteReminder_WhenDeletingForSelfButWithoutRequiredPermissions_ShouldNotAuthorize()
+    public async Task DeleteReminderForSelf_WhenDoesNotHaveRequiredPermissions_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(

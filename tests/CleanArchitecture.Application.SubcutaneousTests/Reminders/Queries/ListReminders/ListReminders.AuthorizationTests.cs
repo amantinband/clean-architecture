@@ -16,7 +16,7 @@ public class ListRemindersAuthorizationTests
     }
 
     [Fact]
-    public async Task ListReminders_WhenDifferentUserButWithAdminRole_ShouldAuthorize()
+    public async Task ListRemindersForDifferentUser_WhenIsAdmin_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -35,7 +35,7 @@ public class ListRemindersAuthorizationTests
     }
 
     [Fact]
-    public async Task ListReminders_WhenDifferentUserWithoutAdminRole_ShouldNotAuthorize()
+    public async Task ListRemindersForDifferentUser_WhenIsNotAdmin_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -54,7 +54,7 @@ public class ListRemindersAuthorizationTests
     }
 
     [Fact]
-    public async Task ListReminders_WhenListingForSelfWithRequiredPermission_ShouldAuthorize()
+    public async Task ListRemindersForSelf_WhenHasRequiredPermission_ShouldAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(
@@ -73,7 +73,7 @@ public class ListRemindersAuthorizationTests
     }
 
     [Fact]
-    public async Task ListReminders_WhenListingForSelfWithoutRequiredPermission_ShouldNotAuthorize()
+    public async Task ListRemindersForSelf_WhenDoesNotHaveRequiredPermission_ShouldNotAuthorize()
     {
         // Arrange
         var currentUser = CurrentUserFactory.CreateCurrentUser(

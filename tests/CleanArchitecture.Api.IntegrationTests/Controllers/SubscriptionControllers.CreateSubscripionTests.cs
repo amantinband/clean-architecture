@@ -1,4 +1,8 @@
-using CleanArchitecture.Contracts.Subscriptions;
+using CleanArchitecture.Api.IntegrationTests.Common.Subscriptions;
+using CleanArchitecture.Api.IntegrationTests.Common.Tokens;
+using CleanArchitecture.Api.IntegrationTests.Common.WebApplicationFactory;
+using CleanArchitecture.Application.Common.Security.Permissions;
+using CleanArchitecture.Application.Common.Security.Roles;
 
 namespace CleanArchitecture.Api.IntegrationTests.Controllers;
 
@@ -6,35 +10,98 @@ namespace CleanArchitecture.Api.IntegrationTests.Controllers;
 
 public class CreateSubscriptionTests
 {
-    private readonly HttpClient _client;
+    private readonly AppHttpClient _client;
 
     public CreateSubscriptionTests(WebAppFactory webAppFactory)
     {
-        _client = webAppFactory.HttpClient;
+        _client = webAppFactory.CreateAppHttpClient();
         webAppFactory.ResetDatabase();
     }
 
     [Theory]
     [MemberData(nameof(ListSubscriptionTypes))]
-    public async Task CreateSubscription_WhenValidSubscription_ShouldCreateSubscription(SubscriptionType subscriptionType)
+    public async Task CreateSubscriptionForSelf_WhenHasPermission_ShouldCreateSubscription(SubscriptionType subscriptionType)
     {
         // Arrange
-        var createSubscriptionRequest = new CreateSubscriptionRequest(SubscriptionType: subscriptionType);
+        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType);
+
+        string token = await _client.GenerateTokenAsync(
+            TokenRequestFactory.CreateGenerateTokenRequest(
+                permissions: [Permission.Subscription.Create],
+                roles: []));
 
         // Act
-        var response = await _client.PostAsJsonAsync(
-            $"users/{Constants.User.Id}/subscriptions",
-            createSubscriptionRequest);
+        var response = await _client.CreateSubscriptionAndExpectSuccessAsync(
+            createSubscriptionRequest: createSubscriptionRequest,
+            token: token);
 
         // Assert
-        // response.StatusCode.Should().Be(HttpStatusCode.Created);
-        // response.Headers.Location.Should().NotBeNull();
+        response.SubscriptionType.Should().Be(subscriptionType);
+    }
 
-        // var subscriptionResponse = await response.Content.ReadFromJsonAsync<SubscriptionResponse>();
-        // subscriptionResponse.Should().NotBeNull();
-        // subscriptionResponse!.SubscriptionType.Should().Be(subscriptionType);
+    [Theory]
+    [MemberData(nameof(ListSubscriptionTypes))]
+    public async Task CreateSubscriptionForSelf_WhenDoesNotHaveRequiredPermission_ShouldReturnForbidden(SubscriptionType subscriptionType)
+    {
+        // Arrange
+        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType);
 
-        // response.Headers.Location!.PathAndQuery.Should().Be($"/Subscriptions/{subscriptionResponse.Id}");
+        string token = await _client.GenerateTokenAsync(
+            TokenRequestFactory.CreateGenerateTokenRequest(
+                permissions: [],
+                roles: []));
+
+        // Act
+        var response = await _client.CreateSubscriptionAsync(
+            createSubscriptionRequest: createSubscriptionRequest,
+            token: token);
+
+        // Assert
+        response.Should().HaveStatusCode(HttpStatusCode.Forbidden);
+    }
+
+    [Theory]
+    [MemberData(nameof(ListSubscriptionTypes))]
+    public async Task CreateSubscriptionForDifferentUser_WhenIsAdmin_ShouldCreateSubscription(SubscriptionType subscriptionType)
+    {
+        // Arrange
+        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType);
+
+        string token = await _client.GenerateTokenAsync(
+            TokenRequestFactory.CreateGenerateTokenRequest(
+                id: Guid.NewGuid(),
+                permissions: [Permission.Subscription.Create],
+                roles: [Role.Admin]));
+
+        // Act
+        var response = await _client.CreateSubscriptionAndExpectSuccessAsync(
+            createSubscriptionRequest: createSubscriptionRequest,
+            token: token);
+
+        // Assert
+        response.SubscriptionType.Should().Be(subscriptionType);
+    }
+
+    [Theory]
+    [MemberData(nameof(ListSubscriptionTypes))]
+    public async Task CreateSubscriptionForDifferentUser_WhenIsNotAdmin_ShouldReturnUnauthorized(SubscriptionType subscriptionType)
+    {
+        // Arrange
+        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType);
+
+        string token = await _client.GenerateTokenAsync(
+            TokenRequestFactory.CreateGenerateTokenRequest(
+                id: Guid.NewGuid(),
+                permissions: [Permission.Subscription.Create],
+                roles: []));
+
+        // Act
+        var response = await _client.CreateSubscriptionAsync(
+            createSubscriptionRequest: createSubscriptionRequest,
+            token: token);
+
+        // Assert
+        response.Should().HaveStatusCode(HttpStatusCode.Forbidden);
     }
 
     public static TheoryData<SubscriptionType> ListSubscriptionTypes()

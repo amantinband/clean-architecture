@@ -1,4 +1,4 @@
-namespace CleanArchitecture.Application.Common.Security;
+namespace CleanArchitecture.Application.Common.Security.Request;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class AuthorizeAttribute : Attribute

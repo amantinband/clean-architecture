@@ -1,8 +1,7 @@
 using System.Reflection;
 
 using CleanArchitecture.Application.Common.Interfaces;
-using CleanArchitecture.Application.Common.Models;
-using CleanArchitecture.Application.Common.Security;
+using CleanArchitecture.Application.Common.Security.Request;
 
 using ErrorOr;
 
