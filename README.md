@@ -1,23 +1,26 @@
 <div align="center">
 
-[![NuGet](https://img.shields.io/nuget/v/erroror.svg)](https://www.nuget.org/packages/erroror)
+[![Build](https://github.com/amantinband/clean-architecture/actions/workflows/build.yml/badge.svg)](https://github.com/amantinband/clean-architecture/actions/workflows/build.yml)
 
-[![Build](https://github.com/amantinband/error-or/actions/workflows/build.yml/badge.svg)](https://github.com/amantinband/error-or/actions/workflows/build.yml) [![publish ErrorOr to nuget](https://github.com/amantinband/error-or/actions/workflows/publish.yml/badge.svg)](https://github.com/amantinband/error-or/actions/workflows/publish.yml)
+[![GitHub contributors](https://img.shields.io/github/contributors/amantinband/clean-architecture)](https://GitHub.com/amantinband/clean-architecture/graphs/contributors/) [![GitHub Stars](https://img.shields.io/github/stars/amantinband/clean-architecture.svg)](https://github.com/amantinband/clean-architecture/stargazers) [![GitHub license](https://img.shields.io/github/license/amantinband/clean-architecture)](https://github.com/amantinband/clean-architecture/blob/main/LICENSE)
+[![codecov](https://codecov.io/gh/amantinband/clean-architecture/branch/main/graph/badge.svg?token=DR2EBIWK7B)](https://codecov.io/gh/amantinband/clean-architecture)
 
-[![GitHub contributors](https://img.shields.io/github/contributors/amantinband/error-or)](https://GitHub.com/amantinband/error-or/graphs/contributors/) [![GitHub Stars](https://img.shields.io/github/stars/amantinband/error-or.svg)](https://github.com/amantinband/error-or/stargazers) [![GitHub license](https://img.shields.io/github/license/amantinband/error-or)](https://github.com/amantinband/error-or/blob/main/LICENSE)
-[![codecov](https://codecov.io/gh/amantinband/error-or/branch/main/graph/badge.svg?token=DR2EBIWK7B)](https://codecov.io/gh/amantinband/error-or)
+---
 
+![](assets/Clean%20Architecture%20Template%20Title.svg)
+
+---
 </div>
 
-# Important notice
+# ️Important notice ⚠️
 
-If you like this template, you may also enjoy my [comprehensive course](https://dometrain.com/bundle/from-zero-to-hero-clean-architectur) on Dometrain where I cover everything you need to know about building production applications structured following clean architecture.
+If you like this template, check out my comprehensive [course](https://dometrain.com/bundle/from-zero-to-hero-clean-architectur) on Dometrain where I cover everything you need to know when building production applications structured following clean architecture.
 
 # Give it a star ⭐
 
 Loving it? Show your support by giving this project a star!
 
-# Domain Overview
+# Domain Overview 🌍
 
 This is a simple reminder application. It allows users to create and manage their reminders.
 
@@ -31,7 +34,7 @@ Users with a basic subscription can create up to 3 daily reminders.
 
 Users with a pro subscription do not have a daily limit on the number of reminders.
 
-# Use Cases / Features
+# Use Cases / Features 🤓
 
 ## Subscriptions
 
@@ -47,11 +50,11 @@ Users with a pro subscription do not have a daily limit on the number of reminde
 1. Get Reminder
 1. List Reminders
 
-# Folder Structure
+# Folder Structure 📁
 
 ![Folder structure](assets/Clean%20Architecture%20Template.svg)
 
-# Authorization
+# Authorization 🔐
 
 This project puts an emphasis on complex authorization scenarios and supports *role-based*, *permission-based* and *policy-based* authorization.
 
@@ -145,11 +148,11 @@ Another option, is specifying the `Authorize` attribute multiple times:
 public record ListRemindersQuery(Guid UserId, Guid SubscriptionId, Guid ReminderId) : IAuthorizeableRequest<ErrorOr<Reminder>>;
 ```
 
-# Testing
+# Testing 📝
 
 This project puts an emphasis on testability and comes with a comprehensive test suite.
 
-![Testing Suite](assets/Clean%20Architecture%20Template%20Testing%20Suite.svg)
+![](assets/Clean%20Architecture%20Template%20Testing%20Suite.svg)
 
 ## Test Types
 
@@ -158,11 +161,15 @@ This project puts an emphasis on testability and comes with a comprehensive test
 The domain layer is tested using unit tests.
 By the bare minimum, each domain entity should have a test that verifies its invariants.
 
+![Domain Layer unit tests](assets/Clean%20Architecture%20Template%20Domain%20Layer%20Unit%20Tests.svg)
+
 ### Application Layer Unit Tests
 
 The domain layer is tested using both unit tests and subcutaneous tests.
 
 Since each one of the application layer use cases has its corresponding subcutaneous test, the unit tests are used to test the application layer standalone components, such as the `ValidationBehavior` and the `AuthorizationBehavior`.
+
+![Application Layer unit tests](assets/Clean%20Architecture%20Template%20Application%20Layer%20Unit%20Tests.svg)
 
 ### Application Layer Subcutaneous Tests
 
@@ -175,20 +182,24 @@ This allows us to test the application layer and the domain layer based on the a
 
 I recommend spending more effort on these tests than the other tests, since they aren't too expensive to write, and the value they provide is huge.
 
+![](assets/Clean%20Architecture%20Template%20Subcutaneous%20Tests.svg)
+
 ### Presentation Layer Integration Tests
 
 The api layer is tested using integration tests. This is where we want to cover the entire system, including the database, external dependencies and the presentation layer.
 
 Unlike the subcutaneous tests, these tests are not meant to test the core logic of our application, but rather to test the integration between the various components of our system and other systems.
 
-# Contribution
+![Integration Tests](assets/Clean%20Architecture%20Template%20Integration%20Tests.svg)
+
+# Contribution 🤲
 
 If you have any questions, comments, or suggestions, please open an issue or create a pull request 🙂
 
-# Credits
+# Credits 🙏
 
 - [CleanArchitecture](https://github.com/jasontaylordev/CleanArchitecture) - An awesome clean architecture solution template by Jason Taylor
 
-# License
+# License 🪪
 
-This project is licensed under the terms of the [MIT](https://github.com/mantinband/error-or/blob/main/LICENSE) license.
+This project is licensed under the terms of the [MIT](https://github.com/mantinband/clean-architecture/blob/main/LICENSE) license.
