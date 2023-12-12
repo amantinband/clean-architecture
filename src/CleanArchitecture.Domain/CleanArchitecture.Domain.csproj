@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ardalis.smartenum" />
-    <PackageReference Include="erroror" />
+    <PackageReference Include="Ardalis.SmartEnum" />
+    <PackageReference Include="ErrorOr" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="throw" />
   </ItemGroup>
