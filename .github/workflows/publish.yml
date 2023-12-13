@@ -1,0 +1,23 @@
+name: Publish template to NuGet
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    name: Package & Publish template
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+        with:
+          nuget-version: '5.x'
+
+      - name: Package
+        run: nuget pack Amantinband.CleanArchitecture.Template.nuspec -OutputDirectory artifacts
+
+      - name: Publish
+        run: nuget push .\artifacts\*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

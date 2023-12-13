@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Amantinband.CleanArchitecture.Template</id>
+    <version>1.0.0</version>
+    <authors>amantinband</authors>
+    <description>.NET 8 Clean Architecture Template</description>
+    <projectUrl>https://github.com/amantinband/clean-architecture</projectUrl>
+    <repository type="git" url="https://github.com/amantinband/clean-architecture" branch="main" />
+    <tags>clean-architecture asp-net asp-net-core clean architecture template</tags>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <icon>icon.png</icon>
+    <readme>README.md</readme>
+  </metadata>
+  <files>
+    <file src="assets\icon.png" target="./" />
+    <file src="README.md" target="./" />
+    <file src="**" exclude=".git\**;**\bin\**;**\obj\**;.github\**" />
+  </files>
+</package>

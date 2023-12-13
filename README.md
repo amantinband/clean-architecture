@@ -108,7 +108,7 @@ Users with a pro subscription do not have a daily limit on the number of reminde
     }
     ```
 
-    > Note: Since most systems use an external identity provider, instead of implementing a full identity provider alongside or as part of this system, this project uses a simple token generator endpoint. This endpoint generates a token based on the details you provide. This is a simple way to generate a token for testing purposes and is closer to how your system will likely be designed.
+    > Note: Since most systems use an external identity provider, this project uses a simple token generator endpoint that generates a token based on the details you provide. This is a simple way to generate a token for testing purposes and is closer to how your system will likely be designed when using an external identity provider.
 
 1. Create a subscription
 
@@ -123,6 +123,15 @@ Users with a pro subscription do not have a daily limit on the number of reminde
         "SubscriptionType": "Basic"
     }
     ```
+
+    > Note: To replace http file variables `{{variableName}}`, you can either:
+    >   1. Use the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension for VS Code + update the values under ".vscode/settings.json". This will update the value for all http files.
+    >   1. Define the variables in the http file itself:
+    >       ```yaml
+    >       @host = http://localhost:5001
+    >       @userId = bae93bf5-9e3c-47b3-aace-3034653b6bb2
+    >       ```
+    >   1. Replace the variables manually.
 
 1. Create a reminder
 

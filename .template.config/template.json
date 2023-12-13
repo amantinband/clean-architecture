@@ -4,7 +4,9 @@
     "classifications": [
         "Clean Architecture",
         "ASP.NET",
-        "Web API"
+        "ASP.NET Core",
+        "Web API",
+        "Project Template"
     ],
     "name": "Clean Architecture Template",
     "shortName": "clean-arch",
@@ -13,7 +15,7 @@
         "type": "project"
     },
     "identity": "Amantinband.CleanArchitecture.Template",
-    "description": "A template for creating a new project using Clean Architecture",
+    "description": ".NET 8 Clean Architecture Template",
     "sourceName": "CleanArchitecture",
     "sources": [
         {
