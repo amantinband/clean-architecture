@@ -7,7 +7,7 @@
 
 ---
 
-![](assets/Clean%20Architecture%20Template%20Title.svg)
+![Clean Architecture Template Title](assets/Clean%20Architecture%20Template%20Title.png)
 
 ---
 
@@ -41,7 +41,7 @@
 
 # ️Important notice ⚠️
 
-If you like this template, check out my comprehensive [course](https://dometrain.com/bundle/from-zero-to-hero-clean-architectur) on Dometrain where I cover everything you need to know when building production applications structured following clean architecture.
+If you like this template, check out my comprehensive [course](https://dometrain.com/bundle/from-zero-to-hero-clean-architecture) on Dometrain where I cover everything you need to know when building production applications structured following clean architecture.
 
 # Give it a star ⭐
 
@@ -82,21 +82,25 @@ Users with a pro subscription do not have a daily limit on the number of reminde
 1. Run the project `dotnet run --project src/CleanArchitecture.Api`
 1. Navigate to `requests/Tokens/GenerateToken.http` and generate a token.
 
-    ```http
+    ```yaml
     POST {{host}}/tokens/generate
     Content-Type: application/json
+    ```
 
+    ```http
     {
         "Id": "bae93bf5-9e3c-47b3-aace-3034653b6bb2",
         "FirstName": "Amichai",
         "LastName": "Mantinband",
         "Email": "amichai@mantinband.com",
-        "Plan": "Basic",
         "Permissions": [
             "set:reminder",
             "get:reminder",
             "dismiss:reminder",
-            "create:subscription"
+            "delete:reminder",
+            "create:subscription",
+            "delete:subscription",
+            "get:subscription"
         ],
         "Roles": [
             "Admin"
@@ -104,13 +108,17 @@ Users with a pro subscription do not have a daily limit on the number of reminde
     }
     ```
 
+    > Note: Since most systems use an external identity provider, instead of implementing a full identity provider alongside or as part of this system, this project uses a simple token generator endpoint. This endpoint generates a token based on the details you provide. This is a simple way to generate a token for testing purposes and is closer to how your system will likely be designed.
+
 1. Create a subscription
 
-    ```http
+    ```yaml
     POST {{host}}/users/{{userId}}/subscriptions
     Content-Type: application/json
     Authorization: Bearer {{token}}
+    ```
 
+    ```http
     {
         "SubscriptionType": "Basic"
     }
@@ -118,21 +126,22 @@ Users with a pro subscription do not have a daily limit on the number of reminde
 
 1. Create a reminder
 
-    ```http
+    ```yaml
     POST {{host}}/users/{{userId}}/subscriptions/{{subscriptionId}}/reminders
     Content-Type: application/json
     Authorization: Bearer {{token}}
+    ```
 
+    ```http
     {
         "text": "let's do it",
         "dateTime": "2025-2-26"
     }
     ```
 
-
 # Folder Structure 📁
 
-![Folder structure](assets/Clean%20Architecture%20Template.svg)
+![Folder structure](assets/Clean%20Architecture%20Template.png)
 
 # Authorization 🔐
 
@@ -155,7 +164,7 @@ Will only allow users with the `Admin` role to cancel subscriptions.
 
 ### Permission-Based Authorization
 
-To apply role based authorization, use the `Authorize` attribute with the `Permissions` parameter and implement the `IAuthorizeableRequest` interface.
+To apply permission based authorization, use the `Authorize` attribute with the `Permissions` parameter and implement the `IAuthorizeableRequest` interface.
 
 For example:
 
@@ -168,7 +177,7 @@ Will only allow users with the `get:reminder` permission to get a subscription.
 
 ### Policy-Based Authorization
 
-To apply role based authorization, use the `Authorize` attribute with the `Policy` parameter and implement the `IAuthorizeableRequest` interface.
+To apply policy based authorization, use the `Authorize` attribute with the `Policy` parameter and implement the `IAuthorizeableRequest` interface.
 
 For example:
 
@@ -179,7 +188,7 @@ public record GetReminderQuery(Guid UserId, Guid SubscriptionId, Guid ReminderId
 
 Will only allow users who pass the `SelfOrAdmin` policy to get a subscription.
 
-Each policy is implemented as a method in the `IPolicyEnforcer` interface.
+Each policy is implemented as a simple method in the `PolicyEnforcer` class.
 
 The policy "SelfOrAdmin" for example, can be implemented as follows:
 
@@ -232,7 +241,7 @@ public record ListRemindersQuery(Guid UserId, Guid SubscriptionId, Guid Reminder
 
 This project puts an emphasis on testability and comes with a comprehensive test suite.
 
-![](assets/Clean%20Architecture%20Template%20Testing%20Suite.svg)
+![](assets/Clean%20Architecture%20Template%20Testing%20Suite.png)
 
 ## Test Types
 
@@ -241,7 +250,7 @@ This project puts an emphasis on testability and comes with a comprehensive test
 The domain layer is tested using unit tests.
 By the bare minimum, each domain entity should have a test that verifies its invariants.
 
-![Domain Layer unit tests](assets/Clean%20Architecture%20Template%20Domain%20Layer%20Unit%20Tests.svg)
+![Domain Layer unit tests](assets/Clean%20Architecture%20Template%20Domain%20Layer%20Unit%20Tests.png)
 
 ### Application Layer Unit Tests
 
@@ -249,7 +258,7 @@ The domain layer is tested using both unit tests and subcutaneous tests.
 
 Since each one of the application layer use cases has its corresponding subcutaneous test, the unit tests are used to test the application layer standalone components, such as the `ValidationBehavior` and the `AuthorizationBehavior`.
 
-![Application Layer unit tests](assets/Clean%20Architecture%20Template%20Application%20Layer%20Unit%20Tests.svg)
+![Application Layer unit tests](assets/Clean%20Architecture%20Template%20Application%20Layer%20Unit%20Tests.png)
 
 ### Application Layer Subcutaneous Tests
 
@@ -262,15 +271,15 @@ This allows us to test the application layer and the domain layer based on the a
 
 I recommend spending more effort on these tests than the other tests, since they aren't too expensive to write, and the value they provide is huge.
 
-![](assets/Clean%20Architecture%20Template%20Subcutaneous%20Tests.svg)
+![](assets/Clean%20Architecture%20Template%20Subcutaneous%20Tests.png)
 
 ### Presentation Layer Integration Tests
 
 The api layer is tested using integration tests. This is where we want to cover the entire system, including the database, external dependencies and the presentation layer.
 
-Unlike the subcutaneous tests, these tests are not meant to test the core logic of our application, but rather to test the integration between the various components of our system and other systems.
+Unlike the subcutaneous tests, the focus of these tests is to ensure the integration between the various components of our system and other systems.
 
-![Integration Tests](assets/Clean%20Architecture%20Template%20Integration%20Tests.svg)
+![Integration Tests](assets/Clean%20Architecture%20Template%20Integration%20Tests.png)
 
 # Contribution 🤲
 

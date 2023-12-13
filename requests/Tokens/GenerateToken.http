@@ -6,12 +6,14 @@ Content-Type: application/json
     "FirstName": "Amichai",
     "LastName": "Mantinband",
     "Email": "amichai@mantinband.com",
-    "Plan": "Basic",
     "Permissions": [
         "set:reminder",
         "get:reminder",
         "dismiss:reminder",
-        "create:subscription"
+        "delete:reminder",
+        "create:subscription",
+        "delete:subscription",
+        "get:subscription"
     ],
     "Roles": [
         "Admin"
