@@ -20,4 +20,4 @@ jobs:
         run: nuget pack Amantinband.CleanArchitecture.Template.nuspec -OutputDirectory artifacts
 
       - name: Publish
-        run: nuget push .\artifacts\*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: nuget push .\artifacts\*.nupkg -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate
