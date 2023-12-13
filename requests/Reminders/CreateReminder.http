@@ -4,5 +4,5 @@ Authorization: Bearer {{token}}
 
 {
     "text": "let's do it",
-    "dateTime": "2025-2-26"
+    "dateTime": "2025-02-26"
 }
