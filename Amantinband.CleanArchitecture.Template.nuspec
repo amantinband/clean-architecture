@@ -10,12 +10,10 @@
     <tags>clean-architecture asp-net asp-net-core clean architecture template</tags>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <icon>icon.png</icon>
+    <icon>assets/icon.png</icon>
     <readme>README.md</readme>
   </metadata>
   <files>
-    <file src="assets\icon.png" target="./" />
-    <file src="README.md" target="./" />
     <file src="**" exclude=".git\**;**\bin\**;**\obj\**;.github\**" />
   </files>
 </package>
