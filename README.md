@@ -9,9 +9,17 @@
 
 ![Clean Architecture Template Title](assets/Clean%20Architecture%20Template%20Title.png)
 
+
 ---
 
 </div>
+
+```shell
+dotnet add package Amantinband.CleanArchitecture.Template --version 1.0.0
+
+dotnet new clean-arch -o CleanArchitecture
+```
+
 
 - [️Important notice ⚠️](#️important-notice-️)
 - [Give it a star ⭐](#give-it-a-star-)
@@ -41,7 +49,9 @@
 
 # ️Important notice ⚠️
 
-If you like this template, check out my comprehensive [course](https://dometrain.com/bundle/from-zero-to-hero-clean-architecture) on Dometrain where I cover everything you need to know when building production applications structured following clean architecture.
+This template is still under construction 👷.
+
+If you're interested in learning more about clean architecture and how to build production applications structured following clean architecture using .NET, check out my comprehensive [course](https://dometrain.com/bundle/from-zero-to-hero-clean-architecture) on Dometrain where I cover everything you need to know when building production applications structured following clean architecture.
 
 # Give it a star ⭐
 
