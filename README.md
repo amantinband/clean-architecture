@@ -1,6 +1,6 @@
 <div align="center">
 
-[![Build](https://github.com/amantinband/clean-architecture/actions/workflows/build.yml/badge.svg)](https://github.com/amantinband/clean-architecture/actions/workflows/build.yml)
+[![Build](https://github.com/amantinband/clean-architecture/actions/workflows/build.yml/badge.svg)](https://github.com/amantinband/clean-architecture/actions/workflows/build.yml) [![Publish template to NuGet](https://github.com/amantinband/clean-architecture/actions/workflows/publish.yml/badge.svg)](https://github.com/amantinband/clean-architecture/actions/workflows/publish.yml)
 
 [![GitHub contributors](https://img.shields.io/github/contributors/amantinband/clean-architecture)](https://GitHub.com/amantinband/clean-architecture/graphs/contributors/) [![GitHub Stars](https://img.shields.io/github/stars/amantinband/clean-architecture.svg)](https://github.com/amantinband/clean-architecture/stargazers) [![GitHub license](https://img.shields.io/github/license/amantinband/clean-architecture)](https://github.com/amantinband/clean-architecture/blob/main/LICENSE)
 [![codecov](https://codecov.io/gh/amantinband/clean-architecture/branch/main/graph/badge.svg?token=DR2EBIWK7B)](https://codecov.io/gh/amantinband/clean-architecture)
@@ -9,17 +9,15 @@
 
 ![Clean Architecture Template Title](assets/Clean%20Architecture%20Template%20Title.png)
 
-
 ---
 
 </div>
 
 ```shell
-dotnet add package Amantinband.CleanArchitecture.Template --version 1.0.0
+dotnet new install Amantinband.CleanArchitecture.Template
 
 dotnet new clean-arch -o CleanArchitecture
 ```
-
 
 - [️Important notice ⚠️](#️important-notice-️)
 - [Give it a star ⭐](#give-it-a-star-)
