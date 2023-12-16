@@ -10,8 +10,8 @@
     <tags>clean-architecture asp-net asp-net-core clean architecture template</tags>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <icon>assets/icon.png</icon>
-    <readme>README.md</readme>
+    <icon>content/assets/icon.png</icon>
+    <readme>content/README.md</readme>
   </metadata>
 
   <files>
