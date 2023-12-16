@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Amantinband.CleanArchitecture.Template</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>amantinband</authors>
     <description>.NET 8 Clean Architecture Template</description>
     <projectUrl>https://github.com/amantinband/clean-architecture</projectUrl>
@@ -13,7 +13,11 @@
     <icon>assets/icon.png</icon>
     <readme>README.md</readme>
   </metadata>
+
   <files>
-    <file src="**" exclude=".git\**;**\bin\**;**\obj\**;.github\**" />
+    <file src=".editorconfig" target="content" />
+    <file src=".gitignore" target="content" />
+    <file src="**" target="content" exclude=".git\**;**\bin\**;**\obj\**;.github\**;*.nuspec" />
   </files>
+
 </package>
