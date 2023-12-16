@@ -14,10 +14,10 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1
         with:
-          nuget-version: '5.x'
+          nuget-version: "5.x"
 
       - name: Package
-        run: nuget pack Amantinband.CleanArchitecture.Template.nuspec -OutputDirectory artifacts
+        run: nuget pack Amantinband.CleanArchitecture.Template.nuspec -OutputDirectory artifacts -NoDefaultExcludes
 
       - name: Publish
         run: nuget push .\artifacts\*.nupkg -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json -SkipDuplicate
