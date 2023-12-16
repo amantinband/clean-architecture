@@ -15,8 +15,6 @@
   </metadata>
 
   <files>
-    <file src=".editorconfig" target="content" />
-    <file src=".gitignore" target="content" />
     <file src="**" target="content" exclude=".git\**;**\bin\**;**\obj\**;.github\**;*.nuspec" />
   </files>
 
