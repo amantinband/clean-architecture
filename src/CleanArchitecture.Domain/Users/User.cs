@@ -16,12 +16,24 @@ public class User : Entity
 
     public Subscription Subscription { get; private set; } = null!;
 
+    public string Email { get; } = null!;
+
+    public string FirstName { get; } = null!;
+
+    public string LastName { get; } = null!;
+
     public User(
         Guid id,
+        string firstName,
+        string lastName,
+        string email,
         Subscription subscription,
         Calendar? calendar = null)
             : base(id)
     {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
         Subscription = subscription;
         _calendar = calendar ?? Calendar.Empty();
     }

@@ -26,7 +26,12 @@ public class SubscriptionsController(IMediator _mediator) : ApiController
                 detail: "Invalid plan type");
         }
 
-        var command = new CreateSubscriptionCommand(userId, subscriptionType);
+        var command = new CreateSubscriptionCommand(
+            userId,
+            request.FirstName,
+            request.LastName,
+            request.Email,
+            subscriptionType);
 
         var result = await _mediator.Send(command);
 

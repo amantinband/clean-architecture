@@ -11,10 +11,16 @@ public static class SubscriptionCommandFactory
 {
     public static CreateSubscriptionCommand CreateCreateSubscriptionCommand(
         Guid? userId = null,
+        string firstName = Constants.User.FirstName,
+        string lastName = Constants.User.LastName,
+        string emailName = Constants.User.Email,
         SubscriptionType? subscriptionType = null)
     {
         return new CreateSubscriptionCommand(
             userId ?? Constants.User.Id,
+            firstName,
+            lastName,
+            emailName,
             subscriptionType ?? Constants.Subscription.Type);
     }
 

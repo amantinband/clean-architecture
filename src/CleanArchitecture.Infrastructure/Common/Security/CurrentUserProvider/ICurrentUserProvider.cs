@@ -1,6 +1,4 @@
-using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
-
-namespace CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
+namespace CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
 
 public interface ICurrentUserProvider
 {

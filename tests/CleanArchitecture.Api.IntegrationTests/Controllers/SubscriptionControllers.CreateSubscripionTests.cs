@@ -23,7 +23,7 @@ public class CreateSubscriptionTests
     public async Task CreateSubscriptionForSelf_WhenHasPermission_ShouldCreateSubscription(SubscriptionType subscriptionType)
     {
         // Arrange
-        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType);
+        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType: subscriptionType);
 
         string token = await _client.GenerateTokenAsync(
             TokenRequestFactory.CreateGenerateTokenRequest(
@@ -44,7 +44,7 @@ public class CreateSubscriptionTests
     public async Task CreateSubscriptionForSelf_WhenDoesNotHaveRequiredPermission_ShouldReturnForbidden(SubscriptionType subscriptionType)
     {
         // Arrange
-        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType);
+        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType: subscriptionType);
 
         string token = await _client.GenerateTokenAsync(
             TokenRequestFactory.CreateGenerateTokenRequest(
@@ -65,7 +65,7 @@ public class CreateSubscriptionTests
     public async Task CreateSubscriptionForDifferentUser_WhenIsAdmin_ShouldCreateSubscription(SubscriptionType subscriptionType)
     {
         // Arrange
-        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType);
+        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType: subscriptionType);
 
         string token = await _client.GenerateTokenAsync(
             TokenRequestFactory.CreateGenerateTokenRequest(
@@ -87,7 +87,7 @@ public class CreateSubscriptionTests
     public async Task CreateSubscriptionForDifferentUser_WhenIsNotAdmin_ShouldReturnUnauthorized(SubscriptionType subscriptionType)
     {
         // Arrange
-        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType);
+        var createSubscriptionRequest = SubscriptionRequestFactory.CreateCreateSubscriptionRequest(subscriptionType: subscriptionType);
 
         string token = await _client.GenerateTokenAsync(
             TokenRequestFactory.CreateGenerateTokenRequest(

@@ -3,6 +3,9 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "SubscriptionType": "Basic"
-    // "SubscriptionType": "Pro"
+    "FirstName": "Lior",
+    "LastName": "Dagan",
+    "Email": "lior@dagan.com",
+    // "SubscriptionType": "Basic"
+    "SubscriptionType": "Pro"
 }

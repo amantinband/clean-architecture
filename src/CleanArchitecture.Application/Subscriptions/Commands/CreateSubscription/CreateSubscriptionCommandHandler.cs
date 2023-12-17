@@ -23,6 +23,9 @@ public class CreateSubscriptionCommandHandler(
 
         var user = new User(
             request.UserId,
+            request.FirstName,
+            request.LastName,
+            request.Email,
             subscription);
 
         await _usersRepository.AddAsync(user, cancellationToken);

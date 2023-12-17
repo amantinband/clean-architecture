@@ -16,11 +16,9 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
             .ValueGeneratedNever();
 
         builder.OwnsOne<Calendar>("_calendar", cb =>
-        {
             cb.Property<Dictionary<DateOnly, int>>("_calendar")
                 .HasColumnName("CalendarDictionary")
-                .HasValueJsonConverter();
-        });
+                .HasValueJsonConverter());
 
         builder.Property<List<Guid>>("_reminderIds")
             .HasColumnName("ReminderIds")
@@ -36,5 +34,11 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
                     v => v.Name,
                     v => SubscriptionType.FromName(v, false));
         });
+
+        builder.Property(u => u.Email);
+
+        builder.Property(u => u.LastName);
+
+        builder.Property(u => u.FirstName);
     }
 }

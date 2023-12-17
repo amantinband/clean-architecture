@@ -1,6 +1,6 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Security.Request;
-using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
+using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
 using CleanArchitecture.Infrastructure.Security.PolicyEnforcer;
 
 using ErrorOr;

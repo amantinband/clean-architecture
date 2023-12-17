@@ -1,6 +1,6 @@
 using CleanArchitecture.Api;
 using CleanArchitecture.Infrastructure.Common;
-using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
+using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

@@ -2,10 +2,10 @@ POST {{host}}/tokens/generate
 Content-Type: application/json
 
 {
-    "Id": "bae93bf5-9e3c-47b3-aace-3034653b6bb2",
-    "FirstName": "Amichai",
-    "LastName": "Mantinband",
-    "Email": "amichai@mantinband.com",
+    "Id": "aae93bf5-9e3c-47b3-aace-3034653b6bb2",
+    "FirstName": "Lior",
+    "LastName": "Dagan",
+    "Email": "lior@dagan.com",
     "Permissions": [
         "set:reminder",
         "get:reminder",

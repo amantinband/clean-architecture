@@ -22,6 +22,8 @@
     <PackageVersion Include="MediatR" Version="12.2.0" />
     <PackageVersion Include="FluentValidation" Version="11.8.1" />
     <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageVersion Include="FluentEmail.Core" Version="3.0.2" />
+    <PackageVersion Include="FluentEmail.Smtp" Version="3.0.2" />
     <!-- Analyzers -->
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
     <!-- Tests -->

@@ -10,5 +10,10 @@ using ErrorOr;
 namespace CleanArchitecture.Application.Subscriptions.Commands.CreateSubscription;
 
 [Authorize(Permissions = Permission.Subscription.Create, Policies = Policy.SelfOrAdmin)]
-public record CreateSubscriptionCommand(Guid UserId, SubscriptionType SubscriptionType)
+public record CreateSubscriptionCommand(
+    Guid UserId,
+    string FirstName,
+    string LastName,
+    string Email,
+    SubscriptionType SubscriptionType)
     : IAuthorizeableRequest<ErrorOr<SubscriptionResult>>;
