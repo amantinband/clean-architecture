@@ -49,9 +49,9 @@ dotnet new clean-arch -o CleanArchitecture
 
 This template is still under construction 👷.
 
-Check out my comprehensive [course](https://dometrain.com/bundle/from-zero-to-hero-clean-architecture) on Dometrain where I cover everything you need to know when building production applications structured following clean architecture (at the time of this commit there are still a few hundred coupon codes under CLEANAMI for a 20% discount).
+Check out my comprehensive [course](https://dometrain.com/bundle/from-zero-to-hero-clean-architecture/?coupon_code=GITHUB) on Dometrain where I cover everything you need to know when building production applications structured following clean architecture. Use the exclusive coupon code `GITHUB` to get 5% off (btw this is the only promo code for a discount on the bundle, which is already 20% off).
 
-![Coupon code: CLEANAMI](assets/course-coupon-code.png)
+![Coupon code: CLEANAMI](assets/Clean%20Architecture%20Template%20Promo%20Code.png)
 
 # Give it a star ⭐
 
