@@ -51,7 +51,7 @@ This template is still under construction 👷.
 
 Check out my comprehensive [course](https://dometrain.com/bundle/from-zero-to-hero-clean-architecture/?coupon_code=GITHUB) on Dometrain where I cover everything you need to know when building production applications structured following clean architecture. Use the exclusive coupon code `GITHUB` to get 5% off (btw this is the only promo code for a discount on the bundle, which is already 20% off).
 
-![Coupon code: CLEANAMI](assets/Clean%20Architecture%20Template%20Promo%20Code.png)
+<img src="assets/Clean%20Architecture%20Template%20Promo%20Code.png" height=30px >
 
 # Give it a star ⭐
 
