@@ -251,7 +251,7 @@ For example:
 public record ListRemindersQuery(Guid UserId, Guid SubscriptionId, Guid ReminderId) : IAuthorizeableRequest<ErrorOr<Reminder>>;
 ```
 
-Will only allow users with the `get:reminder` permission or the `list:reminder` permission, and who pass the `SelfOrAdmin` policy, and who have the `ReminderManager` role to list reminders.
+Will only allow users with the `get:reminder` and  `list:reminder` permission, and who pass the `SelfOrAdmin` policy, and who have the `ReminderManager` role to list reminders.
 
 Another option, is specifying the `Authorize` attribute multiple times:
 
@@ -280,9 +280,9 @@ By the bare minimum, each domain entity should have a test that verifies its inv
 
 ### Application Layer Unit Tests
 
-The domain layer is tested using both unit tests and subcutaneous tests.
+The application layer is tested using both unit tests and subcutaneous tests.
 
-Since each one of the application layer use cases has its corresponding subcutaneous test, the unit tests are used to test the application layer standalone components, such as the `ValidationBehavior` and the `AuthorizationBehavior`.
+Since each one of the application layer use cases has its corresponding subcutaneous tests, the unit tests are used to test the application layer standalone components, such as the `ValidationBehavior` and the `AuthorizationBehavior`.
 
 ![Application Layer unit tests](assets/Clean%20Architecture%20Template%20Application%20Layer%20Unit%20Tests.png)
 
@@ -291,7 +291,7 @@ Since each one of the application layer use cases has its corresponding subcutan
 Subcutaneous tests are tests that operate right under the presentation layer.
 These tests are responsible for testing the core logic of our application, which is the application layer and the domain layer.
 
-The reason there are so many of these tests, is because each one of the application layer use cases has its corresponding subcutaneous test.
+The reason there are so many of these tests, is because each one of the application layer use cases has its corresponding subcutaneous tests.
 
 This allows us to test the application layer and the domain layer based on the actual expected usage, giving us the confidence that our application works as expected and that the system cannot be manipulated in a way we don't allow.
 
@@ -343,7 +343,7 @@ Then, in an eventual consistency manner, the system will update all the relevant
 ### Eventual Consistency Mechanism
 
 1. Each invariant is encapsulated in a single domain object. This allows performing changes by updating a single domain object in a single transaction.
-1. If a `domain object B` needs to react to changes in `domain object A`, a [Domain Event](src/CleanArchitecture.Domain/Common/IDomainEvent.cs) is added to `domain object A` alongside the changes.
+1. If `domain object B` needs to react to changes in `domain object A`, a [Domain Event](src/CleanArchitecture.Domain/Common/IDomainEvent.cs) is added to `domain object A` alongside the changes.
 1. Upon persisting `domain object A` changes to the database, the domain events are [extracted and added to a queue](src/CleanArchitecture.Infrastructure/Common/Persistence/AppDbContext.cs) for offline processing:
     ```csharp
     private void AddDomainEventsToOfflineProcessingQueue(List<IDomainEvent> domainEvents)
@@ -360,16 +360,16 @@ Then, in an eventual consistency manner, the system will update all the relevant
     {
         context.Response.OnCompleted(async () =>
         {
-                if (context.Items.TryGetValue("DomainEvents", out var value) ||
-                    value is not Queue<IDomainEvent> domainEvents)
-                {
-                    return;
-                }
+            if (context.Items.TryGetValue("DomainEvents", out var value) ||
+                value is not Queue<IDomainEvent> domainEvents)
+            {
+                return;
+            }
 
-                while (domainEvents.TryDequeue(out var nextEvent))
-                {
-                    await publisher.Publish(nextEvent);
-                }
+            while (domainEvents.TryDequeue(out var nextEvent))
+            {
+                await publisher.Publish(nextEvent);
+            }
         });
     }
     ```
