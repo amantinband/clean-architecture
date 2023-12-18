@@ -68,7 +68,7 @@ public class ReminderEmailBackgroundService(
                       I hope this email finds you well.
 
                       I'm writing you this email to remind you about the following reminders:
-                      {string.Join('\n', dueReminders.Select((reminder, i) => $"{i}. {reminder.Text}"))}
+                      {string.Join('\n', dueReminders.Select((reminder, i) => $"{i + 1}. {reminder.Text}"))}
 
                       Best,
                       {user.FirstName} from the past.

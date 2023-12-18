@@ -311,9 +311,11 @@ Unlike the subcutaneous tests, the focus of these tests is to ensure the integra
 
 ## Domain Events & Eventual Consistency
 
+> Note: Eventual consistency and the domain events pattern add a layer of complexity. If you don't need it, don't use it. If you need it, make sure your system is designed properly and that you have the right tools to manage failures.
+
 The domain is designed so each use case which manipulates data, updates a single domain object in a single transaction.
 
-For example, when a user deletes a subscription, the only change that happens atomically is the subscription is marked as deleted
+For example, when a user cancels a subscription, the only change that happens atomically is the subscription is marked as canceled:
 
 ```csharp
 public ErrorOr<Success> CancelSubscription(Guid subscriptionId)
@@ -390,7 +392,7 @@ private async void SendEmailNotifications(object? state)
               I hope this email finds you well.
 
               I'm writing you this email to remind you about the following reminders:
-              {string.Join('\n', dueReminders.Select((reminder, i) => $"{i}. {reminder.Text}"))}
+              {string.Join('\n', dueReminders.Select((reminder, i) => $"{i + 1}. {reminder.Text}"))}
 
               Best,
               {user.FirstName} from the past.
@@ -428,25 +430,10 @@ You can use your own SMTP server or use a service like [Brevo](https://brevo.co/
 
 ```shell
 dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:EnableEmailNotifications true
-```
-
-```shell
 dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:DefaultFromEmail amantinband@gmail.com
-```
-
-```shell
 dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:SmtpSettings:Server smtp-relay.brevo.com
-```
-
-```shell
 dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:SmtpSettings:Port 587
-```
-
-```shell
 dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:SmtpSettings:Username amantinband@gmail.com
-```
-
-```shell
 dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:SmtpSettings:Password your-password
 ```
 
