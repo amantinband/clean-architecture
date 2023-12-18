@@ -41,6 +41,13 @@ dotnet new clean-arch -o CleanArchitecture
     - [Application Layer Unit Tests](#application-layer-unit-tests)
     - [Application Layer Subcutaneous Tests](#application-layer-subcutaneous-tests)
     - [Presentation Layer Integration Tests](#presentation-layer-integration-tests)
+- [Fun features 💃🕺](#fun-features-)
+  - [Domain Events \& Eventual Consistency](#domain-events--eventual-consistency)
+    - [Eventual Consistency Mechanism](#eventual-consistency-mechanism)
+  - [Background service for sending email reminders](#background-service-for-sending-email-reminders)
+    - [Configure Email Settings](#configure-email-settings)
+    - [Configure Email Settings Manually](#configure-email-settings-manually)
+    - [Configure Email Settings via User Secrets](#configure-email-settings-via-user-secrets)
 - [Contribution 🤲](#contribution-)
 - [Credits 🙏](#credits-)
 - [License 🪪](#license-)
@@ -76,15 +83,15 @@ Users with a pro subscription do not have a daily limit on the number of reminde
 ## Subscriptions
 
 1. Create Subscription
-1. Cancel Subscription
 1. Get Subscription
+1. Cancel Subscription
 
 ## Reminders
 
-1. Delete Reminder
-1. Dismiss Reminder
 1. Set Reminder
 1. Get Reminder
+1. Delete Reminder
+1. Dismiss Reminder
 1. List Reminders
 
 # Getting Started 🏃
@@ -299,6 +306,149 @@ The api layer is tested using integration tests. This is where we want to cover 
 Unlike the subcutaneous tests, the focus of these tests is to ensure the integration between the various components of our system and other systems.
 
 ![Integration Tests](assets/Clean%20Architecture%20Template%20Integration%20Tests.png)
+
+# Fun features 💃🕺
+
+## Domain Events & Eventual Consistency
+
+The domain is designed so each use case which manipulates data, updates a single domain object in a single transaction.
+
+For example, when a user deletes a subscription, the only change that happens atomically is the subscription is marked as deleted
+
+```csharp
+public ErrorOr<Success> CancelSubscription(Guid subscriptionId)
+{
+    if (subscriptionId != Subscription.Id)
+    {
+        return Error.NotFound("Subscription not found");
+    }
+
+    Subscription = Subscription.Canceled;
+
+    _domainEvents.Add(new SubscriptionCanceledEvent(this, subscriptionId));
+
+    return Result.Success;
+}
+```
+
+Then, in an eventual consistency manner, the system will update all the relevant data. Which includes:
+
+1. Deleting the subscription from the database and marking all reminders as deleted ([Subscriptions/Events/SubscriptionDeletedEventHandler.cs](src/CleanArchitecture.Application/Subscriptions/Events/SubscriptionCanceledEventHandler.cs)])
+1. Deleting all the reminders marked as deleted from the database ([Reminders/Events/ReminderDeletedEventHandler.cs](src/CleanArchitecture.Application/Reminders/Events/ReminderDeletedEventHandler.cs)]
+
+> Note: Alongside the performance benefits, this allows to reuse reactive behavior. For example, the `ReminderDeletedEventHandler` is invoked both when a subscription is deleted and when a reminder is deleted.
+
+### Eventual Consistency Mechanism
+
+1. Each invariant is encapsulated in a single domain object. This allows performing changes by updating a single domain object in a single transaction.
+1. If a `domain object B` needs to react to changes in `domain object A`, a [Domain Event](src/CleanArchitecture.Domain/Common/IDomainEvent.cs) is added to `domain object A` alongside the changes.
+1. Upon persisting `domain object A` changes to the database, the domain events are [extracted and added to a queue](src/CleanArchitecture.Infrastructure/Common/Persistence/AppDbContext.cs) for offline processing:
+    ```csharp
+    private void AddDomainEventsToOfflineProcessingQueue(List<IDomainEvent> domainEvents)
+    {
+        Queue<IDomainEvent> domainEventsQueue = new();
+        domainEvents.ForEach(domainEventsQueue.Enqueue);
+
+        _httpContextAccessor.HttpContext.Items["DomainEvents"] = domainEventsQueue;
+    }
+    ```
+1. After the user receives a response, the [EventualConsistencyMiddleware](src/CleanArchitecture.Infrastructure/Common/Middleware/EventualConsistencyMiddleware.cs) is invoked and processes the domain events:
+    ```csharp
+    public async Task InvokeAsync(HttpContext context, IEventualConsistencyProcessor eventualConsistencyProcessor)
+    {
+        context.Response.OnCompleted(async () =>
+        {
+                if (context.Items.TryGetValue("DomainEvents", out var value) ||
+                    value is not Queue<IDomainEvent> domainEvents)
+                {
+                    return;
+                }
+
+                while (domainEvents.TryDequeue(out var nextEvent))
+                {
+                    await publisher.Publish(nextEvent);
+                }
+        });
+    }
+    ```
+
+> Note: the code snippets above are a simplified version of the actual implementation.
+
+## Background service for sending email reminders
+
+There is a simple background service that runs every minute and sends email reminders for all reminders that are due ([ReminderEmailBackgroundService](src/CleanArchitecture.Infrastructure/Reminders/BackgroundServices/ReminderEmailBackgroundService.cs)):
+
+```csharp
+private async void SendEmailNotifications(object? state)
+{
+    await _fluentEmail
+        .To(user.Email)
+        .Subject($"{dueReminders.Count} reminders due!")
+        .Body($"""
+              Dear {user.FirstName} {user.LastName} from the present.
+
+              I hope this email finds you well.
+
+              I'm writing you this email to remind you about the following reminders:
+              {string.Join('\n', dueReminders.Select((reminder, i) => $"{i}. {reminder.Text}"))}
+
+              Best,
+              {user.FirstName} from the past.
+              """)
+        .SendAsync();
+}
+```
+
+### Configure Email Settings
+
+To configure the service to send emails, make sure to update the email settings under the `appsettings.json`/`appsettings.Development.json` file:
+
+You can use your own SMTP server or use a service like [Brevo](https://brevo.co/).
+
+### Configure Email Settings Manually
+
+```json
+{
+  "EmailSettings": {
+    "EnableEmailNotifications": false,
+    "DefaultFromEmail": "your-email@gmail.com (also, change EnableEmailNotifications to true 👆)",
+    "SmtpSettings": {
+      "Server": "smtp.gmail.com",
+      "Port": 587,
+      "Username": "your-email@gmail.com",
+      "Password": "your-password"
+    }
+  }
+}
+```
+
+> note: you may need to allow less secure apps to access your email account.
+
+### Configure Email Settings via User Secrets
+
+```shell
+dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:EnableEmailNotifications true
+```
+
+```shell
+dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:DefaultFromEmail amantinband@gmail.com
+```
+
+```shell
+dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:SmtpSettings:Server smtp-relay.brevo.com
+```
+
+```shell
+dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:SmtpSettings:Port 587
+```
+
+```shell
+dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:SmtpSettings:Username amantinband@gmail.com
+```
+
+```shell
+dotnet user-secrets --project src/CleanArchitecture.Api set EmailSettings:SmtpSettings:Password your-password
+```
 
 # Contribution 🤲
 

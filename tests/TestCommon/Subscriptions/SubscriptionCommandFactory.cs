@@ -13,14 +13,14 @@ public static class SubscriptionCommandFactory
         Guid? userId = null,
         string firstName = Constants.User.FirstName,
         string lastName = Constants.User.LastName,
-        string emailName = Constants.User.Email,
+        string email = Constants.User.Email,
         SubscriptionType? subscriptionType = null)
     {
         return new CreateSubscriptionCommand(
             userId ?? Constants.User.Id,
             firstName,
             lastName,
-            emailName,
+            email,
             subscriptionType ?? Constants.Subscription.Type);
     }
 
