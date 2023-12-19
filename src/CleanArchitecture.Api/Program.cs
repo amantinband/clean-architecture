@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 {
     app.UseExceptionHandler();
-    app.AddInfrastructureMiddleware();
+    app.UseInfrastructure();
 
     if (app.Environment.IsDevelopment())
     {

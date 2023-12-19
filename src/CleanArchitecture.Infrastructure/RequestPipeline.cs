@@ -6,7 +6,7 @@ namespace CleanArchitecture.Infrastructure;
 
 public static class RequestPipeline
 {
-    public static IApplicationBuilder AddInfrastructureMiddleware(this IApplicationBuilder app)
+    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
     {
         app.UseMiddleware<EventualConsistencyMiddleware>();
         return app;
