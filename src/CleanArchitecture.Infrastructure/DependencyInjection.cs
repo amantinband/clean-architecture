@@ -14,10 +14,6 @@ using CleanArchitecture.Infrastructure.Security.TokenGenerator;
 using CleanArchitecture.Infrastructure.Services;
 using CleanArchitecture.Infrastructure.Users.Persistence;
 
-using FluentEmail.Core;
-
-using FluentValidation;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

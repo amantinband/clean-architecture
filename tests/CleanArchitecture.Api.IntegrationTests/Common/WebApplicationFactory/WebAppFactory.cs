@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -39,5 +40,10 @@ public class WebAppFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLifet
         builder.ConfigureTestServices(services => services
             .RemoveAll<DbContextOptions<AppDbContext>>()
             .AddDbContext<AppDbContext>((sp, options) => options.UseSqlite(_testDatabase.Connection)));
+
+        builder.ConfigureAppConfiguration((context, conf) => conf.AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            { "EmailSettings:EnableEmailNotifications", "false" },
+        }));
     }
 }
