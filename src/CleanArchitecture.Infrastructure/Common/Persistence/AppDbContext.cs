@@ -19,8 +19,7 @@ public class AppDbContext(DbContextOptions options, IHttpContextAccessor _httpCo
     public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var domainEvents = ChangeTracker.Entries<Entity>()
-           .Select(entry => entry.Entity.PopDomainEvents())
-           .SelectMany(x => x)
+           .SelectMany(entry => entry.Entity.PopDomainEvents())
            .ToList();
 
         if (IsUserWaitingOnline())
