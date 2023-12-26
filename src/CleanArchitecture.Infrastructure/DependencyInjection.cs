@@ -81,7 +81,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddPersistence(this IServiceCollection services)
     {
-        services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source = CleanArchitecture.db"));
+        services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source = CleanArchitecture.sqlite"));
 
         services.AddScoped<IRemindersRepository, RemindersRepository>();
         services.AddScoped<IUsersRepository, UsersRepository>();

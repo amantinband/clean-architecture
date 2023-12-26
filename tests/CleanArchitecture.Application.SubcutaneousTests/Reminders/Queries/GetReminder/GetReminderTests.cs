@@ -9,8 +9,8 @@ public class GetReminderTests(WebAppFactory webAppFactory)
     public async Task GetReminder_WhenValidQuery_ShouldReturnReminder()
     {
         // Arrange
-        var subscription = await _mediator.CreateSubscription();
-        var reminder = await _mediator.SetReminder(
+        var subscription = await _mediator.CreateSubscriptionAsync();
+        var reminder = await _mediator.SetReminderAsync(
             ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
 
         var query = ReminderQueryFactory.CreateGetReminderQuery(
@@ -44,7 +44,7 @@ public class GetReminderTests(WebAppFactory webAppFactory)
     public async Task GetReminder_WhenNoReminder_ShouldReturnNotFound()
     {
         // Arrange
-        var subscription = await _mediator.CreateSubscription();
+        var subscription = await _mediator.CreateSubscriptionAsync();
 
         var query = ReminderQueryFactory.CreateGetReminderQuery(subscriptionId: subscription.Id);
 

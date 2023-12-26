@@ -23,8 +23,8 @@ public class DismissReminderTests(WebAppFactory webAppFactory)
     public async Task DismissReminder_WhenValidCommand_ShouldDismissReminder()
     {
         // Arrange
-        var subscription = await _mediator.CreateSubscription();
-        var reminder = await _mediator.SetReminder(
+        var subscription = await _mediator.CreateSubscriptionAsync();
+        var reminder = await _mediator.SetReminderAsync(
             ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
 
         var command = ReminderCommandFactory.CreateDismissReminderCommand(
@@ -39,7 +39,39 @@ public class DismissReminderTests(WebAppFactory webAppFactory)
         result.Value.Should().Be(Result.Success);
 
         // Assert side effects took place
-        var getReminderResult = await _mediator.GetReminder(
+        var getReminderResult = await _mediator.GetReminderAsync(
+            ReminderQueryFactory.CreateGetReminderQuery(
+                subscriptionId: subscription.Id,
+                reminderId: reminder.Id));
+
+        getReminderResult.IsError.Should().BeFalse();
+        getReminderResult.Value.IsDismissed.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task DismissReminder_WhenReminderAlreadyDismissed_ShouldReturnConflict()
+    {
+        // Arrange
+        var subscription = await _mediator.CreateSubscriptionAsync();
+        var reminder = await _mediator.SetReminderAsync(
+            ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
+
+        var command = ReminderCommandFactory.CreateDismissReminderCommand(
+            subscriptionId: subscription.Id,
+            reminderId: reminder.Id);
+
+        // Act
+        var firstDismissReminderResult = await _mediator.Send(command);
+        var secondDismissReminderResult = await _mediator.Send(command);
+
+        // Assert
+        firstDismissReminderResult.IsError.Should().BeFalse();
+
+        secondDismissReminderResult.IsError.Should().BeTrue();
+        secondDismissReminderResult.FirstError.Type.Should().Be(ErrorType.Conflict);
+
+        // Assert side effects took place
+        var getReminderResult = await _mediator.GetReminderAsync(
             ReminderQueryFactory.CreateGetReminderQuery(
                 subscriptionId: subscription.Id,
                 reminderId: reminder.Id));

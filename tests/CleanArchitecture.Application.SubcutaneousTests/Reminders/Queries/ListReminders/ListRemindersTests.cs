@@ -9,8 +9,8 @@ public class ListRemindersTests(WebAppFactory webAppFactory)
     public async Task ListReminders_WhenValidQuery_ShouldReturnReminder()
     {
         // Arrange
-        var subscription = await _mediator.CreateSubscription();
-        var reminder = await _mediator.SetReminder(
+        var subscription = await _mediator.CreateSubscriptionAsync();
+        var reminder = await _mediator.SetReminderAsync(
             ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
 
         var query = ReminderQueryFactory.CreateListRemindersQuery(
@@ -42,7 +42,7 @@ public class ListRemindersTests(WebAppFactory webAppFactory)
     public async Task ListReminders_WhenNoReminder_ShouldReturnEmptyList()
     {
         // Arrange
-        var subscription = await _mediator.CreateSubscription();
+        var subscription = await _mediator.CreateSubscriptionAsync();
 
         var query = ReminderQueryFactory.CreateListRemindersQuery(subscriptionId: subscription.Id);
 

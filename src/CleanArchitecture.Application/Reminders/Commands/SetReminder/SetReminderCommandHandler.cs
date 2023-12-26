@@ -12,7 +12,11 @@ public class SetReminderCommandHandler(IUsersRepository _usersRepository)
 {
     public async Task<ErrorOr<Reminder>> Handle(SetReminderCommand command, CancellationToken cancellationToken)
     {
-        var reminder = new Reminder(command.SubscriptionId, command.Text, command.DateTime);
+        var reminder = new Reminder(
+            command.UserId,
+            command.SubscriptionId,
+            command.Text,
+            command.DateTime);
 
         var user = await _usersRepository.GetBySubscriptionIdAsync(command.SubscriptionId, cancellationToken);
 

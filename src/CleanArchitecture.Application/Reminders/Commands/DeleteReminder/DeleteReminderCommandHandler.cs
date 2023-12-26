@@ -18,7 +18,7 @@ public class DeleteReminderCommandHandler(
 
         if (reminder is null || user is null)
         {
-            return Error.NotFound("Reminder not found");
+            return Error.NotFound(description: "Reminder not found");
         }
 
         var deleteReminderResult = user.DeleteReminder(reminder);

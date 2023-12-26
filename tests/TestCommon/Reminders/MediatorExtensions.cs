@@ -13,7 +13,7 @@ namespace TestCommon.Reminders;
 
 public static class MediatorExtensions
 {
-    public static async Task<Reminder> SetReminder(
+    public static async Task<Reminder> SetReminderAsync(
         this IMediator mediator,
         SetReminderCommand? command = null)
     {
@@ -26,14 +26,14 @@ public static class MediatorExtensions
         return result.Value;
     }
 
-    public static async Task<ErrorOr<List<Reminder>>> ListReminders(
+    public static async Task<ErrorOr<List<Reminder>>> ListRemindersAsync(
         this IMediator mediator,
         ListRemindersQuery? query = null)
     {
         return await mediator.Send(query ?? ReminderQueryFactory.CreateListRemindersQuery());
     }
 
-    public static async Task<ErrorOr<Reminder>> GetReminder(
+    public static async Task<ErrorOr<Reminder>> GetReminderAsync(
         this IMediator mediator,
         GetReminderQuery? query = null)
     {

@@ -24,6 +24,10 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
             .HasColumnName("ReminderIds")
             .HasListOfIdsConverter();
 
+        builder.Property<List<Guid>>("_dismissedReminderIds")
+            .HasColumnName("DismissedReminderIds")
+            .HasListOfIdsConverter();
+
         builder.OwnsOne(u => u.Subscription, sb =>
         {
             sb.Property(s => s.Id)

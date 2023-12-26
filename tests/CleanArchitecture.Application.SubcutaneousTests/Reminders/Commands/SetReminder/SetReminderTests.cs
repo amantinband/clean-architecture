@@ -25,7 +25,7 @@ public class SetReminderTests(WebAppFactory webAppFactory)
     public async Task SetReminder_WhenValidCommand_ShouldSetReminder()
     {
         // Arrange
-        var subscription = await _mediator.CreateSubscription();
+        var subscription = await _mediator.CreateSubscriptionAsync();
 
         var command = ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id);
 
@@ -37,7 +37,7 @@ public class SetReminderTests(WebAppFactory webAppFactory)
         result.Value.AssertCreatedFrom(command);
 
         // Assert side effects took place
-        var getReminderResult = await _mediator.GetReminder(
+        var getReminderResult = await _mediator.GetReminderAsync(
             ReminderQueryFactory.CreateGetReminderQuery(
                 subscriptionId: subscription.Id,
                 reminderId: result.Value.Id));
@@ -51,7 +51,7 @@ public class SetReminderTests(WebAppFactory webAppFactory)
     public async Task SetReminder_WhenMoreThanMaxDailyReminders_ShouldReturnValidationError(SubscriptionType subscriptionType)
     {
         // Arrange
-        var subscription = await _mediator.CreateSubscription(
+        var subscription = await _mediator.CreateSubscriptionAsync(
             SubscriptionCommandFactory.CreateCreateSubscriptionCommand(subscriptionType: subscriptionType));
 
         var commands = Enumerable.Range(0, subscriptionType.GetMaxDailyReminders() + 1)
@@ -71,7 +71,7 @@ public class SetReminderTests(WebAppFactory webAppFactory)
             .Which.FirstError.Should().Be(UserErrors.CannotCreateMoreRemindersThanSubscriptionAllows);
 
         // Assert side effects took place
-        var listRemindersResult = await _mediator.ListReminders(
+        var listRemindersResult = await _mediator.ListRemindersAsync(
             ReminderQueryFactory.CreateListRemindersQuery(subscriptionId: subscription.Id));
 
         listRemindersResult.IsError.Should().BeFalse();
@@ -79,7 +79,7 @@ public class SetReminderTests(WebAppFactory webAppFactory)
 
         foreach (var succeededCommand in succeededCommands)
         {
-            var result = await _mediator.GetReminder(
+            var result = await _mediator.GetReminderAsync(
                 ReminderQueryFactory.CreateGetReminderQuery(
                     subscriptionId: subscription.Id,
                     reminderId: succeededCommand.Value.Id));

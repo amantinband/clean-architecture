@@ -1,3 +1,4 @@
+using CleanArchitecture.Application.Reminders.Commands.DeleteReminder;
 using CleanArchitecture.Application.Reminders.Commands.DismissReminder;
 using CleanArchitecture.Application.Reminders.Commands.SetReminder;
 using CleanArchitecture.Application.Reminders.Queries.GetReminder;
@@ -33,6 +34,18 @@ public class RemindersController(ISender _mediator) : ApiController
     public async Task<IActionResult> DismissReminder(Guid userId, Guid subscriptionId, Guid reminderId)
     {
         var command = new DismissReminderCommand(userId, subscriptionId, reminderId);
+
+        var result = await _mediator.Send(command);
+
+        return result.Match(
+            _ => NoContent(),
+            Problem);
+    }
+
+    [HttpDelete("{reminderId:guid}")]
+    public async Task<IActionResult> DeleteReminder(Guid userId, Guid subscriptionId, Guid reminderId)
+    {
+        var command = new DeleteReminderCommand(userId, subscriptionId, reminderId);
 
         var result = await _mediator.Send(command);
 

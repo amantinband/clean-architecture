@@ -6,6 +6,8 @@ namespace CleanArchitecture.Domain.Reminders;
 
 public class Reminder : Entity
 {
+    public Guid UserId { get; }
+
     public Guid SubscriptionId { get; }
 
     public DateTime DateTime { get; }
@@ -16,12 +18,18 @@ public class Reminder : Entity
 
     public bool IsDismissed { get; private set; }
 
-    public Reminder(Guid subscriptionId, string text, DateTime dateTime, Guid? id = null)
-        : base(id ?? Guid.NewGuid())
+    public Reminder(
+        Guid userId,
+        Guid subscriptionId,
+        string text,
+        DateTime dateTime,
+        Guid? id = null)
+            : base(id ?? Guid.NewGuid())
     {
+        UserId = userId;
+        SubscriptionId = subscriptionId;
         Text = text;
         DateTime = dateTime;
-        SubscriptionId = subscriptionId;
     }
 
     public ErrorOr<Success> Dismiss()

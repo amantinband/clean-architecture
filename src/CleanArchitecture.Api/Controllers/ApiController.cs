@@ -10,7 +10,7 @@ namespace CleanArchitecture.Api.Controllers;
 [Authorize]
 public class ApiController : ControllerBase
 {
-    protected IActionResult Problem(List<Error> errors)
+    protected ActionResult Problem(List<Error> errors)
     {
         if (errors.Count is 0)
         {
@@ -25,7 +25,7 @@ public class ApiController : ControllerBase
         return Problem(errors[0]);
     }
 
-    private IActionResult Problem(Error error)
+    private ObjectResult Problem(Error error)
     {
         var statusCode = error.Type switch
         {
@@ -39,7 +39,7 @@ public class ApiController : ControllerBase
         return Problem(statusCode: statusCode, title: error.Description);
     }
 
-    private IActionResult ValidationProblem(List<Error> errors)
+    private ActionResult ValidationProblem(List<Error> errors)
     {
         var modelStateDictionary = new ModelStateDictionary();
 

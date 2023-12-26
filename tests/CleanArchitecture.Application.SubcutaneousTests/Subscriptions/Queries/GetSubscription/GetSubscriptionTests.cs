@@ -9,7 +9,7 @@ public class GetSubscriptionTests(WebAppFactory webAppFactory)
     public async Task GetSubscription_WhenSubscriptionExists_ShouldReturnSubscription()
     {
         // Arrange
-        var subscription = await _mediator.CreateSubscription();
+        var subscription = await _mediator.CreateSubscriptionAsync();
 
         var query = SubscriptionQueryFactory.CreateGetSubscriptionQuery();
 

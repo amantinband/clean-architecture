@@ -14,6 +14,8 @@ public class ReminderConfigurations : IEntityTypeConfiguration<Reminder>
         builder.Property(r => r.Id)
             .ValueGeneratedNever();
 
+        builder.Property(r => r.UserId);
+
         builder.Property(r => r.SubscriptionId);
 
         builder.Property(r => r.DateTime);

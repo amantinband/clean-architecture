@@ -12,7 +12,10 @@ namespace CleanArchitecture.Domain.Users;
 public class User : Entity
 {
     private readonly Calendar _calendar = null!;
+
     private readonly List<Guid> _reminderIds = [];
+
+    private readonly List<Guid> _dismissedReminderIds = [];
 
     public Subscription Subscription { get; private set; } = null!;
 
@@ -42,7 +45,7 @@ public class User : Entity
     {
         if (Subscription == Subscription.Canceled)
         {
-            return Error.NotFound("Subscription not found");
+            return Error.NotFound(description: "Subscription not found");
         }
 
         reminder.SubscriptionId.Throw().IfNotEquals(Subscription.Id);
@@ -65,13 +68,20 @@ public class User : Entity
     {
         if (Subscription == Subscription.Canceled)
         {
-            return Error.NotFound("Subscription not found");
+            return Error.NotFound(description: "Subscription not found");
         }
 
-        if (!_reminderIds.Remove(reminderId))
+        if (!_reminderIds.Contains(reminderId))
         {
             return Error.NotFound(description: "Reminder not found");
         }
+
+        if (_dismissedReminderIds.Contains(reminderId))
+        {
+            return Error.Conflict(description: "Reminder already dismissed");
+        }
+
+        _dismissedReminderIds.Add(reminderId);
 
         _domainEvents.Add(new ReminderDismissedEvent(reminderId));
 
@@ -82,7 +92,7 @@ public class User : Entity
     {
         if (subscriptionId != Subscription.Id)
         {
-            return Error.NotFound("Subscription not found");
+            return Error.NotFound(description: "Subscription not found");
         }
 
         Subscription = Subscription.Canceled;
@@ -94,10 +104,17 @@ public class User : Entity
 
     public ErrorOr<Success> DeleteReminder(Reminder reminder)
     {
+        if (Subscription == Subscription.Canceled)
+        {
+            return Error.NotFound(description: "Subscription not found");
+        }
+
         if (!_reminderIds.Remove(reminder.Id))
         {
-            return Error.NotFound("Reminder not found");
+            return Error.NotFound(description: "Reminder not found");
         }
+
+        _dismissedReminderIds.Remove(reminder.Id);
 
         _calendar.DecrementEventCount(reminder.Date);
 
