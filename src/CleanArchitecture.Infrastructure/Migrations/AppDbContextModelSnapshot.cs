@@ -35,6 +35,9 @@ namespace CleanArchitecture.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Reminders");
@@ -56,6 +59,11 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("_dismissedReminderIds")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("DismissedReminderIds");
 
                     b.Property<string>("_reminderIds")
                         .IsRequired()

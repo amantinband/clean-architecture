@@ -1,10 +1,10 @@
 {
     "rest-client.environmentVariables": {
         "$shared": {
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTGlvciIsImZhbWlseV9uYW1lIjoiRGFnYW4iLCJlbWFpbCI6Imxpb3JsaW9yZEBnbWFpbC5jb20iLCJpZCI6ImFhZTkzYmY1LTllM2MtNDdiMy1hYWNlLTMwMzQ2NTNiNmJiMiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwicGVybWlzc2lvbnMiOlsic2V0OnJlbWluZGVyIiwiZ2V0OnJlbWluZGVyIiwiZGlzbWlzczpyZW1pbmRlciIsImRlbGV0ZTpyZW1pbmRlciIsImNyZWF0ZTpzdWJzY3JpcHRpb24iLCJkZWxldGU6c3Vic2NyaXB0aW9uIiwiZ2V0OnN1YnNjcmlwdGlvbiJdLCJleHAiOjE3MDI3NjE0ODcsImlzcyI6IlJlbWluZGVyU2VydmljZSIsImF1ZCI6IlJlbWluZGVyU2VydmljZSJ9.IAMTLGboIQCcpPL-rCOWvt4vQ7z7dDw5lFK5znFsSAI",
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTGlvciIsImZhbWlseV9uYW1lIjoiRGFnYW4iLCJlbWFpbCI6Imxpb3JAZGFnYW4uY29tIiwiaWQiOiJhYWU5M2JmNS05ZTNjLTQ3YjMtYWFjZS0zMDM0NjUzYjZiYjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsInBlcm1pc3Npb25zIjpbInNldDpyZW1pbmRlciIsImdldDpyZW1pbmRlciIsImRpc21pc3M6cmVtaW5kZXIiLCJkZWxldGU6cmVtaW5kZXIiLCJjcmVhdGU6c3Vic2NyaXB0aW9uIiwiZGVsZXRlOnN1YnNjcmlwdGlvbiIsImdldDpzdWJzY3JpcHRpb24iXSwiZXhwIjoxNzAzNjA2Njk3LCJpc3MiOiJSZW1pbmRlclNlcnZpY2UiLCJhdWQiOiJSZW1pbmRlclNlcnZpY2UifQ.YhGGMluj3C0n-_UNR_Xs57lJejZde2uGf_3wgWD0eXE",
             "userId": "aae93bf5-9e3c-47b3-aace-3034653b6bb2",
-            "subscriptionId": "09c76854-c629-4c90-96d1-17a52595a765",
-            "reminderId": "1b306b10-a161-46fa-9285-0b180e37a319"
+            "subscriptionId": "c8ee11f0-d4bb-4b43-a448-d511924b520e",
+            "reminderId": "08233bb1-ce29-49e2-b346-5f8b7cf61593"
         },
         "dev": {
             "host": "http://localhost:5001",

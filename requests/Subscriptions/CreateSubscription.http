@@ -6,6 +6,6 @@ Authorization: Bearer {{token}}
     "FirstName": "Lior",
     "LastName": "Dagan",
     "Email": "lior@dagan.com",
-    // "SubscriptionType": "Basic"
-    "SubscriptionType": "Pro"
+    "SubscriptionType": "Basic"
+    // "SubscriptionType": "Pro"
 }

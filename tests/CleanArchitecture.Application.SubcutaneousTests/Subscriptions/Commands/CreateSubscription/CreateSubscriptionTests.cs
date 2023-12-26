@@ -18,7 +18,7 @@ public class CreateSubscriptionTests(WebAppFactory webAppFactory)
         result.IsError.Should().BeFalse();
         result.Value.AssertCreatedFrom(command);
 
-        var getSubscriptionResult = await _mediator.GetSubscription();
+        var getSubscriptionResult = await _mediator.GetSubscriptionAsync();
         getSubscriptionResult.IsError.Should().BeFalse();
         getSubscriptionResult.Value.Should().BeEquivalentTo(result.Value);
     }

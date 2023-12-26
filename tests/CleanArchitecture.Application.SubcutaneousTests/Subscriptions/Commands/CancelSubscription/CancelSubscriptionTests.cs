@@ -9,7 +9,7 @@ public class CancelSubscriptionTests(WebAppFactory webAppFactory)
     public async Task CancelSubscription_WhenSubscriptionExists_ShouldCancelSubscription()
     {
         // Arrange
-        var subscription = await _mediator.CreateSubscription();
+        var subscription = await _mediator.CreateSubscriptionAsync();
 
         var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand(subscriptionId: subscription.Id);
 
@@ -21,7 +21,7 @@ public class CancelSubscriptionTests(WebAppFactory webAppFactory)
         result.Value.Should().Be(Result.Success);
 
         // Assert side effects took place
-        var getSubscriptionResult = await _mediator.GetSubscription();
+        var getSubscriptionResult = await _mediator.GetSubscriptionAsync();
 
         getSubscriptionResult.IsError.Should().BeTrue();
         getSubscriptionResult.FirstError.Type.Should().Be(ErrorType.NotFound);
@@ -45,9 +45,9 @@ public class CancelSubscriptionTests(WebAppFactory webAppFactory)
     public async Task CancelSubscription_WhenSubscriptionHasReminders_ShouldCancelSubscriptionAndDeleteReminders()
     {
         // Arrange
-        var subscription = await _mediator.CreateSubscription();
-        await _mediator.SetReminder(ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
-        await _mediator.SetReminder(ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
+        var subscription = await _mediator.CreateSubscriptionAsync();
+        await _mediator.SetReminderAsync(ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
+        await _mediator.SetReminderAsync(ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
 
         var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand(subscriptionId: subscription.Id);
 
@@ -59,12 +59,12 @@ public class CancelSubscriptionTests(WebAppFactory webAppFactory)
         result.Value.Should().Be(Result.Success);
 
         // Assert side effects took place
-        var getSubscriptionResult = await _mediator.GetSubscription();
+        var getSubscriptionResult = await _mediator.GetSubscriptionAsync();
 
         getSubscriptionResult.IsError.Should().BeTrue();
         getSubscriptionResult.FirstError.Type.Should().Be(ErrorType.NotFound);
 
-        var listRemindersResult = await _mediator.ListReminders();
+        var listRemindersResult = await _mediator.ListRemindersAsync();
 
         listRemindersResult.IsError.Should().BeFalse();
         listRemindersResult.Value.Should().BeEmpty();
