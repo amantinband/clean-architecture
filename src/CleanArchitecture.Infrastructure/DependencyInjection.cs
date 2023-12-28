@@ -49,8 +49,6 @@ public static class DependencyInjection
         EmailSettings emailSettings = new();
         configuration.Bind(EmailSettings.Section, emailSettings);
 
-        Console.WriteLine($"Enable email notifications: {emailSettings.EnableEmailNotifications}");
-
         if (!emailSettings.EnableEmailNotifications)
         {
             return services;
