@@ -1,6 +1,5 @@
 using CleanArchitecture.Application.Subscriptions.Commands.CancelSubscription;
 using CleanArchitecture.Application.Subscriptions.Commands.CreateSubscription;
-using CleanArchitecture.Application.Subscriptions.Queries.GetSubscription;
 using CleanArchitecture.Domain.Users;
 
 using TestCommon.TestConstants;
