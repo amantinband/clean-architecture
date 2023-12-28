@@ -1,5 +1,5 @@
 using CleanArchitecture.Application.Common.Security.Request;
-using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
+using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 
 using ErrorOr;
 

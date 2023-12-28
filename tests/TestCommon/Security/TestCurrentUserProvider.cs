@@ -1,4 +1,4 @@
-using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
+using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 
 namespace TestCommon.Security;
 

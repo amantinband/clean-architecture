@@ -1,6 +1,6 @@
 using CleanArchitecture.Api;
 using CleanArchitecture.Infrastructure.Common;
-using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
+using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -48,11 +48,11 @@ public class WebAppFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLifet
             services
                 .RemoveAll<DbContextOptions<AppDbContext>>()
                 .AddDbContext<AppDbContext>((sp, options) => options.UseSqlite(TestDatabase.Connection));
-
-            builder.ConfigureAppConfiguration((context, conf) => conf.AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                { "EmailSettings:EnableEmailNotifications", "false" },
-            }));
         });
+
+        builder.ConfigureAppConfiguration((context, conf) => conf.AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            { "EmailSettings:EnableEmailNotifications", "false" },
+        }));
     }
 }

@@ -1,6 +1,5 @@
 using CleanArchitecture.Application.Common.Behaviors;
 using CleanArchitecture.Application.Common.Interfaces;
-using CleanArchitecture.Application.Common.Security;
 using CleanArchitecture.Application.Common.Security.Request;
 
 using MediatR;

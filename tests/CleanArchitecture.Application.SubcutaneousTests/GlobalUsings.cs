@@ -9,6 +9,5 @@ global using MediatR;
 global using TestCommon.Reminders;
 global using TestCommon.Security;
 global using TestCommon.Subscriptions;
-global using TestCommon.TestConstants;
 
 global using Xunit;

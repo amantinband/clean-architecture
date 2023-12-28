@@ -1,4 +1,4 @@
-namespace CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
+namespace CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 
 public record CurrentUser(
     Guid Id,
