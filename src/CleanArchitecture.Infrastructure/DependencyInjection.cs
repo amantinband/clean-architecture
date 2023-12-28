@@ -29,7 +29,7 @@ public static class DependencyInjection
             .AddHttpContextAccessor()
             .AddServices()
             .AddBackgroundServices(configuration)
-            .AddAuthentication(configuration)
+            .AddAuthentication()
             .AddAuthorization()
             .AddPersistence();
 
@@ -96,7 +96,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddAuthentication(this IServiceCollection services)
     {
         services.AddOptions<JwtSettings>()
             .BindConfiguration(JwtSettings.Section);
