@@ -1,8 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
-
 using Microsoft.AspNetCore.Http;
 
 using Throw;

@@ -3,14 +3,13 @@ using System.Net.Mail;
 
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure.Common;
-using CleanArchitecture.Infrastructure.Common.Security.CurrentUserProvider;
-using CleanArchitecture.Infrastructure.Configuration;
 using CleanArchitecture.Infrastructure.Reminders.BackgroundServices;
 using CleanArchitecture.Infrastructure.Reminders.Persistence;
 using CleanArchitecture.Infrastructure.Security;
 using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 using CleanArchitecture.Infrastructure.Security.PolicyEnforcer;
 using CleanArchitecture.Infrastructure.Security.TokenGenerator;
+using CleanArchitecture.Infrastructure.Security.TokenValidation;
 using CleanArchitecture.Infrastructure.Services;
 using CleanArchitecture.Infrastructure.Users.Persistence;
 
@@ -29,7 +28,7 @@ public static class DependencyInjection
             .AddHttpContextAccessor()
             .AddServices()
             .AddBackgroundServices(configuration)
-            .AddAuthentication()
+            .AddAuthentication(configuration)
             .AddAuthorization()
             .AddPersistence();
 
@@ -49,6 +48,8 @@ public static class DependencyInjection
     {
         EmailSettings emailSettings = new();
         configuration.Bind(EmailSettings.Section, emailSettings);
+
+        Console.WriteLine($"Enable email notifications: {emailSettings.EnableEmailNotifications}");
 
         if (!emailSettings.EnableEmailNotifications)
         {
@@ -96,16 +97,15 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddAuthentication(this IServiceCollection services)
+    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions<JwtSettings>()
-            .BindConfiguration(JwtSettings.Section);
+        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.Section));
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
-        services.ConfigureOptions<JwtBearerOptionsSetup>();
-
-        services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+        services
+            .ConfigureOptions<JwtBearerTokenValidationConfiguration>()
+            .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
 
         return services;
