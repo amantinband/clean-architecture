@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: clean-architecture-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    restart: on-failure
+    volumes:
+      - ./src/CleanArchitecture.Api/CleanArchitecture.sqlite:/app/CleanArchitecture.sqlite

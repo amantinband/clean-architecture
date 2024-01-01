@@ -28,6 +28,13 @@ dotnet new clean-arch -o CleanArchitecture
   - [Subscriptions](#subscriptions)
   - [Reminders](#reminders)
 - [Getting Started 🏃](#getting-started-)
+  - [Clone the repository](#clone-the-repository)
+  - [Run the service](#run-the-service)
+    - [Run the service using Docker](#run-the-service-using-docker)
+    - [Run the service using the .NET CLI](#run-the-service-using-the-net-cli)
+  - [Generate a token](#generate-a-token)
+  - [Create a subscription](#create-a-subscription)
+  - [Create a reminder](#create-a-reminder)
 - [Folder Structure 📁](#folder-structure-)
 - [Authorization 🔐](#authorization-)
   - [Authorization Types](#authorization-types)
@@ -96,74 +103,136 @@ Users with a pro subscription do not have a daily limit on the number of reminde
 
 # Getting Started 🏃
 
-1. Run the project `dotnet run --project src/CleanArchitecture.Api`
-1. Navigate to `requests/Tokens/GenerateToken.http` and generate a token.
+## Clone the repository
 
-    ```yaml
-    POST {{host}}/tokens/generate
-    Content-Type: application/json
-    ```
+```shell
+git clone https://github.com/amantinband/clean-architecture
+```
 
-    ```http
-    {
-        "Id": "bae93bf5-9e3c-47b3-aace-3034653b6bb2",
-        "FirstName": "Amichai",
-        "LastName": "Mantinband",
-        "Email": "amichai@mantinband.com",
-        "Permissions": [
-            "set:reminder",
-            "get:reminder",
-            "dismiss:reminder",
-            "delete:reminder",
-            "create:subscription",
-            "delete:subscription",
-            "get:subscription"
-        ],
-        "Roles": [
-            "Admin"
-        ]
-    }
-    ```
+## Run the service
 
-    > Note: Since most systems use an external identity provider, this project uses a simple token generator endpoint that generates a token based on the details you provide. This is a simple way to generate a token for testing purposes and is closer to how your system will likely be designed when using an external identity provider.
+### Run the service using Docker
 
-1. Create a subscription
+```shell
+docker compose up
+```
 
-    ```yaml
-    POST {{host}}/users/{{userId}}/subscriptions
-    Content-Type: application/json
-    Authorization: Bearer {{token}}
-    ```
+### Run the service using the .NET CLI
 
-    ```http
-    {
-        "SubscriptionType": "Basic"
-    }
-    ```
+```shell
+dotnet run --project src/CleanArchitecture.Api
+```
 
-    > Note: To replace http file variables `{{variableName}}`, you can either:
-    >   1. Use the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension for VS Code + update the values under ".vscode/settings.json". This will update the value for all http files.
-    >   1. Define the variables in the http file itself:
-    >       ```yaml
-    >       @host = http://localhost:5001
-    >       @userId = bae93bf5-9e3c-47b3-aace-3034653b6bb2
-    >       ```
-    >   1. Replace the variables manually.
+## Generate a token
 
-1. Create a reminder
+Navigate to `requests/Tokens/GenerateToken.http` and generate a token.
 
-    ```yaml
-    POST {{host}}/users/{{userId}}/subscriptions/{{subscriptionId}}/reminders
-    Content-Type: application/json
-    Authorization: Bearer {{token}}
-    ```
+> Note: Since most systems use an external identity provider, this project uses a simple token generator endpoint that generates a token based on the details you provide. This is a simple way to generate a token for testing purposes and is closer to how your system will likely be designed when using an external identity provider.
 
-    ```http
-    {
-        "text": "let's do it",
-        "dateTime": "2025-2-26"
-    }
-    ```
+```yaml
+POST {{host}}/tokens/generate
+Content-Type: application/json
+```
+
+```http
+{
+    "Id": "bae93bf5-9e3c-47b3-aace-3034653b6bb2",
+    "FirstName": "Amichai",
+    "LastName": "Mantinband",
+    "Email": "amichai@mantinband.com",
+    "Permissions": [
+        "set:reminder",
+        "get:reminder",
+        "dismiss:reminder",
+        "delete:reminder",
+        "create:subscription",
+        "delete:subscription",
+        "get:subscription"
+    ],
+    "Roles": [
+        "Admin"
+    ]
+}
+```
+
+> ### NOTE: Replacing http file variables (`{{variableName}}`)
+>
+> #### Option 1 (recommended) - Using the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension for VS Code
+>
+> Use the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension for VS Code + update the values under [.vscode/settings.json](.vscode/settings.json). This will update the value for all http files.
+>
+> ```json
+> {
+>    "rest-client.environmentVariables": {
+>        "$shared": { // these will be shared across all http files, regardless of the environment
+>            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTGlvciIsImZhbWlseV9uYW1lIjoiRGFnYW4iLCJlbWFpbCI6Imxpb3JAZGFnYW4uY29tIiwiaWQiOiJhYWU5M2JmNS05ZTNjLTQ3YjMtYWFjZS0zMDM0NjUzYjZiYjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsInBlcm1pc3Npb25zIjpbInNldDpyZW1pbmRlciIsImdldDpyZW1pbmRlciIsImRpc21pc3M6cmVtaW5kZXIiLCJkZWxldGU6cmVtaW5kZXIiLCJjcmVhdGU6c3Vic2NyaXB0aW9uIiwiZGVsZXRlOnN1YnNjcmlwdGlvbiIsImdldDpzdWJzY3JpcHRpb24iXSwiZXhwIjoxNzA0MTM0MTIzLCJpc3MiOiJSZW1pbmRlclNlcnZpY2UiLCJhdWQiOiJSZW1pbmRlclNlcnZpY2UifQ.wyvn9cq3ohp-JPTmbBd3G1cAU1A6COpiQd3C_e_Ng5s",
+>            "userId": "aae93bf5-9e3c-47b3-aace-3034653b6bb2",
+>            "subscriptionId": "c8ee11f0-d4bb-4b43-a448-d511924b520e",
+>            "reminderId": "08233bb1-ce29-49e2-b346-5f8b7cf61593"
+>        },
+>        "dev": { // when the environment is set to dev, these values will be used
+>            "host": "http://localhost:5001",
+>        },
+>        "prod": { // when the environment is set to prod, these values will be used
+>            "host": "http://your-prod-endpoint.com",
+>        }
+>    }
+>}
+> ```
+>
+> #### Options 2 - Defining the variables in the http file itself
+>
+> Define the variables in the http file itself. This will only update the value for the current http file.
+>
+> ```yaml
+> @host = http://localhost:5001
+>
+> POST {{host}}/tokens/generate
+> ```
+>
+> #### Option 3 - Manually
+>
+> Replace the variables manually.
+>
+> ```yaml
+> POST {{host}}/tokens/generate
+> ```
+>
+> 👇
+>
+> ```yaml
+> POST http://localhost:5001/tokens/generate
+> ```
+>
+
+## Create a subscription
+
+```yaml
+POST {{host}}/users/{{userId}}/subscriptions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+```
+
+```http
+{
+    "SubscriptionType": "Basic"
+}
+```
+
+## Create a reminder
+
+```yaml
+POST {{host}}/users/{{userId}}/subscriptions/{{subscriptionId}}/reminders
+Content-Type: application/json
+Authorization: Bearer {{token}}
+```
+
+```http
+{
+    "text": "let's do it",
+    "dateTime": "2025-2-26"
+}
+```
 
 # Folder Structure 📁
 
