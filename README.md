@@ -28,10 +28,8 @@ dotnet new clean-arch -o CleanArchitecture
   - [Subscriptions](#subscriptions)
   - [Reminders](#reminders)
 - [Getting Started 🏃](#getting-started-)
-  - [Clone the repository](#clone-the-repository)
-  - [Run the service](#run-the-service)
-    - [Run the service using Docker](#run-the-service-using-docker)
-    - [Run the service using the .NET CLI](#run-the-service-using-the-net-cli)
+  - [Install the template or clone the project](#install-the-template-or-clone-the-project)
+  - [Run the service using Docker or the .NET CLI](#run-the-service-using-docker-or-the-net-cli)
   - [Generate a token](#generate-a-token)
   - [Create a subscription](#create-a-subscription)
   - [Create a reminder](#create-a-reminder)
@@ -103,21 +101,27 @@ Users with a pro subscription do not have a daily limit on the number of reminde
 
 # Getting Started 🏃
 
-## Clone the repository
+## Install the template or clone the project
+
+```shell
+dotnet new install Amantinband.CleanArchitecture.Template
+
+dotnet new clean-arch -o CleanArchitecture
+```
+
+or
 
 ```shell
 git clone https://github.com/amantinband/clean-architecture
 ```
 
-## Run the service
-
-### Run the service using Docker
+## Run the service using Docker or the .NET CLI
 
 ```shell
 docker compose up
 ```
 
-### Run the service using the .NET CLI
+or
 
 ```shell
 dotnet run --project src/CleanArchitecture.Api
