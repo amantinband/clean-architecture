@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Amantinband.CleanArchitecture.Template</id>
-    <version>1.0.5</version>
+    <version>1.1.0</version>
     <authors>amantinband</authors>
     <description>.NET 8 Clean Architecture Template</description>
     <projectUrl>https://github.com/amantinband/clean-architecture</projectUrl>
