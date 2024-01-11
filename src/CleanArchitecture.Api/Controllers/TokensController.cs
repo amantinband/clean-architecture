@@ -3,6 +3,8 @@ using CleanArchitecture.Application.Tokens.Queries.Generate;
 using CleanArchitecture.Contracts.Common;
 using CleanArchitecture.Contracts.Tokens;
 
+using ErrorOr;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
@@ -17,41 +19,29 @@ namespace CleanArchitecture.Api.Controllers;
 public class TokensController(ISender _mediator) : ApiController
 {
     [HttpPost("generate")]
-    public async Task<IActionResult> GenerateToken(GenerateTokenRequest request)
-    {
-        if (!DomainSubscriptionType.TryFromName(request.SubscriptionType.ToString(), out var plan))
-        {
-            return Problem(
-                statusCode: StatusCodes.Status400BadRequest,
-                detail: "Invalid subscription type");
-        }
+    public async Task<IActionResult> GenerateToken(GenerateTokenRequest request) =>
+        await DomainSubscriptionType.TryFromName(request.SubscriptionType.ToString(), out var plan).ToErrorOr()
+            .FailIf(val => val is false, Error.Validation("Invalid subscription type"))
+            .Then(_ => new GenerateTokenQuery(
+                request.Id,
+                request.FirstName,
+                request.LastName,
+                request.Email,
+                plan,
+                request.Permissions,
+                request.Roles))
+            .ThenAsync(query => _mediator.Send(query))
+            .Then(ToDto)
+            .Match(Ok, Problem);
 
-        var query = new GenerateTokenQuery(
-            request.Id,
-            request.FirstName,
-            request.LastName,
-            request.Email,
-            plan,
-            request.Permissions,
-            request.Roles);
-
-        var result = await _mediator.Send(query);
-
-        return result.Match(
-            generateTokenResult => Ok(ToDto(generateTokenResult)),
-            Problem);
-    }
-
-    private static TokenResponse ToDto(GenerateTokenResult authResult)
-    {
-        return new TokenResponse(
+    private static ErrorOr<TokenResponse> ToDto(GenerateTokenResult authResult) =>
+        new TokenResponse(
             authResult.Id,
             authResult.FirstName,
             authResult.LastName,
             authResult.Email,
             ToDto(authResult.SubscriptionType),
             authResult.Token);
-    }
 
     private static SubscriptionType ToDto(DomainSubscriptionType subscriptionType) =>
         subscriptionType.Name switch
