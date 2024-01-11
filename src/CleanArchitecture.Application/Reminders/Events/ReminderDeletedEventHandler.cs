@@ -1,6 +1,8 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Users.Events;
 
+using ErrorOr;
+
 using MediatR;
 
 namespace CleanArchitecture.Application.Reminders.Events;
@@ -9,9 +11,10 @@ public class ReminderDeletedEventHandler(IRemindersRepository _remindersReposito
 {
     public async Task Handle(ReminderDeletedEvent notification, CancellationToken cancellationToken)
     {
-        var reminder = await _remindersRepository.GetByIdAsync(notification.ReminderId, cancellationToken)
-            ?? throw new InvalidOperationException();
-
-        await _remindersRepository.RemoveAsync(reminder, cancellationToken);
+        await (await _remindersRepository.GetByIdAsync(notification.ReminderId, cancellationToken)).ToErrorOr()
+            .When(reminder => reminder is null, Error.Unexpected())
+            .SwitchAsync(
+                reminder => _remindersRepository.RemoveAsync(reminder!, cancellationToken),
+                _ => throw new InvalidOperationException());
     }
 }
