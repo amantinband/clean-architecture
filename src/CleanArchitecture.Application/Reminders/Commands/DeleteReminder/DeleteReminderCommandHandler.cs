@@ -1,4 +1,6 @@
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Domain.Reminders;
+using CleanArchitecture.Domain.Users;
 
 using ErrorOr;
 
@@ -12,24 +14,14 @@ public class DeleteReminderCommandHandler(
 {
     public async Task<ErrorOr<Success>> Handle(DeleteReminderCommand request, CancellationToken cancellationToken)
     {
-        var reminder = await _remindersRepository.GetByIdAsync(request.ReminderId, cancellationToken);
+        Reminder? reminder = await _remindersRepository.GetByIdAsync(request.ReminderId, cancellationToken);
+        User? user = await _usersRepository.GetByIdAsync(request.UserId, cancellationToken);
 
-        var user = await _usersRepository.GetByIdAsync(request.UserId, cancellationToken);
-
-        if (reminder is null || user is null)
-        {
-            return Error.NotFound(description: "Reminder not found");
-        }
-
-        var deleteReminderResult = user.DeleteReminder(reminder);
-
-        if (deleteReminderResult.IsError)
-        {
-            return deleteReminderResult.Errors;
-        }
-
-        await _usersRepository.UpdateAsync(user, cancellationToken);
-
-        return Result.Success;
+        return await (Reminder: reminder, User: user).ToErrorOr()
+                .FailIf(pair => pair.Reminder is null || pair.User is null, Error.NotFound("Reminder not found"))
+                .Then(pair => (Reminder: pair.Reminder!, User: pair.User!))
+                .Then(pair => pair.User.DeleteReminder(pair.Reminder).Then(success => pair))
+                .ThenDoAsync(pair => _usersRepository.UpdateAsync(pair.User, cancellationToken))
+                .Then(_ => Result.Success);
     }
 }

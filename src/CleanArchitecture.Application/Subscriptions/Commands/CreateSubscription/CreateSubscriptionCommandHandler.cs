@@ -12,24 +12,22 @@ namespace CleanArchitecture.Application.Subscriptions.Commands.CreateSubscriptio
 public class CreateSubscriptionCommandHandler(
     IUsersRepository _usersRepository) : IRequestHandler<CreateSubscriptionCommand, ErrorOr<SubscriptionResult>>
 {
-    public async Task<ErrorOr<SubscriptionResult>> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
-    {
-        if (await _usersRepository.GetByIdAsync(request.UserId, cancellationToken) is not null)
-        {
-            return Error.Conflict(description: "User already has an active subscription");
-        }
+    public async Task<ErrorOr<SubscriptionResult>> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken) =>
+        await (await _usersRepository.GetByIdAsync(request.UserId, cancellationToken)).ToErrorOr()
+            .FailIf(user => user is not null, Error.Conflict(description: "User already has an active subscription"))
+            .Then(_ =>
+            {
+                var subscription = new Subscription(request.SubscriptionType);
 
-        var subscription = new Subscription(request.SubscriptionType);
+                var user = new User(
+                    request.UserId,
+                    request.FirstName,
+                    request.LastName,
+                    request.Email,
+                    subscription);
 
-        var user = new User(
-            request.UserId,
-            request.FirstName,
-            request.LastName,
-            request.Email,
-            subscription);
-
-        await _usersRepository.AddAsync(user, cancellationToken);
-
-        return SubscriptionResult.FromUser(user);
-    }
+                return (Subscription: subscription, User: user);
+            })
+            .ThenDoAsync(pair => _usersRepository.AddAsync(pair.User, cancellationToken))
+            .Then(pair => SubscriptionResult.FromUser(pair.User));
 }

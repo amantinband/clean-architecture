@@ -12,28 +12,20 @@ public class SetReminderCommandHandler(IUsersRepository _usersRepository)
 {
     public async Task<ErrorOr<Reminder>> Handle(SetReminderCommand command, CancellationToken cancellationToken)
     {
-        var reminder = new Reminder(
-            command.UserId,
-            command.SubscriptionId,
-            command.Text,
-            command.DateTime);
+        return await (await _usersRepository.GetBySubscriptionIdAsync(command.SubscriptionId, cancellationToken)).ToErrorOr()
+            .FailIf(user => user is null, Error.NotFound(description: "Subscription not found"))
+            .Then(user =>
+            {
+                var reminder = new Reminder(
+                    command.UserId,
+                    command.SubscriptionId,
+                    command.Text,
+                    command.DateTime);
 
-        var user = await _usersRepository.GetBySubscriptionIdAsync(command.SubscriptionId, cancellationToken);
-
-        if (user is null)
-        {
-            return Error.NotFound(description: "Subscription not found");
-        }
-
-        var setReminderResult = user.SetReminder(reminder);
-
-        if (setReminderResult.IsError)
-        {
-            return setReminderResult.Errors;
-        }
-
-        await _usersRepository.UpdateAsync(user, cancellationToken);
-
-        return reminder;
+                return user!.SetReminder(reminder)
+                    .Then(success => (User: user!, Reminder: reminder));
+            })
+            .ThenDoAsync(pair => _usersRepository.UpdateAsync(pair.User, cancellationToken))
+            .Then(pair => pair.Reminder);
     }
 }
