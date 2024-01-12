@@ -13,8 +13,8 @@ public class GetSubscriptionQueryHandler(IUsersRepository _usersRepository)
 {
     public async Task<ErrorOr<SubscriptionResult>> Handle(GetSubscriptionQuery request, CancellationToken cancellationToken)
     {
-        return await _usersRepository.GetByIdAsync(request.UserId, cancellationToken) is User user
-            ? SubscriptionResult.FromUser(user)
-            : Error.NotFound(description: "Subscription not found.");
+        return (await _usersRepository.GetByIdAsync(request.UserId, cancellationToken)).ToErrorOr()
+            .When(user => user is null, Error.NotFound(description: "Subscription not found."))
+            .Map(user => SubscriptionResult.FromUser(user!));
     }
 }

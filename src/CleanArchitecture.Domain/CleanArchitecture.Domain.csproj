@@ -8,9 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.SmartEnum" />
-    <PackageReference Include="ErrorOr" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="throw" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ErrorOr\src\ErrorOr.csproj" />
   </ItemGroup>
 
 </Project>
