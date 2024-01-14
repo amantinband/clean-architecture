@@ -37,7 +37,7 @@
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
     <!-- Auth -->
     <PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="8.0.0" />
-    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
   </ItemGroup>
