@@ -28,6 +28,7 @@ dotnet new clean-arch -o CleanArchitecture
   - [Subscriptions](#subscriptions)
   - [Reminders](#reminders)
 - [Getting Started 🏃](#getting-started-)
+  - [YouTube Tutorial](#youtube-tutorial)
   - [Install the template or clone the project](#install-the-template-or-clone-the-project)
   - [Run the service using Docker or the .NET CLI](#run-the-service-using-docker-or-the-net-cli)
   - [Generate a token](#generate-a-token)
@@ -100,6 +101,10 @@ Users with a pro subscription do not have a daily limit on the number of reminde
 1. List Reminders
 
 # Getting Started 🏃
+
+## YouTube Tutorial
+
+[![Clean Architecture Tutorial](https://img.youtube.com/vi/DTmlhHu8tHA/0.jpg)](https://www.youtube.com/watch?v=DTmlhHu8tHA)
 
 ## Install the template or clone the project
 
