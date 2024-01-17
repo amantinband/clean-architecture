@@ -4,15 +4,9 @@ using ErrorOr;
 
 namespace CleanArchitecture.Domain.Reminders;
 
-public class Reminder : Entity
+public class Reminder : CreationEntity
 {
-    public Guid UserId { get; }
-
     public Guid SubscriptionId { get; }
-
-    public DateTime DateTime { get; }
-
-    public DateOnly Date => DateOnly.FromDateTime(DateTime.Date);
 
     public string Text { get; } = null!;
 
@@ -24,12 +18,10 @@ public class Reminder : Entity
         string text,
         DateTime dateTime,
         Guid? id = null)
-            : base(id ?? Guid.NewGuid())
+            : base(id ?? Guid.NewGuid(), userId, dateTime)
     {
-        UserId = userId;
         SubscriptionId = subscriptionId;
         Text = text;
-        DateTime = dateTime;
     }
 
     public ErrorOr<Success> Dismiss()
