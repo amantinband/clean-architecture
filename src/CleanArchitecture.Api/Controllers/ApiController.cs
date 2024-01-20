@@ -14,9 +14,7 @@ public class ApiController : ControllerBase
     {
         return errors.Count is 0
             ? Problem()
-            : errors.All(error => error.Type == ErrorType.Validation)
-                ? ValidationProblem(errors)
-                : Problem(errors[0]);
+            : errors.All(error => error.Type == ErrorType.Validation) ? ValidationProblem(errors) : Problem(errors[0]);
     }
 
     private ObjectResult Problem(Error error)
