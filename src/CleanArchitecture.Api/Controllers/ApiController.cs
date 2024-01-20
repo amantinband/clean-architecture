@@ -12,17 +12,11 @@ public class ApiController : ControllerBase
 {
     protected ActionResult Problem(List<Error> errors)
     {
-        if (errors.Count is 0)
-        {
-            return Problem();
-        }
-
-        if (errors.All(error => error.Type == ErrorType.Validation))
-        {
-            return ValidationProblem(errors);
-        }
-
-        return Problem(errors[0]);
+        return errors.Count is 0
+            ? Problem()
+            : errors.All(error => error.Type == ErrorType.Validation)
+                ? ValidationProblem(errors)
+                : Problem(errors[0]);
     }
 
     private ObjectResult Problem(Error error)
