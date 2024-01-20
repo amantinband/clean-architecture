@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />

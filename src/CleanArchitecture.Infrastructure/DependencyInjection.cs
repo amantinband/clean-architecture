@@ -8,6 +8,7 @@ using CleanArchitecture.Infrastructure.Reminders.Persistence;
 using CleanArchitecture.Infrastructure.Security;
 using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 using CleanArchitecture.Infrastructure.Security.PolicyEnforcer;
+using CleanArchitecture.Infrastructure.Security.SwaggerSupport;
 using CleanArchitecture.Infrastructure.Security.TokenGenerator;
 using CleanArchitecture.Infrastructure.Security.TokenValidation;
 using CleanArchitecture.Infrastructure.Services;
@@ -103,6 +104,7 @@ public static class DependencyInjection
 
         services
             .ConfigureOptions<JwtBearerTokenValidationConfiguration>()
+            .ConfigureOptions<SwaggerJwtSupportConfiguration>()
             .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer();
 
