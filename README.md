@@ -483,7 +483,7 @@ private async void SendEmailNotifications(object? state)
 
 To configure the service to send emails, make sure to update the email settings under the `appsettings.json`/`appsettings.Development.json` file:
 
-You can use your own SMTP server or use a service like [Brevo](https://brevo.co/).
+You can use your own SMTP server or use a service like [Brevo](https://brevo.com/).
 
 ### Configure Email Settings Manually
 
