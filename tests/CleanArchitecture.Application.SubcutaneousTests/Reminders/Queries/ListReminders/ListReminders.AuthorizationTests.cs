@@ -31,7 +31,7 @@ public class ListRemindersAuthorizationTests
         var result = await _mediator.Send(query);
 
         // Assert
-        result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public class ListRemindersAuthorizationTests
         var result = await _mediator.Send(query);
 
         // Assert
-        result.FirstError.Type.Should().Be(ErrorType.Unauthorized);
+        result.Error.Should().BeOfType<ForbiddenError>();
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class ListRemindersAuthorizationTests
         var result = await _mediator.Send(query);
 
         // Assert
-        result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -88,6 +88,6 @@ public class ListRemindersAuthorizationTests
         var result = await _mediator.Send(query);
 
         // Assert
-        result.FirstError.Type.Should().Be(ErrorType.Unauthorized);
+        result.Error.Should().BeOfType<ForbiddenError>();
     }
 }

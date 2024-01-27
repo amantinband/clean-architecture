@@ -17,14 +17,14 @@ public class CancelSubscriptionTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeFalse();
-        result.Value.Should().Be(Result.Success);
+        result.IsFailure.Should().BeFalse();
+        result.Value.Should().Be(default(FunctionalDdd.Unit));
 
         // Assert side effects took place
         var getSubscriptionResult = await _mediator.GetSubscriptionAsync();
 
-        getSubscriptionResult.IsError.Should().BeTrue();
-        getSubscriptionResult.FirstError.Type.Should().Be(ErrorType.NotFound);
+        getSubscriptionResult.IsFailure.Should().BeTrue();
+        getSubscriptionResult.Error.Should().BeOfType<NotFoundError>();
     }
 
     [Fact]
@@ -37,8 +37,8 @@ public class CancelSubscriptionTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeTrue();
-        result.FirstError.Type.Should().Be(ErrorType.NotFound);
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType<NotFoundError>();
     }
 
     [Fact]
@@ -55,18 +55,18 @@ public class CancelSubscriptionTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeFalse();
-        result.Value.Should().Be(Result.Success);
+        result.IsFailure.Should().BeFalse();
+        result.Value.Should().Be(default(FunctionalDdd.Unit));
 
         // Assert side effects took place
         var getSubscriptionResult = await _mediator.GetSubscriptionAsync();
 
-        getSubscriptionResult.IsError.Should().BeTrue();
-        getSubscriptionResult.FirstError.Type.Should().Be(ErrorType.NotFound);
+        getSubscriptionResult.IsFailure.Should().BeTrue();
+        getSubscriptionResult.Error.Should().BeOfType<NotFoundError>();
 
         var listRemindersResult = await _mediator.ListRemindersAsync();
 
-        listRemindersResult.IsError.Should().BeFalse();
+        listRemindersResult.IsFailure.Should().BeFalse();
         listRemindersResult.Value.Should().BeEmpty();
     }
 }

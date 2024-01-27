@@ -6,15 +6,19 @@ using CleanArchitecture.Contracts.Subscriptions;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 using DomainSubscriptionType = CleanArchitecture.Domain.Users.SubscriptionType;
 using SubscriptionType = CleanArchitecture.Contracts.Common.SubscriptionType;
 
 namespace CleanArchitecture.Api.Controllers;
 
+[ApiController]
+[Authorize]
 [Route("users/{userId:guid}/subscriptions")]
-public class SubscriptionsController(IMediator _mediator) : ApiController
+public class SubscriptionsController(IMediator _mediator) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> CreateSubscription(Guid userId, CreateSubscriptionRequest request)
@@ -33,38 +37,36 @@ public class SubscriptionsController(IMediator _mediator) : ApiController
             request.Email,
             subscriptionType);
 
-        var result = await _mediator.Send(command);
-
-        return result.Match(
-            subscription => CreatedAtAction(
+        IConvertToActionResult actionResult = await _mediator.Send(command)
+                        .FinallyAsync(
+             subscription => CreatedAtAction(
                 actionName: nameof(GetSubscription),
                 routeValues: new { UserId = userId },
                 value: ToDto(subscription)),
-            Problem);
+             err => err.ToErrorActionResult<SubscriptionResult>(this));
+
+        return actionResult.Convert();
     }
 
     [HttpDelete("{subscriptionId:guid}")]
-    public async Task<IActionResult> DeleteSubscription(Guid userId, Guid subscriptionId)
+    public async Task<ActionResult<FunctionalDdd.Unit>> DeleteSubscription(Guid userId, Guid subscriptionId)
     {
         var command = new CancelSubscriptionCommand(userId, subscriptionId);
 
-        var result = await _mediator.Send(command);
-
-        return result.Match(
+        return await _mediator.Send(command)
+            .FinallyAsync(
             _ => NoContent(),
-            Problem);
+            err => err.ToErrorActionResult<FunctionalDdd.Unit>(this));
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetSubscription(Guid userId)
+    public async Task<ActionResult<SubscriptionResponse>> GetSubscription(Guid userId)
     {
         var query = new GetSubscriptionQuery(userId);
 
-        var result = await _mediator.Send(query);
-
-        return result.Match(
-            user => Ok(ToDto(user)),
-            Problem);
+        return await _mediator.Send(query)
+            .MapAsync(ToDto)
+            .ToOkActionResultAsync(this);
     }
 
     private static SubscriptionType ToDto(DomainSubscriptionType subscriptionType) =>

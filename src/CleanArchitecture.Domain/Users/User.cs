@@ -3,8 +3,6 @@ using CleanArchitecture.Domain.Reminders;
 using CleanArchitecture.Domain.Subscriptions;
 using CleanArchitecture.Domain.Users.Events;
 
-using ErrorOr;
-
 using Throw;
 
 namespace CleanArchitecture.Domain.Users;
@@ -41,11 +39,11 @@ public class User : Entity
         _calendar = calendar ?? Calendar.Empty();
     }
 
-    public ErrorOr<Success> SetReminder(Reminder reminder)
+    public Result<Unit> SetReminder(Reminder reminder)
     {
         if (Subscription == Subscription.Canceled)
         {
-            return Error.NotFound(description: "Subscription not found");
+            return Error.NotFound("Subscription not found");
         }
 
         reminder.SubscriptionId.Throw().IfNotEquals(Subscription.Id);
@@ -61,57 +59,57 @@ public class User : Entity
 
         _domainEvents.Add(new ReminderSetEvent(reminder));
 
-        return Result.Success;
+        return Result.Success();
     }
 
-    public ErrorOr<Success> DismissReminder(Guid reminderId)
+    public Result<Unit> DismissReminder(Guid reminderId)
     {
         if (Subscription == Subscription.Canceled)
         {
-            return Error.NotFound(description: "Subscription not found");
+            return Error.NotFound("Subscription not found");
         }
 
         if (!_reminderIds.Contains(reminderId))
         {
-            return Error.NotFound(description: "Reminder not found");
+            return Error.NotFound("Reminder not found");
         }
 
         if (_dismissedReminderIds.Contains(reminderId))
         {
-            return Error.Conflict(description: "Reminder already dismissed");
+            return Error.Conflict("Reminder already dismissed");
         }
 
         _dismissedReminderIds.Add(reminderId);
 
         _domainEvents.Add(new ReminderDismissedEvent(reminderId));
 
-        return Result.Success;
+        return Result.Success();
     }
 
-    public ErrorOr<Success> CancelSubscription(Guid subscriptionId)
+    public Result<Unit> CancelSubscription(Guid subscriptionId)
     {
         if (subscriptionId != Subscription.Id)
         {
-            return Error.NotFound(description: "Subscription not found");
+            return Error.NotFound("Subscription not found");
         }
 
         Subscription = Subscription.Canceled;
 
         _domainEvents.Add(new SubscriptionCanceledEvent(this, subscriptionId));
 
-        return Result.Success;
+        return Result.Success();
     }
 
-    public ErrorOr<Success> DeleteReminder(Reminder reminder)
+    public Result<Unit> DeleteReminder(Reminder reminder)
     {
         if (Subscription == Subscription.Canceled)
         {
-            return Error.NotFound(description: "Subscription not found");
+            return Error.NotFound("Subscription not found");
         }
 
         if (!_reminderIds.Remove(reminder.Id))
         {
-            return Error.NotFound(description: "Reminder not found");
+            return Error.NotFound("Reminder not found", target: reminder.Id.ToString());
         }
 
         _dismissedReminderIds.Remove(reminder.Id);
@@ -120,7 +118,7 @@ public class User : Entity
 
         _domainEvents.Add(new ReminderDeletedEvent(reminder.Id));
 
-        return Result.Success;
+        return Result.Success();
     }
 
     public void DeleteAllReminders()

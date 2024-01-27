@@ -15,8 +15,8 @@ public class DismissReminderTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeTrue();
-        result.FirstError.Type.Should().Be(ErrorType.NotFound);
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType<NotFoundError>();
     }
 
     [Fact]
@@ -35,8 +35,8 @@ public class DismissReminderTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeFalse();
-        result.Value.Should().Be(Result.Success);
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().Be(default(FunctionalDdd.Unit));
 
         // Assert side effects took place
         var getReminderResult = await _mediator.GetReminderAsync(
@@ -44,7 +44,7 @@ public class DismissReminderTests(WebAppFactory webAppFactory)
                 subscriptionId: subscription.Id,
                 reminderId: reminder.Id));
 
-        getReminderResult.IsError.Should().BeFalse();
+        getReminderResult.IsFailure.Should().BeFalse();
         getReminderResult.Value.IsDismissed.Should().BeTrue();
     }
 
@@ -65,10 +65,10 @@ public class DismissReminderTests(WebAppFactory webAppFactory)
         var secondDismissReminderResult = await _mediator.Send(command);
 
         // Assert
-        firstDismissReminderResult.IsError.Should().BeFalse();
+        firstDismissReminderResult.IsSuccess.Should().BeTrue();
 
-        secondDismissReminderResult.IsError.Should().BeTrue();
-        secondDismissReminderResult.FirstError.Type.Should().Be(ErrorType.Conflict);
+        secondDismissReminderResult.IsFailure.Should().BeTrue();
+        secondDismissReminderResult.Error.Should().BeOfType<ConflictError>();
 
         // Assert side effects took place
         var getReminderResult = await _mediator.GetReminderAsync(
@@ -76,7 +76,7 @@ public class DismissReminderTests(WebAppFactory webAppFactory)
                 subscriptionId: subscription.Id,
                 reminderId: reminder.Id));
 
-        getReminderResult.IsError.Should().BeFalse();
+        getReminderResult.IsFailure.Should().BeFalse();
         getReminderResult.Value.IsDismissed.Should().BeTrue();
     }
 }

@@ -12,12 +12,13 @@ using DomainSubscriptionType = CleanArchitecture.Domain.Users.SubscriptionType;
 
 namespace CleanArchitecture.Api.Controllers;
 
-[Route("tokens")]
 [AllowAnonymous]
-public class TokensController(ISender _mediator) : ApiController
+[ApiController]
+[Route("tokens")]
+public class TokensController(ISender _mediator) : ControllerBase
 {
     [HttpPost("generate")]
-    public async Task<IActionResult> GenerateToken(GenerateTokenRequest request)
+    public async Task<ActionResult<TokenResponse>> GenerateToken(GenerateTokenRequest request)
     {
         if (!DomainSubscriptionType.TryFromName(request.SubscriptionType.ToString(), out var plan))
         {
@@ -35,11 +36,9 @@ public class TokensController(ISender _mediator) : ApiController
             request.Permissions,
             request.Roles);
 
-        var result = await _mediator.Send(query);
-
-        return result.Match(
-            generateTokenResult => Ok(ToDto(generateTokenResult)),
-            Problem);
+        return await _mediator.Send(query)
+            .MapAsync(ToDto)
+            .ToOkActionResultAsync(this);
     }
 
     private static TokenResponse ToDto(GenerateTokenResult authResult)

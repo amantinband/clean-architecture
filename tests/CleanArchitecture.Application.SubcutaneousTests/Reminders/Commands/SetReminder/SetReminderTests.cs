@@ -17,8 +17,8 @@ public class SetReminderTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeTrue();
-        result.FirstError.Type.Should().Be(ErrorType.NotFound);
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType<NotFoundError>();
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public class SetReminderTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.AssertCreatedFrom(command);
 
         // Assert side effects took place
@@ -42,7 +42,7 @@ public class SetReminderTests(WebAppFactory webAppFactory)
                 subscriptionId: subscription.Id,
                 reminderId: result.Value.Id));
 
-        getReminderResult.IsError.Should().BeFalse();
+        getReminderResult.IsFailure.Should().BeFalse();
         getReminderResult.Value.Should().BeEquivalentTo(result.Value);
     }
 
@@ -62,19 +62,19 @@ public class SetReminderTests(WebAppFactory webAppFactory)
         var results = await Task.WhenAll(commands.Select(command => _mediator.Send(command)));
 
         // Assert all but one created successfully
-        var succeededCommands = results.Where(result => !result.IsError).ToList();
+        var succeededCommands = results.Where(result => !result.IsFailure).ToList();
         succeededCommands.Should().HaveCount(subscriptionType.GetMaxDailyReminders());
 
         // Assert one returned the domain error we expect
-        var failedCommands = results.Where(result => result.IsError).ToList();
+        var failedCommands = results.Where(result => result.IsFailure).ToList();
         failedCommands.Should().ContainSingle()
-            .Which.FirstError.Should().Be(UserErrors.CannotCreateMoreRemindersThanSubscriptionAllows);
+            .Which.Error.Should().Be(UserErrors.CannotCreateMoreRemindersThanSubscriptionAllows);
 
         // Assert side effects took place
         var listRemindersResult = await _mediator.ListRemindersAsync(
             ReminderQueryFactory.CreateListRemindersQuery(subscriptionId: subscription.Id));
 
-        listRemindersResult.IsError.Should().BeFalse();
+        listRemindersResult.IsFailure.Should().BeFalse();
         listRemindersResult.Value.Should().HaveCount(subscriptionType.GetMaxDailyReminders());
 
         foreach (var succeededCommand in succeededCommands)
@@ -84,7 +84,7 @@ public class SetReminderTests(WebAppFactory webAppFactory)
                     subscriptionId: subscription.Id,
                     reminderId: succeededCommand.Value.Id));
 
-            result.IsError.Should().BeFalse();
+            result.IsFailure.Should().BeFalse();
             result.Value.Should().BeEquivalentTo(succeededCommand.Value);
         }
     }

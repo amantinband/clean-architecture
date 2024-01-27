@@ -1,8 +1,6 @@
 using CleanArchitecture.Application.Authentication.Queries.Login;
 using CleanArchitecture.Domain.Users;
 
-using ErrorOr;
-
 using MediatR;
 
 namespace CleanArchitecture.Application.Tokens.Queries.Generate;
@@ -14,4 +12,4 @@ public record GenerateTokenQuery(
     string Email,
     SubscriptionType SubscriptionType,
     List<string> Permissions,
-    List<string> Roles) : IRequest<ErrorOr<GenerateTokenResult>>;
+    List<string> Roles) : IRequest<Result<GenerateTokenResult>>;

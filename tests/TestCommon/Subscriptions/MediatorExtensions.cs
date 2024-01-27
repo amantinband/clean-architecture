@@ -2,10 +2,7 @@ using CleanArchitecture.Application.Subscriptions.Commands.CreateSubscription;
 using CleanArchitecture.Application.Subscriptions.Common;
 using CleanArchitecture.Application.Subscriptions.Queries.GetSubscription;
 
-using ErrorOr;
-
 using FluentAssertions;
-
 using MediatR;
 
 namespace TestCommon.Subscriptions;
@@ -20,13 +17,13 @@ public static class MediatorExtensions
 
         var result = await mediator.Send(command);
 
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.AssertCreatedFrom(command);
 
         return result.Value;
     }
 
-    public static async Task<ErrorOr<SubscriptionResult>> GetSubscriptionAsync(
+    public static async Task<Result<SubscriptionResult>> GetSubscriptionAsync(
         this IMediator mediator,
         GetSubscriptionQuery? query = null)
     {

@@ -17,7 +17,7 @@ public class GetSubscriptionTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(query);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.Should().BeEquivalentTo(subscription);
     }
 
@@ -31,7 +31,7 @@ public class GetSubscriptionTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(query);
 
         // Assert
-        result.IsError.Should().BeTrue();
-        result.FirstError.Type.Should().Be(ErrorType.NotFound);
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType<NotFoundError>();
     }
 }

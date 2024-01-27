@@ -3,20 +3,18 @@ using CleanArchitecture.Application.Subscriptions.Common;
 using CleanArchitecture.Domain.Subscriptions;
 using CleanArchitecture.Domain.Users;
 
-using ErrorOr;
-
 using MediatR;
 
 namespace CleanArchitecture.Application.Subscriptions.Commands.CreateSubscription;
 
 public class CreateSubscriptionCommandHandler(
-    IUsersRepository _usersRepository) : IRequestHandler<CreateSubscriptionCommand, ErrorOr<SubscriptionResult>>
+    IUsersRepository _usersRepository) : IRequestHandler<CreateSubscriptionCommand, Result<SubscriptionResult>>
 {
-    public async Task<ErrorOr<SubscriptionResult>> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
+    public async Task<Result<SubscriptionResult>> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
     {
         if (await _usersRepository.GetByIdAsync(request.UserId, cancellationToken) is not null)
         {
-            return Error.Conflict(description: "User already has an active subscription");
+            return Error.Conflict("User already has an active subscription");
         }
 
         var subscription = new Subscription(request.SubscriptionType);

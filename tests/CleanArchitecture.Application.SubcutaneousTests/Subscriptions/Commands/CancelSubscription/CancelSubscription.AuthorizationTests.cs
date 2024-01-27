@@ -29,7 +29,7 @@ public class CancelSubscriptionAuthorizationTests
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
+        result.Error.Should().NotBeOfType<ForbiddenError>();
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class CancelSubscriptionAuthorizationTests
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().Be(ErrorType.Unauthorized);
+        result.Error.Should().BeOfType<ForbiddenError>();
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class CancelSubscriptionAuthorizationTests
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().NotBe(ErrorType.Unauthorized);
+        result.Error.Should().NotBeOfType<ForbiddenError>();
     }
 
     [Fact]
@@ -85,6 +85,6 @@ public class CancelSubscriptionAuthorizationTests
         var result = await _mediator.Send(command);
 
         // Assert
-        result.FirstError.Type.Should().Be(ErrorType.Unauthorized);
+        result.Error.Should().BeOfType<ForbiddenError>();
     }
 }

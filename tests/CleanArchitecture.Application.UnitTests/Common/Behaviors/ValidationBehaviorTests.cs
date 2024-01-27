@@ -11,13 +11,13 @@ namespace CleanArchitecture.Application.UnitTests.Common.Behaviors;
 
 public class ValidationBehaviorTests
 {
-    private readonly ValidationBehavior<SetReminderCommand, ErrorOr<Reminder>> _validationBehavior;
+    private readonly ValidationBehavior<SetReminderCommand, Result<Reminder>> _validationBehavior;
     private readonly IValidator<SetReminderCommand> _mockValidator;
-    private readonly RequestHandlerDelegate<ErrorOr<Reminder>> _mockNextBehavior;
+    private readonly RequestHandlerDelegate<Result<Reminder>> _mockNextBehavior;
 
     public ValidationBehaviorTests()
     {
-        _mockNextBehavior = Substitute.For<RequestHandlerDelegate<ErrorOr<Reminder>>>();
+        _mockNextBehavior = Substitute.For<RequestHandlerDelegate<Result<Reminder>>>();
         _mockValidator = Substitute.For<IValidator<SetReminderCommand>>();
 
         _validationBehavior = new(_mockValidator);
@@ -40,7 +40,7 @@ public class ValidationBehaviorTests
         var result = await _validationBehavior.Handle(setReminderCommand, _mockNextBehavior, default);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.Should().BeEquivalentTo(reminder);
     }
 
@@ -59,9 +59,12 @@ public class ValidationBehaviorTests
         var result = await _validationBehavior.Handle(setReminderCommand, _mockNextBehavior, default);
 
         // Assert
-        result.IsError.Should().BeTrue();
-        result.FirstError.Code.Should().Be("foo");
-        result.FirstError.Description.Should().Be("bad foo");
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType<ValidationError>();
+        var validationError = (ValidationError)result.Error;
+        validationError.Errors.Should().HaveCount(1);
+        validationError.Errors[0].FieldName.Should().Be("foo");
+        validationError.Errors[0].Message.Should().Be("bad foo");
     }
 
     [Fact]
@@ -69,7 +72,7 @@ public class ValidationBehaviorTests
     {
         // Arrange
         var setReminderCommand = ReminderCommandFactory.CreateSetReminderCommand();
-        var validationBehavior = new ValidationBehavior<SetReminderCommand, ErrorOr<Reminder>>();
+        var validationBehavior = new ValidationBehavior<SetReminderCommand, Result<Reminder>>();
 
         var reminder = ReminderFactory.CreateReminder();
         _mockNextBehavior.Invoke().Returns(reminder);
@@ -78,7 +81,7 @@ public class ValidationBehaviorTests
         var result = await validationBehavior.Handle(setReminderCommand, _mockNextBehavior, default);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.Should().Be(reminder);
     }
 }

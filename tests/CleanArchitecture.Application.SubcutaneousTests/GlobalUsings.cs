@@ -1,7 +1,5 @@
 global using CleanArchitecture.Application.SubcutaneousTests.Common;
 
-global using ErrorOr;
-
 global using FluentAssertions;
 
 global using MediatR;

@@ -12,6 +12,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="FunctionalDdd.Asp" />
   </ItemGroup>
 
   <ItemGroup>

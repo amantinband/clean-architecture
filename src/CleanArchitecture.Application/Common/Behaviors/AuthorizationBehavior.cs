@@ -3,8 +3,6 @@ using System.Reflection;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Security.Request;
 
-using ErrorOr;
-
 using MediatR;
 
 namespace CleanArchitecture.Application.Common.Behaviors;
@@ -13,7 +11,7 @@ public class AuthorizationBehavior<TRequest, TResponse>(
     IAuthorizationService _authorizationService)
         : IPipelineBehavior<TRequest, TResponse>
             where TRequest : IAuthorizeableRequest<TResponse>
-            where TResponse : IErrorOr
+            where TResponse : IResult
 {
     public async Task<TResponse> Handle(
         TRequest request,
@@ -47,8 +45,8 @@ public class AuthorizationBehavior<TRequest, TResponse>(
             requiredPermissions,
             requiredPolicies);
 
-        return authorizationResult.IsError
-            ? (dynamic)authorizationResult.Errors
+        return authorizationResult.IsFailure
+            ? (dynamic)authorizationResult.Error
             : await next();
     }
 }

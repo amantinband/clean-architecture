@@ -20,7 +20,7 @@ public class ListRemindersTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(query);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.Should().ContainSingle().Which.Should().BeEquivalentTo(reminder);
     }
 
@@ -34,7 +34,7 @@ public class ListRemindersTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(query);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.Should().BeEmpty();
     }
 
@@ -50,7 +50,7 @@ public class ListRemindersTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(query);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.Should().BeEmpty();
     }
 }

@@ -15,11 +15,11 @@ public class CreateSubscriptionTests(WebAppFactory webAppFactory)
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.AssertCreatedFrom(command);
 
         var getSubscriptionResult = await _mediator.GetSubscriptionAsync();
-        getSubscriptionResult.IsError.Should().BeFalse();
+        getSubscriptionResult.IsFailure.Should().BeFalse();
         getSubscriptionResult.Value.Should().BeEquivalentTo(result.Value);
     }
 
@@ -34,10 +34,10 @@ public class CreateSubscriptionTests(WebAppFactory webAppFactory)
         var secondResult = await _mediator.Send(command);
 
         // Assert
-        firstResult.IsError.Should().BeFalse();
+        firstResult.IsFailure.Should().BeFalse();
         firstResult.Value.AssertCreatedFrom(command);
 
-        secondResult.IsError.Should().BeTrue();
-        secondResult.FirstError.Type.Should().Be(ErrorType.Conflict);
+        secondResult.IsFailure.Should().BeTrue();
+        secondResult.Error.Should().BeOfType<ConflictError>();
     }
 }

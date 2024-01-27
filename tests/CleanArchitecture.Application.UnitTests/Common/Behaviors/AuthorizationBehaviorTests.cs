@@ -9,13 +9,13 @@ namespace CleanArchitecture.Application.UnitTests.Common.Behaviors;
 public class AuthorizationBehaviorTests
 {
     private readonly IAuthorizationService _mockAuthorizationService;
-    private readonly RequestHandlerDelegate<ErrorOr<Response>> _mockNextBehavior;
+    private readonly RequestHandlerDelegate<Result<Response>> _mockNextBehavior;
 
     public AuthorizationBehaviorTests()
     {
         _mockAuthorizationService = Substitute.For<IAuthorizationService>();
 
-        _mockNextBehavior = Substitute.For<RequestHandlerDelegate<ErrorOr<Response>>>();
+        _mockNextBehavior = Substitute.For<RequestHandlerDelegate<Result<Response>>>();
         _mockNextBehavior
             .Invoke()
             .Returns(Response.Instance);
@@ -27,13 +27,13 @@ public class AuthorizationBehaviorTests
         // Arrange
         var request = new RequestWithNoAuthorizationAttribute(Constants.User.Id);
 
-        var authorizationBehavior = new AuthorizationBehavior<RequestWithNoAuthorizationAttribute, ErrorOr<Response>>(_mockAuthorizationService);
+        var authorizationBehavior = new AuthorizationBehavior<RequestWithNoAuthorizationAttribute, Result<Response>>(_mockAuthorizationService);
 
         // Act
         var result = await authorizationBehavior.Handle(request, _mockNextBehavior, default);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.Should().Be(Response.Instance);
     }
 
@@ -49,15 +49,15 @@ public class AuthorizationBehaviorTests
                 Must.BeEmptyList<string>(),
                 Must.BeListWith(["Permission"]),
                 Must.BeEmptyList<string>())
-            .Returns(Result.Success);
+            .Returns(Result.Success());
 
-        var authorizationBehavior = new AuthorizationBehavior<RequestWithSingleAuthorizationAttribute, ErrorOr<Response>>(_mockAuthorizationService);
+        var authorizationBehavior = new AuthorizationBehavior<RequestWithSingleAuthorizationAttribute, Result<Response>>(_mockAuthorizationService);
 
         // Act
         var result = await authorizationBehavior.Handle(request, _mockNextBehavior, default);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.Should().Be(Response.Instance);
     }
 
@@ -67,7 +67,7 @@ public class AuthorizationBehaviorTests
         // Arrange
         var request = new RequestWithSingleAuthorizationAttribute(Constants.User.Id);
 
-        var error = Error.Unauthorized(code: "bad.user", description: "bad user");
+        var error = Error.Unauthorized(code: "bad.user", message: "bad user");
 
         _mockAuthorizationService
             .AuthorizeCurrentUser(
@@ -77,14 +77,14 @@ public class AuthorizationBehaviorTests
                 Must.BeEmptyList<string>())
             .Returns(error);
 
-        var authorizationBehavior = new AuthorizationBehavior<RequestWithSingleAuthorizationAttribute, ErrorOr<Response>>(_mockAuthorizationService);
+        var authorizationBehavior = new AuthorizationBehavior<RequestWithSingleAuthorizationAttribute, Result<Response>>(_mockAuthorizationService);
 
         // Act
         var result = await authorizationBehavior.Handle(request, _mockNextBehavior, default);
 
         // Assert
-        result.IsError.Should().BeTrue();
-        result.FirstError.Should().Be(error);
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(error);
     }
 
     [Fact]
@@ -99,15 +99,15 @@ public class AuthorizationBehaviorTests
                 Must.BeListWith(["Role1", "Role2", "Role3"]),
                 Must.BeListWith(["Permission1", "Permission2", "Permission3"]),
                 Must.BeListWith(["Policy1", "Policy2", "Policy3"]))
-            .Returns(Result.Success);
+            .Returns(Result.Success());
 
-        var authorizationBehavior = new AuthorizationBehavior<RequestWithTonsOfAuthorizationAttribute, ErrorOr<Response>>(_mockAuthorizationService);
+        var authorizationBehavior = new AuthorizationBehavior<RequestWithTonsOfAuthorizationAttribute, Result<Response>>(_mockAuthorizationService);
 
         // Act
         var result = await authorizationBehavior.Handle(request, _mockNextBehavior, default);
 
         // Assert
-        result.IsError.Should().BeFalse();
+        result.IsFailure.Should().BeFalse();
         result.Value.Should().Be(Response.Instance);
     }
 
@@ -117,7 +117,7 @@ public class AuthorizationBehaviorTests
         // Arrange
         var request = new RequestWithTonsOfAuthorizationAttribute(Constants.User.Id);
 
-        var error = Error.Unauthorized(code: "bad.user", description: "bad user");
+        var error = Error.Unauthorized(code: "bad.user", message: "bad user");
 
         _mockAuthorizationService
             .AuthorizeCurrentUser(
@@ -127,14 +127,14 @@ public class AuthorizationBehaviorTests
                 Must.BeListWith(["Policy1", "Policy2", "Policy3"]))
             .Returns(error);
 
-        var authorizationBehavior = new AuthorizationBehavior<RequestWithTonsOfAuthorizationAttribute, ErrorOr<Response>>(_mockAuthorizationService);
+        var authorizationBehavior = new AuthorizationBehavior<RequestWithTonsOfAuthorizationAttribute, Result<Response>>(_mockAuthorizationService);
 
         // Act
         var result = await authorizationBehavior.Handle(request, _mockNextBehavior, default);
 
         // Assert
-        result.IsError.Should().BeTrue();
-        result.FirstError.Should().Be(error);
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(error);
     }
 }
 
@@ -143,13 +143,13 @@ public record Response
     public static readonly Response Instance = new();
 }
 
-public record RequestWithNoAuthorizationAttribute(Guid UserId) : IAuthorizeableRequest<ErrorOr<Response>>;
+public record RequestWithNoAuthorizationAttribute(Guid UserId) : IAuthorizeableRequest<Result<Response>>;
 
 [Authorize(Permissions = "Permission")]
-public record RequestWithSingleAuthorizationAttribute(Guid UserId) : IAuthorizeableRequest<ErrorOr<Response>>;
+public record RequestWithSingleAuthorizationAttribute(Guid UserId) : IAuthorizeableRequest<Result<Response>>;
 
 [Authorize(Permissions = "Permission1,Permission2")]
 [Authorize(Roles = "Role1,Role2")]
 [Authorize(Policies = "Policy1,Policy2")]
 [Authorize(Permissions = "Permission3", Roles = "Role3", Policies = "Policy3")]
-public record RequestWithTonsOfAuthorizationAttribute(Guid UserId) : IAuthorizeableRequest<ErrorOr<Response>>;
+public record RequestWithTonsOfAuthorizationAttribute(Guid UserId) : IAuthorizeableRequest<Result<Response>>;

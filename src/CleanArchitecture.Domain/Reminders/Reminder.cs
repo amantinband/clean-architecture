@@ -1,7 +1,5 @@
 using CleanArchitecture.Domain.Common;
 
-using ErrorOr;
-
 namespace CleanArchitecture.Domain.Reminders;
 
 public class Reminder : Entity
@@ -32,16 +30,16 @@ public class Reminder : Entity
         DateTime = dateTime;
     }
 
-    public ErrorOr<Success> Dismiss()
+    public Result<Unit> Dismiss()
     {
         if (IsDismissed)
         {
-            return Error.Conflict(description: "Reminder already dismissed");
+            return Error.Conflict("Reminder already dismissed");
         }
 
         IsDismissed = true;
 
-        return Result.Success;
+        return Result.Success();
     }
 
     private Reminder()

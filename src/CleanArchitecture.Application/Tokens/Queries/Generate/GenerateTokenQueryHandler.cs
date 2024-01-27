@@ -1,17 +1,15 @@
 using CleanArchitecture.Application.Authentication.Queries.Login;
 using CleanArchitecture.Application.Common.Interfaces;
 
-using ErrorOr;
-
 using MediatR;
 
 namespace CleanArchitecture.Application.Tokens.Queries.Generate;
 
 public class GenerateTokenQueryHandler(
     IJwtTokenGenerator _jwtTokenGenerator)
-        : IRequestHandler<GenerateTokenQuery, ErrorOr<GenerateTokenResult>>
+        : IRequestHandler<GenerateTokenQuery, Result<GenerateTokenResult>>
 {
-    public Task<ErrorOr<GenerateTokenResult>> Handle(GenerateTokenQuery query, CancellationToken cancellationToken)
+    public Task<Result<GenerateTokenResult>> Handle(GenerateTokenQuery query, CancellationToken cancellationToken)
     {
         var id = query.Id ?? Guid.NewGuid();
 
@@ -32,6 +30,6 @@ public class GenerateTokenQueryHandler(
             query.SubscriptionType,
             token);
 
-        return Task.FromResult(ErrorOrFactory.From(authResult));
+        return Task.FromResult(Result.Success(authResult));
     }
 }

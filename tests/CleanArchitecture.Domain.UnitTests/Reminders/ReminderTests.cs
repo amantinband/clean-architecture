@@ -22,7 +22,7 @@ public class ReminderTests
         var dismissReminderResult = reminder.Dismiss();
 
         // Assert
-        dismissReminderResult.IsError.Should().BeFalse();
+        dismissReminderResult.IsFailure.Should().BeFalse();
         reminder.IsDismissed.Should().BeTrue();
     }
 
@@ -37,9 +37,9 @@ public class ReminderTests
         var secondDismissReminderResult = reminder.Dismiss();
 
         // Assert
-        firstDismissReminderResult.IsError.Should().BeFalse();
+        firstDismissReminderResult.IsFailure.Should().BeFalse();
 
-        secondDismissReminderResult.IsError.Should().BeTrue();
-        secondDismissReminderResult.FirstError.Type.Should().Be(ErrorType.Conflict);
+        secondDismissReminderResult.IsFailure.Should().BeTrue();
+        secondDismissReminderResult.Error.Should().BeOfType<ConflictError>();
     }
 }

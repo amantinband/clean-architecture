@@ -25,8 +25,8 @@ public class CreateSubscriptionValidationTests
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeTrue();
-        result.FirstError.Type.Should().Be(ErrorType.Validation);
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType<ValidationError>();
     }
 
     [Theory]
@@ -42,8 +42,8 @@ public class CreateSubscriptionValidationTests
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeTrue();
-        result.FirstError.Type.Should().Be(ErrorType.Validation);
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType<ValidationError>();
     }
 
     [Theory]
@@ -58,7 +58,7 @@ public class CreateSubscriptionValidationTests
         var result = await _mediator.Send(command);
 
         // Assert
-        result.IsError.Should().BeTrue();
-        result.FirstError.Type.Should().Be(ErrorType.Validation);
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().BeOfType<ValidationError>();
     }
 }

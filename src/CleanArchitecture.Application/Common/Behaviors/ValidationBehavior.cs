@@ -1,5 +1,3 @@
-using ErrorOr;
-
 using FluentValidation;
 
 using MediatR;
@@ -9,7 +7,7 @@ namespace CleanArchitecture.Application.Common.Behaviors;
 public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)
     : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
-        where TResponse : IErrorOr
+        where TResponse : IResult
 {
     private readonly IValidator<TRequest>? _validator = validator;
 
@@ -31,10 +29,9 @@ public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? valid
         }
 
         var errors = validationResult.Errors
-            .ConvertAll(error => Error.Validation(
-                code: error.PropertyName,
-                description: error.ErrorMessage));
+            .Select(x => new ValidationError.ModelError(x.ErrorMessage, x.PropertyName))
+            .ToList();
 
-        return (dynamic)errors;
+        return (dynamic)Error.Validation(errors);
     }
 }
