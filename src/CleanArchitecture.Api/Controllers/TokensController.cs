@@ -18,39 +18,27 @@ namespace CleanArchitecture.Api.Controllers;
 public class TokensController(ISender _mediator) : ControllerBase
 {
     [HttpPost("generate")]
-    public async Task<ActionResult<TokenResponse>> GenerateToken(GenerateTokenRequest request)
-    {
-        if (!DomainSubscriptionType.TryFromName(request.SubscriptionType.ToString(), out var plan))
-        {
-            return Problem(
-                statusCode: StatusCodes.Status400BadRequest,
-                detail: "Invalid subscription type");
-        }
-
-        var query = new GenerateTokenQuery(
+    public async Task<ActionResult<TokenResponse>> GenerateToken(GenerateTokenRequest request) =>
+        await GenerateTokenQuery.TryCreate(
             request.Id,
             request.FirstName,
             request.LastName,
             request.Email,
-            plan,
+            request.SubscriptionType.ToString(),
             request.Permissions,
-            request.Roles);
+            request.Roles)
+        .BindAsync(query => _mediator.Send(query))
+        .MapAsync(ToDto)
+        .ToOkActionResultAsync(this);
 
-        return await _mediator.Send(query)
-            .MapAsync(ToDto)
-            .ToOkActionResultAsync(this);
-    }
-
-    private static TokenResponse ToDto(GenerateTokenResult authResult)
-    {
-        return new TokenResponse(
+    private static TokenResponse ToDto(GenerateTokenResult authResult) =>
+        new TokenResponse(
             authResult.Id,
             authResult.FirstName,
             authResult.LastName,
             authResult.Email,
             ToDto(authResult.SubscriptionType),
             authResult.Token);
-    }
 
     private static SubscriptionType ToDto(DomainSubscriptionType subscriptionType) =>
         subscriptionType.Name switch

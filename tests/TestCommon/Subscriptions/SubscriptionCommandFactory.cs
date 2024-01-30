@@ -15,12 +15,12 @@ public static class SubscriptionCommandFactory
         string email = Constants.User.Email,
         SubscriptionType? subscriptionType = null)
     {
-        return new CreateSubscriptionCommand(
+        return CreateSubscriptionCommand.TryCreate(
             userId ?? Constants.User.Id,
             firstName,
             lastName,
             email,
-            subscriptionType ?? Constants.Subscription.Type);
+            (subscriptionType ?? Constants.Subscription.Type).ToString()).Value;
     }
 
     public static CancelSubscriptionCommand CreateCancelSubscriptionCommand(

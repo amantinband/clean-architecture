@@ -18,60 +18,45 @@ namespace CleanArchitecture.Api.Controllers;
 public class RemindersController(ISender _mediator) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<FunctionalDdd.Unit>> CreateReminder(Guid userId, Guid subscriptionId, CreateReminderRequest request)
-    {
-        var command = new SetReminderCommand(userId, subscriptionId, request.Text, request.DateTime.UtcDateTime);
-
-        return await _mediator.Send(command)
+    public async Task<ActionResult<FunctionalDdd.Unit>> CreateReminder(Guid userId, Guid subscriptionId, CreateReminderRequest request) =>
+        await new SetReminderCommand(userId, subscriptionId, request.Text, request.DateTime.UtcDateTime).ToResult()
+            .BindAsync(command => _mediator.Send(command))
             .FinallyAsync(
              reminder => CreatedAtAction(
                 actionName: nameof(GetReminder),
                 routeValues: new { UserId = userId, SubscriptionId = subscriptionId, ReminderId = reminder.Id },
                 value: ToDto(reminder)),
              err => err.ToErrorActionResult<FunctionalDdd.Unit>(this));
-    }
 
     [HttpPost("{reminderId:guid}/dismiss")]
-    public async Task<ActionResult<FunctionalDdd.Unit>> DismissReminder(Guid userId, Guid subscriptionId, Guid reminderId)
-    {
-        var command = new DismissReminderCommand(userId, subscriptionId, reminderId);
-
-        return await _mediator.Send(command)
+    public async Task<ActionResult<FunctionalDdd.Unit>> DismissReminder(Guid userId, Guid subscriptionId, Guid reminderId) =>
+        await new DismissReminderCommand(userId, subscriptionId, reminderId).ToResult()
+            .BindAsync(command => _mediator.Send(command))
             .FinallyAsync(
-            _ => NoContent(),
-            err => err.ToErrorActionResult<FunctionalDdd.Unit>(this));
-    }
+                _ => NoContent(),
+                err => err.ToErrorActionResult<FunctionalDdd.Unit>(this));
 
     [HttpDelete("{reminderId:guid}")]
-    public async Task<ActionResult<FunctionalDdd.Unit>> DeleteReminder(Guid userId, Guid subscriptionId, Guid reminderId)
-    {
-        var command = new DeleteReminderCommand(userId, subscriptionId, reminderId);
-
-        return await _mediator.Send(command)
+    public async Task<ActionResult<FunctionalDdd.Unit>> DeleteReminder(Guid userId, Guid subscriptionId, Guid reminderId) =>
+        await new DeleteReminderCommand(userId, subscriptionId, reminderId).ToResult()
+            .BindAsync(command => _mediator.Send(command))
             .FinallyAsync(
-            _ => NoContent(),
-            err => err.ToErrorActionResult<FunctionalDdd.Unit>(this));
-    }
+                _ => NoContent(),
+                err => err.ToErrorActionResult<FunctionalDdd.Unit>(this));
 
     [HttpGet("{reminderId:guid}")]
-    public async Task<ActionResult<ReminderResponse>> GetReminder(Guid userId, Guid subscriptionId, Guid reminderId)
-    {
-        var query = new GetReminderQuery(userId, subscriptionId, reminderId);
-
-        return await _mediator.Send(query)
+    public async Task<ActionResult<ReminderResponse>> GetReminder(Guid userId, Guid subscriptionId, Guid reminderId) =>
+        await new GetReminderQuery(userId, subscriptionId, reminderId).ToResult()
+            .BindAsync(query => _mediator.Send(query))
             .MapAsync(ToDto)
             .ToOkActionResultAsync(this);
-    }
 
     [HttpGet]
-    public async Task<ActionResult<List<ReminderResponse>>> ListReminders(Guid userId, Guid subscriptionId)
-    {
-        var query = new ListRemindersQuery(userId, subscriptionId);
-
-        return await _mediator.Send(query)
+    public async Task<ActionResult<List<ReminderResponse>>> ListReminders(Guid userId, Guid subscriptionId) =>
+        await new ListRemindersQuery(userId, subscriptionId).ToResult()
+            .BindAsync(query => _mediator.Send(query))
             .MapAsync(reminders => reminders.ConvertAll(ToDto))
             .ToOkActionResultAsync(this);
-    }
 
     private ReminderResponse ToDto(Reminder reminder) =>
         new(reminder.Id, reminder.Text, reminder.DateTime, reminder.IsDismissed);

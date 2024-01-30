@@ -1,7 +1,5 @@
 using CleanArchitecture.Domain.Users;
 
-using Throw;
-
 namespace CleanArchitecture.Application.Subscriptions.Common;
 
 public record SubscriptionResult(
@@ -11,7 +9,7 @@ public record SubscriptionResult(
 {
     public static SubscriptionResult FromUser(User user)
     {
-        user.Subscription.ThrowIfNull();
+        ArgumentNullException.ThrowIfNull(user.Subscription);
 
         return new SubscriptionResult(
             user.Subscription.Id,
