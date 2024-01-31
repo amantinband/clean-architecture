@@ -1,6 +1,7 @@
 using CleanArchitecture.Application.Reminders.Commands.DeleteReminder;
 using CleanArchitecture.Application.Reminders.Commands.DismissReminder;
 using CleanArchitecture.Application.Reminders.Commands.SetReminder;
+using CleanArchitecture.Infrastructure.Services;
 
 using TestCommon.TestConstants;
 
@@ -8,17 +9,18 @@ namespace TestCommon.Reminders;
 
 public static class ReminderCommandFactory
 {
-    public static SetReminderCommand CreateSetReminderCommand(
+    public static Result<SetReminderCommand> CreateSetReminderCommand(
         Guid? userId = null,
         Guid? subscriptionId = null,
         string text = Constants.Reminder.Text,
         DateTime? dateTime = null)
     {
-        return new SetReminderCommand(
+        return SetReminderCommand.TryCreate(
             userId ?? Constants.User.Id,
             subscriptionId ?? Constants.Subscription.Id,
             text,
-            dateTime ?? Constants.Reminder.DateTime);
+            dateTime ?? Constants.Reminder.DateTime,
+            new SystemDateTimeProvider());
     }
 
     public static DismissReminderCommand CreateDismissReminderCommand(

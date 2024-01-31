@@ -25,7 +25,7 @@ public class SetReminderAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = ReminderCommandFactory.CreateSetReminderCommand();
+        var command = ReminderCommandFactory.CreateSetReminderCommand().Value;
 
         // Act
         var result = await _mediator.Send(command);
@@ -44,7 +44,7 @@ public class SetReminderAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = ReminderCommandFactory.CreateSetReminderCommand();
+        var command = ReminderCommandFactory.CreateSetReminderCommand().Value;
 
         // Act
         var result = await _mediator.Send(command);
@@ -63,7 +63,7 @@ public class SetReminderAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = ReminderCommandFactory.CreateSetReminderCommand();
+        var command = ReminderCommandFactory.CreateSetReminderCommand().Value;
 
         // Act
         var result = await _mediator.Send(command);
@@ -82,7 +82,7 @@ public class SetReminderAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = ReminderCommandFactory.CreateSetReminderCommand();
+        var command = ReminderCommandFactory.CreateSetReminderCommand().Value;
 
         // Act
         var result = await _mediator.Send(command);

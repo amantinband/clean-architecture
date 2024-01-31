@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 using DomainSubscriptionType = CleanArchitecture.Domain.Users.SubscriptionType;
 using SubscriptionType = CleanArchitecture.Contracts.Common.SubscriptionType;
+using Unit = FunctionalDdd.Unit;
 
 namespace CleanArchitecture.Api.Controllers;
 
@@ -41,7 +42,7 @@ public class SubscriptionsController(IMediator _mediator) : ControllerBase
     }
 
     [HttpDelete("{subscriptionId:guid}")]
-    public async Task<ActionResult<FunctionalDdd.Unit>> DeleteSubscription(Guid userId, Guid subscriptionId) =>
+    public async Task<ActionResult<Unit>> DeleteSubscription(Guid userId, Guid subscriptionId) =>
         await new CancelSubscriptionCommand(userId, subscriptionId).ToResult()
             .BindAsync(command => _mediator.Send(command))
             .FinallyAsync(

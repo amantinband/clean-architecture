@@ -15,7 +15,7 @@ public static class MediatorExtensions
         this IMediator mediator,
         SetReminderCommand? command = null)
     {
-        command ??= ReminderCommandFactory.CreateSetReminderCommand();
+        command ??= ReminderCommandFactory.CreateSetReminderCommand().Value;
         var result = await mediator.Send(command);
 
         result.IsFailure.Should().BeFalse();

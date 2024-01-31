@@ -15,14 +15,11 @@ public class CreateSubscriptionValidationTests
     [Theory]
     [InlineData(1)]
     [InlineData(10001)]
-    public async Task CreateSubscription_WhenInvalidFirstName_ShouldReturnValidationError(int nameLength)
+    public void CreateSubscription_WhenInvalidFirstName_ShouldReturnValidationError(int nameLength)
     {
-        // Arrange
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand(
+        // Arrange & act
+        var result = SubscriptionCommandFactory.CreateCreateSubscriptionCommand(
             firstName: new('a', nameLength));
-
-        // Act
-        var result = await _mediator.Send(command);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -32,14 +29,11 @@ public class CreateSubscriptionValidationTests
     [Theory]
     [InlineData(1)]
     [InlineData(10001)]
-    public async Task CreateSubscription_WhenInvalidLastName_ShouldReturnValidationError(int nameLength)
+    public void CreateSubscription_WhenInvalidLastName_ShouldReturnValidationError(int nameLength)
     {
-        // Arrange
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand(
+        // Arrange & act
+        var result = SubscriptionCommandFactory.CreateCreateSubscriptionCommand(
             lastName: new('a', nameLength));
-
-        // Act
-        var result = await _mediator.Send(command);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -49,13 +43,10 @@ public class CreateSubscriptionValidationTests
     [Theory]
     [InlineData("foo.com")]
     [InlineData("foo")]
-    public async Task CreateSubscription_WhenInvalidEmailAddress_ShouldReturnValidationError(string email)
+    public void CreateSubscription_WhenInvalidEmailAddress_ShouldReturnValidationError(string email)
     {
-        // Arrange
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand(email: email);
-
-        // Act
-        var result = await _mediator.Send(command);
+        // Arrange & act
+        var result = SubscriptionCommandFactory.CreateCreateSubscriptionCommand(email: email);
 
         // Assert
         result.IsFailure.Should().BeTrue();

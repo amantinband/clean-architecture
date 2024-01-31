@@ -25,7 +25,7 @@ public class CreateSubscriptionAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand();
+        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand().Value;
 
         // Act
         var result = await _mediator.Send(command);
@@ -44,7 +44,7 @@ public class CreateSubscriptionAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand();
+        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand().Value;
 
         // Act
         var result = await _mediator.Send(command);
@@ -63,7 +63,7 @@ public class CreateSubscriptionAuthorizationTests
 
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand();
+        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand().Value;
 
         // Act
         var result = await _mediator.Send(command);
@@ -81,7 +81,7 @@ public class CreateSubscriptionAuthorizationTests
             permissions: []);
         _currentUserProvider.Returns(currentUser);
 
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand();
+        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand().Value;
 
         // Act
         var result = await _mediator.Send(command);

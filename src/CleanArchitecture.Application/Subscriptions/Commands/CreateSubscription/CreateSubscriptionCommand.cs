@@ -25,7 +25,10 @@ public class CreateSubscriptionCommand : IAuthorizeableRequest<Result<Subscripti
             return Result.Failure<CreateSubscriptionCommand>(Error.Validation("Invalid plan type", nameof(subscriptionType)));
         }
 
-        return Result.Success(new CreateSubscriptionCommand(userId, firstName, lastName, email, subscription_type));
+        var command = new CreateSubscriptionCommand(userId, firstName, lastName, email, subscription_type);
+        var validator = new CreateSubscriptionCommandValidator();
+
+        return validator.ValidateToResult(command);
     }
 
     public Guid UserId { get; }

@@ -9,7 +9,7 @@ public class CreateSubscriptionTests(WebAppFactory webAppFactory)
     public async Task CreateSubscription_WhenNoSubscription_ShouldCreateSubscription()
     {
         // Arrange
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand();
+        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand().Value;
 
         // Act
         var result = await _mediator.Send(command);
@@ -27,7 +27,7 @@ public class CreateSubscriptionTests(WebAppFactory webAppFactory)
     public async Task CreateSubscription_WhenSubscriptionAlreadyExists_ShouldReturnConflict()
     {
         // Arrange
-        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand();
+        var command = SubscriptionCommandFactory.CreateCreateSubscriptionCommand().Value;
 
         // Act
         var firstResult = await _mediator.Send(command);

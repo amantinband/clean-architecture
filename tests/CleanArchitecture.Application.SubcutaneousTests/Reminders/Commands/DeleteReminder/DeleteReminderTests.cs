@@ -46,7 +46,7 @@ public class DeleteReminderTests(WebAppFactory webAppFactory)
         // Arrange
         var subscription = await _mediator.CreateSubscriptionAsync();
         var reminder = await _mediator.SetReminderAsync(
-            ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
+            ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id).Value);
 
         var command = ReminderCommandFactory.CreateDeleteReminderCommand(
             subscriptionId: subscription.Id,
@@ -75,7 +75,7 @@ public class DeleteReminderTests(WebAppFactory webAppFactory)
         // Arrange
         var subscription = await _mediator.CreateSubscriptionAsync();
         var reminder = await _mediator.SetReminderAsync(
-            ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
+            ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id).Value);
 
         var command = ReminderCommandFactory.CreateDeleteReminderCommand(
             subscriptionId: subscription.Id,

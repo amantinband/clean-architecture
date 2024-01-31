@@ -46,8 +46,8 @@ public class CancelSubscriptionTests(WebAppFactory webAppFactory)
     {
         // Arrange
         var subscription = await _mediator.CreateSubscriptionAsync();
-        await _mediator.SetReminderAsync(ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
-        await _mediator.SetReminderAsync(ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
+        await _mediator.SetReminderAsync(ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id).Value);
+        await _mediator.SetReminderAsync(ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id).Value);
 
         var command = SubscriptionCommandFactory.CreateCancelSubscriptionCommand(subscriptionId: subscription.Id);
 

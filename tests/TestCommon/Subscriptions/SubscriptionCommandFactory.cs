@@ -8,7 +8,7 @@ namespace TestCommon.Subscriptions;
 
 public static class SubscriptionCommandFactory
 {
-    public static CreateSubscriptionCommand CreateCreateSubscriptionCommand(
+    public static Result<CreateSubscriptionCommand> CreateCreateSubscriptionCommand(
         Guid? userId = null,
         string firstName = Constants.User.FirstName,
         string lastName = Constants.User.LastName,
@@ -20,7 +20,7 @@ public static class SubscriptionCommandFactory
             firstName,
             lastName,
             email,
-            (subscriptionType ?? Constants.Subscription.Type).ToString()).Value;
+            (subscriptionType ?? Constants.Subscription.Type).ToString());
     }
 
     public static CancelSubscriptionCommand CreateCancelSubscriptionCommand(

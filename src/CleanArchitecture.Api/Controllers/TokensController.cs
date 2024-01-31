@@ -32,7 +32,7 @@ public class TokensController(ISender _mediator) : ControllerBase
         .ToOkActionResultAsync(this);
 
     private static TokenResponse ToDto(GenerateTokenResult authResult) =>
-        new TokenResponse(
+        new(
             authResult.Id,
             authResult.FirstName,
             authResult.LastName,

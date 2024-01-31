@@ -25,7 +25,7 @@ public class DismissReminderTests(WebAppFactory webAppFactory)
         // Arrange
         var subscription = await _mediator.CreateSubscriptionAsync();
         var reminder = await _mediator.SetReminderAsync(
-            ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
+            ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id).Value);
 
         var command = ReminderCommandFactory.CreateDismissReminderCommand(
             subscriptionId: subscription.Id,
@@ -54,7 +54,7 @@ public class DismissReminderTests(WebAppFactory webAppFactory)
         // Arrange
         var subscription = await _mediator.CreateSubscriptionAsync();
         var reminder = await _mediator.SetReminderAsync(
-            ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id));
+            ReminderCommandFactory.CreateSetReminderCommand(subscriptionId: subscription.Id).Value);
 
         var command = ReminderCommandFactory.CreateDismissReminderCommand(
             subscriptionId: subscription.Id,
