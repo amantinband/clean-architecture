@@ -247,6 +247,8 @@ Authorization: Bearer {{token}}
 
 ![Folder structure](assets/Clean%20Architecture%20Template.png)
 
+You can use the [this](https://www.figma.com/community/file/1334042945934670571/clean-architecture-project-file-system) figma community file to explore or create your own folder structure respresentation.
+
 # Authorization 🔐
 
 This project puts an emphasis on complex authorization scenarios and supports *role-based*, *permission-based* and *policy-based* authorization.
@@ -483,7 +485,7 @@ private async void SendEmailNotifications(object? state)
 
 To configure the service to send emails, make sure to update the email settings under the `appsettings.json`/`appsettings.Development.json` file:
 
-You can use your own SMTP server or use a service like [Brevo](https://brevo.co/).
+You can use your own SMTP server or use a service like [Brevo](https://brevo.com/).
 
 ### Configure Email Settings Manually
 
