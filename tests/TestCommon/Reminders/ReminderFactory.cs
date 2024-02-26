@@ -1,4 +1,5 @@
 using CleanArchitecture.Domain.Reminders;
+using CleanArchitecture.Domain.Users;
 
 using TestCommon.TestConstants;
 
@@ -7,17 +8,17 @@ namespace TestCommon.Reminders;
 public static class ReminderFactory
 {
     public static Reminder CreateReminder(
-        Guid? userId = null,
+        UserId? userId = null,
         Guid? subscriptionId = null,
         string text = Constants.Reminder.Text,
         DateTime? dateTime = null,
-        Guid? id = null)
+        ReminderId? id = null)
     {
         return new Reminder(
-            userId ?? Constants.User.Id,
+            userId ?? UserId.TryCreate(Constants.User.Id).Value,
             subscriptionId ?? Constants.Subscription.Id,
             text ?? Constants.Reminder.Text,
             dateTime ?? Constants.Reminder.DateTime,
-            id ?? Constants.Reminder.Id);
+            id ?? ReminderId.TryCreate(Constants.Reminder.Id).Value);
     }
 }

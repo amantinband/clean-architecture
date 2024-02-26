@@ -8,14 +8,14 @@ namespace TestCommon.Users;
 public static class UserFactory
 {
     public static User CreateUser(
-        Guid? id = null,
+        UserId? id = null,
         string firstName = Constants.User.FirstName,
         string lastName = Constants.User.LastName,
         string emailName = Constants.User.Email,
         Subscription? subscription = null)
     {
         return new User(
-            id ?? Constants.User.Id,
+            id ?? UserId.TryCreate(Constants.User.Id).Value,
             firstName,
             lastName,
             emailName,

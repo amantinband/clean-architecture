@@ -1,10 +1,10 @@
-using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Users;
 
 namespace CleanArchitecture.Domain.Reminders;
 
-public class Reminder : Entity
+public class Reminder : Entity<ReminderId>
 {
-    public Guid UserId { get; }
+    public UserId UserId { get; }
 
     public Guid SubscriptionId { get; }
 
@@ -17,17 +17,23 @@ public class Reminder : Entity
     public bool IsDismissed { get; private set; }
 
     public Reminder(
-        Guid userId,
+        UserId userId,
         Guid subscriptionId,
         string text,
         DateTime dateTime,
-        Guid? id = null)
-            : base(id ?? Guid.NewGuid())
+        ReminderId? id = null)
+            : base(id ?? ReminderId.NewUnique())
     {
         UserId = userId;
         SubscriptionId = subscriptionId;
         Text = text;
         DateTime = dateTime;
+    }
+
+    public static Result<Reminder> TryCreate(Guid userId, Guid subscriptionId, string text, DateTime dateTime, ReminderId? id = null)
+    {
+        return UserId.TryCreate(userId)
+            .Map(userId => new Reminder(userId, subscriptionId, text, dateTime, id));
     }
 
     public Result<Unit> Dismiss()
@@ -40,9 +46,5 @@ public class Reminder : Entity
         IsDismissed = true;
 
         return Result.Success();
-    }
-
-    private Reminder()
-    {
     }
 }

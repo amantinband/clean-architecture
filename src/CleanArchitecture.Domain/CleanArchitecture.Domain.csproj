@@ -8,7 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.SmartEnum" />
-    <PackageReference Include="FunctionalDdd.RailwayOrientedProgramming" />
+    <PackageReference Include="FunctionalDdd.CommonValueObjectGenerator" />
+    <PackageReference Include="FunctionalDDD.DomainDrivenDesign" />
+    <PackageReference Include="FunctionalDDD.FluentValidation" />
+    <PackageReference Include="FunctionalDDD.CommonValueObjects" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="throw" />
   </ItemGroup>

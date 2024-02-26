@@ -5,11 +5,12 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Reminders.Events;
 
-public class ReminderDeletedEventHandler(IRemindersRepository _remindersRepository) : INotificationHandler<ReminderDeletedEvent>
+public class ReminderDeletedEventHandler(IRemindersRepository _remindersRepository) : INotificationHandler<DomainEventNotification<ReminderDeletedEvent>>
 {
-    public async Task Handle(ReminderDeletedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(DomainEventNotification<ReminderDeletedEvent> notification, CancellationToken cancellationToken)
     {
-        var reminder = await _remindersRepository.GetByIdAsync(notification.ReminderId, cancellationToken)
+        var @event = notification.DomainEvent;
+        var reminder = await _remindersRepository.GetByIdAsync(@event.ReminderId, cancellationToken)
             ?? throw new InvalidOperationException();
 
         await _remindersRepository.RemoveAsync(reminder, cancellationToken);

@@ -1,9 +1,8 @@
-using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Users;
 
 namespace CleanArchitecture.Domain.Subscriptions;
 
-public class Subscription : Entity
+public class Subscription : Entity<Guid>
 {
     public SubscriptionType SubscriptionType { get; } = null!;
 
@@ -16,6 +15,7 @@ public class Subscription : Entity
     public static readonly Subscription Canceled = new(new SubscriptionType("Canceled", -1), Guid.Empty);
 
     private Subscription()
+        : base(Guid.Empty)
     {
     }
 }

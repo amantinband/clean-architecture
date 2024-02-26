@@ -14,7 +14,7 @@ public class UsersRepository(AppDbContext _dbContext) : IUsersRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken)
     {
         return await _dbContext.Users.FindAsync(userId, cancellationToken);
     }

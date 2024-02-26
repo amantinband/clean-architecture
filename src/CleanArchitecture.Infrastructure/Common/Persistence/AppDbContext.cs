@@ -1,7 +1,9 @@
-using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Application;
 using CleanArchitecture.Domain.Reminders;
 using CleanArchitecture.Domain.Users;
 using CleanArchitecture.Infrastructure.Common.Middleware;
+
+using FunctionalDdd;
 
 using MediatR;
 
@@ -18,9 +20,14 @@ public class AppDbContext(DbContextOptions options, IHttpContextAccessor _httpCo
 
     public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var domainEvents = ChangeTracker.Entries<Entity>()
-           .SelectMany(entry => entry.Entity.PopDomainEvents())
+        var domainEvents = ChangeTracker.Entries<IAggregate>()
+           .SelectMany(entry => entry.Entity.UncommittedEvents())
            .ToList();
+
+        foreach (var entry in ChangeTracker.Entries<IAggregate>())
+        {
+            entry.Entity.AcceptChanges();
+        }
 
         if (IsUserWaitingOnline())
         {
@@ -36,6 +43,27 @@ public class AppDbContext(DbContextOptions options, IHttpContextAccessor _httpCo
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
+        modelBuilder
+        .Entity<Reminder>()
+        .Property(e => e.Id)
+        .HasConversion(
+            v => v.ToString(),
+            v => ReminderId.TryCreate(v).Value);
+
+        modelBuilder
+        .Entity<Reminder>()
+        .Property(e => e.UserId)
+        .HasConversion(
+            v => v.ToString(),
+            v => UserId.TryCreate(v).Value);
+
+        modelBuilder
+        .Entity<User>()
+        .Property(e => e.Id)
+        .HasConversion(
+            v => v.ToString(),
+            v => UserId.TryCreate(v).Value);
+
         base.OnModelCreating(modelBuilder);
     }
 
@@ -45,7 +73,8 @@ public class AppDbContext(DbContextOptions options, IHttpContextAccessor _httpCo
     {
         foreach (var domainEvent in domainEvents)
         {
-            await _publisher.Publish(domainEvent);
+            var @event = GetNotificationEvent(domainEvent);
+            await _publisher.Publish(@event);
         }
     }
 
@@ -58,5 +87,16 @@ public class AppDbContext(DbContextOptions options, IHttpContextAccessor _httpCo
 
         domainEvents.ForEach(domainEventsQueue.Enqueue);
         _httpContextAccessor.HttpContext.Items[EventualConsistencyMiddleware.DomainEventsKey] = domainEventsQueue;
+    }
+
+    private INotification GetNotificationEvent(IDomainEvent @event)
+    {
+        var eventType = @event.GetType();
+
+        var notification =
+            Activator.CreateInstance(typeof(DomainEventNotification<>).MakeGenericType(eventType), @event) as
+                INotification;
+
+        return notification!;
     }
 }

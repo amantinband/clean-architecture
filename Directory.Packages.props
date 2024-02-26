@@ -1,12 +1,17 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <FunctionalDddVersion>2.0.0-alpha.17</FunctionalDddVersion>
   </PropertyGroup>
   <ItemGroup>
+    <!-- Functional DDD -->
+    <PackageVersion Include="FunctionalDdd.Asp" Version="$(FunctionalDddVersion)" />
+    <PackageVersion Include="FunctionalDdd.CommonValueObjectGenerator" Version="$(FunctionalDddVersion)" />
+    <PackageVersion Include="FunctionalDdd.CommonValueObjects" Version="$(FunctionalDddVersion)" />
+    <PackageVersion Include="FunctionalDdd.DomainDrivenDesign" Version="$(FunctionalDddVersion)" />
+    <PackageVersion Include="FunctionalDdd.FluentValidation" Version="$(FunctionalDddVersion)" />
+    <PackageVersion Include="FunctionalDdd.RailwayOrientedProgramming" Version="$(FunctionalDddVersion)" />
     <!-- ASP.NET -->
-    <PackageVersion Include="FunctionalDdd.FluentValidation" Version="2.0.0-alpha.15" />
-    <PackageVersion Include="FunctionalDdd.RailwayOrientedProgramming" Version="2.0.0-alpha.15" />
-    <PackageVersion Include="FunctionalDdd.Asp" Version="2.0.0-alpha.15" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />

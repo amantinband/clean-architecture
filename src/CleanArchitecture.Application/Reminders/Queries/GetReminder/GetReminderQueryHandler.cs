@@ -10,9 +10,15 @@ public class GetReminderQueryHandler(IRemindersRepository _remindersRepository)
 {
     public async Task<Result<Reminder>> Handle(GetReminderQuery query, CancellationToken cancellationToken)
     {
-        var reminder = await _remindersRepository.GetByIdAsync(query.ReminderId, cancellationToken);
+        var rReminderId = ReminderId.TryCreate(query.ReminderId);
+        if (rReminderId.IsFailure)
+        {
+            return rReminderId.Error;
+        }
 
-        if (reminder?.UserId != query.UserId)
+        var reminder = await _remindersRepository.GetByIdAsync(rReminderId.Value, cancellationToken);
+
+        if (reminder is null || reminder.UserId != query.UserId)
         {
             return Error.NotFound("Reminder not found");
         }

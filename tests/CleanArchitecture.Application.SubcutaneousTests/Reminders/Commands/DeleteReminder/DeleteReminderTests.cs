@@ -20,9 +20,9 @@ public class DeleteReminderTests(WebAppFactory webAppFactory)
         var aggregateError = (AggregateError)result.Error;
         aggregateError.Errors.Should().HaveCount(2);
         aggregateError.Errors[0].Should().BeOfType<NotFoundError>();
-        aggregateError.Errors[0].Message.Should().Be("Reminder not found");
+        aggregateError.Errors[0].Message.Should().Be("User not found");
         aggregateError.Errors[1].Should().BeOfType<NotFoundError>();
-        aggregateError.Errors[1].Message.Should().Be("User not found");
+        aggregateError.Errors[1].Message.Should().Be("Reminder not found");
     }
 
     [Fact]

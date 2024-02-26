@@ -1,3 +1,4 @@
+using CleanArchitecture.Domain.Reminders;
 using CleanArchitecture.Domain.Users;
 using CleanArchitecture.Infrastructure.Common.Persistence;
 
@@ -20,11 +21,11 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
                 .HasColumnName("CalendarDictionary")
                 .HasValueJsonConverter());
 
-        builder.Property<List<Guid>>("_reminderIds")
+        builder.Property<List<ReminderId>>("_reminderIds")
             .HasColumnName("ReminderIds")
             .HasListOfIdsConverter();
 
-        builder.Property<List<Guid>>("_dismissedReminderIds")
+        builder.Property<List<ReminderId>>("_dismissedReminderIds")
             .HasColumnName("DismissedReminderIds")
             .HasListOfIdsConverter();
 

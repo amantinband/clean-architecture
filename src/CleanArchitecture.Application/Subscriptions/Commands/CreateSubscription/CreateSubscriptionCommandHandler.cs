@@ -12,7 +12,13 @@ public class CreateSubscriptionCommandHandler(
 {
     public async Task<Result<SubscriptionResult>> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
     {
-        if (await _usersRepository.GetByIdAsync(request.UserId, cancellationToken) is not null)
+        var rUserId = UserId.TryCreate(request.UserId);
+        if (rUserId.IsFailure)
+        {
+            return Result.Failure<SubscriptionResult>(rUserId.Error);
+        }
+
+        if (await _usersRepository.GetByIdAsync(rUserId.Value, cancellationToken) is not null)
         {
             return Error.Conflict("User already has an active subscription");
         }
@@ -20,7 +26,7 @@ public class CreateSubscriptionCommandHandler(
         var subscription = new Subscription(request.SubscriptionType);
 
         var user = new User(
-            request.UserId,
+            rUserId.Value,
             request.FirstName,
             request.LastName,
             request.Email,

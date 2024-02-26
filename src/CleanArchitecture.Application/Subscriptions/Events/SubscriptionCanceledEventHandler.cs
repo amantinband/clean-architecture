@@ -6,12 +6,13 @@ using MediatR;
 namespace CleanArchitecture.Application.Subscriptions.Events;
 
 public class SubscriptionCanceledEventHandler(IUsersRepository _usersRepository)
-    : INotificationHandler<SubscriptionCanceledEvent>
+    : INotificationHandler<DomainEventNotification<SubscriptionCanceledEvent>>
 {
-    public async Task Handle(SubscriptionCanceledEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(DomainEventNotification<SubscriptionCanceledEvent> notification, CancellationToken cancellationToken)
     {
-        notification.User.DeleteAllReminders();
+        var @event = notification.DomainEvent;
+        @event.User.DeleteAllReminders();
 
-        await _usersRepository.RemoveAsync(notification.User, cancellationToken);
+        await _usersRepository.RemoveAsync(@event.User, cancellationToken);
     }
 }

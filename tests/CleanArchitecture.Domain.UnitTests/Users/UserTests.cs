@@ -1,3 +1,4 @@
+using CleanArchitecture.Domain.Reminders;
 using CleanArchitecture.Domain.Users;
 
 namespace CleanArchitecture.Domain.UnitTests.Users;
@@ -15,7 +16,7 @@ public class UserTests
 
         // Create max number of daily reminders + 1
         var reminders = Enumerable.Range(0, subscriptionType.GetMaxDailyReminders() + 1)
-            .Select(_ => ReminderFactory.CreateReminder(id: Guid.NewGuid(), subscriptionId: subscription.Id));
+            .Select(_ => ReminderFactory.CreateReminder(id: ReminderId.NewUnique(), subscriptionId: subscription.Id));
 
         // Act
         var setReminderResults = reminders.Select(user.SetReminder).ToList();

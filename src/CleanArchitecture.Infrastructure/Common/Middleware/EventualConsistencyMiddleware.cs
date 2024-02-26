@@ -1,5 +1,3 @@
-using CleanArchitecture.Domain.Common;
-
 using MediatR;
 
 using Microsoft.AspNetCore.Http;

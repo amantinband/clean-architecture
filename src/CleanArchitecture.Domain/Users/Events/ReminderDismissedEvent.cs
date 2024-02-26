@@ -1,5 +1,5 @@
-using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Reminders;
 
 namespace CleanArchitecture.Domain.Users.Events;
 
-public record ReminderDismissedEvent(Guid ReminderId) : IDomainEvent;
+public record ReminderDismissedEvent(ReminderId ReminderId) : IDomainEvent;

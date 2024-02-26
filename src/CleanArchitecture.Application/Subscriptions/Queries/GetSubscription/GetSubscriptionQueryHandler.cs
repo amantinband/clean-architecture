@@ -10,9 +10,7 @@ public class GetSubscriptionQueryHandler(IUsersRepository _usersRepository)
     : IRequestHandler<GetSubscriptionQuery, Result<SubscriptionResult>>
 {
     public async Task<Result<SubscriptionResult>> Handle(GetSubscriptionQuery request, CancellationToken cancellationToken)
-    {
-        return await _usersRepository.GetByIdAsync(request.UserId, cancellationToken) is User user
-            ? SubscriptionResult.FromUser(user)
-            : Error.NotFound("Subscription not found.");
-    }
+        => await UserId.TryCreate(request.UserId)
+            .BindAsync(userId => _usersRepository.GetByIdAsync(userId, cancellationToken).ToResultAsync(Error.NotFound("Subscription not found.")))
+            .MapAsync(SubscriptionResult.FromUser);
 }
