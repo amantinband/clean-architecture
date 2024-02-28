@@ -73,8 +73,7 @@ public class AppDbContext(DbContextOptions options, IHttpContextAccessor _httpCo
     {
         foreach (var domainEvent in domainEvents)
         {
-            var @event = GetNotificationEvent(domainEvent);
-            await _publisher.Publish(@event);
+            await _publisher.Publish(domainEvent.GetNotificationEvent());
         }
     }
 
@@ -87,16 +86,5 @@ public class AppDbContext(DbContextOptions options, IHttpContextAccessor _httpCo
 
         domainEvents.ForEach(domainEventsQueue.Enqueue);
         _httpContextAccessor.HttpContext.Items[EventualConsistencyMiddleware.DomainEventsKey] = domainEventsQueue;
-    }
-
-    private INotification GetNotificationEvent(IDomainEvent @event)
-    {
-        var eventType = @event.GetType();
-
-        var notification =
-            Activator.CreateInstance(typeof(DomainEventNotification<>).MakeGenericType(eventType), @event) as
-                INotification;
-
-        return notification!;
     }
 }

@@ -19,7 +19,7 @@ public class EventualConsistencyMiddleware(RequestDelegate _next)
                 {
                     while (domainEvents.TryDequeue(out var nextEvent))
                     {
-                        await publisher.Publish(nextEvent);
+                        await publisher.Publish(nextEvent.GetNotificationEvent());
                     }
                 }
 

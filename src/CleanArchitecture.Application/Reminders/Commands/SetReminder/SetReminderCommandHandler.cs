@@ -9,13 +9,10 @@ public class SetReminderCommandHandler(IUsersRepository _usersRepository)
     : IRequestHandler<SetReminderCommand, Result<Reminder>>
 {
     public async Task<Result<Reminder>> Handle(SetReminderCommand command, CancellationToken cancellationToken) =>
-        await _usersRepository.GetBySubscriptionIdAsync(command.SubscriptionId, cancellationToken)
-            .ToResultAsync(Error.NotFound("Subscription not found"))
+        await _usersRepository.GetBySubscriptionIdAsync(command.SubscriptionId, cancellationToken).ToResultAsync(Error.NotFound("Subscription not found"))
             .CombineAsync(Reminder.TryCreate(command.UserId, command.SubscriptionId, command.Text, command.DateTime))
-            .BindAsync((user, reminder) => user.SetReminder(reminder).Map(r => (user, reminder)))
             .BindAsync((user, reminder) =>
-            {
-                _usersRepository.UpdateAsync(user, cancellationToken);
-                return Result.Success(reminder);
-            });
+                user.SetReminder(reminder)
+                .TapAsync(_ => _usersRepository.UpdateAsync(user, cancellationToken))
+                .MapAsync(_ => reminder));
 }
