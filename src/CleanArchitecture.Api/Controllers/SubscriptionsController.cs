@@ -47,7 +47,7 @@ public class SubscriptionsController(IMediator _mediator) : ControllerBase
             .BindAsync(command => _mediator.Send(command))
             .FinallyAsync(
               _ => NoContent(),
-              err => err.ToErrorActionResult<FunctionalDdd.Unit>(this));
+              err => err.ToErrorActionResult<Unit>(this));
 
     [HttpGet]
     public async Task<ActionResult<SubscriptionResponse>> GetSubscription(Guid userId) =>

@@ -10,7 +10,7 @@ namespace CleanArchitecture.Application.Reminders.Commands.DeleteReminder;
 
 public class DeleteReminderCommandHandler(
     IRemindersRepository _remindersRepository,
-    IUsersRepository _usersRepository) : IRequestHandler<DeleteReminderCommand, Result<FunctionalDdd.Unit>>
+    IUsersRepository _usersRepository) : IRequestHandler<DeleteReminderCommand, Result<Unit>>
 {
     public async Task<Result<Unit>> Handle(DeleteReminderCommand request, CancellationToken cancellationToken) =>
         await UserId.TryCreate(request.UserId)
