@@ -14,15 +14,13 @@ public class PolicyEnforcer : IPolicyEnforcer
         CurrentUser currentUser,
         string policy)
     {
-        return policy switch
+        return request switch
         {
-            Policy.SelfOrAdmin => SelfOrAdminPolicy(request, currentUser),
-            _ => Error.Unexpected(description: "Unknown policy name"),
+            IUserAuthorizeableRequest<T> userAuthorizeableRequest => UserPolicyEnforcer.Authorize(
+                userAuthorizeableRequest,
+                currentUser,
+                policy),
+            _ => Result.Success,
         };
     }
-
-    private static ErrorOr<Success> SelfOrAdminPolicy<T>(IAuthorizeableRequest<T> request, CurrentUser currentUser) =>
-        request.UserId == currentUser.Id || currentUser.Roles.Contains(Role.Admin)
-            ? Result.Success
-            : Error.Unauthorized(description: "Requesting user failed policy requirement");
 }
