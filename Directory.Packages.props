@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <FunctionalDddVersion>2.0.0-alpha.18</FunctionalDddVersion>
+    <FunctionalDddVersion>2.0.0-alpha.19</FunctionalDddVersion>
   </PropertyGroup>
   <ItemGroup>
     <!-- Functional DDD -->
