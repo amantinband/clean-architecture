@@ -247,6 +247,8 @@ Authorization: Bearer {{token}}
 
 ![Folder structure](assets/Clean%20Architecture%20Template.png)
 
+You can use the [this](https://www.figma.com/community/file/1334042945934670571/clean-architecture-project-file-system) figma community file to explore or create your own folder structure respresentation.
+
 # Authorization 🔐
 
 This project puts an emphasis on complex authorization scenarios and supports *role-based*, *permission-based* and *policy-based* authorization.
