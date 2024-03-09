@@ -12,6 +12,6 @@ public class SubscriptionCanceledEventHandler(IUsersRepository _usersRepository)
     {
         notification.User.DeleteAllReminders();
 
-        await _usersRepository.UpdateAsync(notification.User, cancellationToken);
+        await _usersRepository.RemoveAsync(notification.User, cancellationToken);
     }
 }
