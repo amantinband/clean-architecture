@@ -7,10 +7,7 @@ public class Calendar
     /// </summary>
     private readonly Dictionary<DateOnly, int> _calendar = [];
 
-    public static Calendar Empty()
-    {
-        return new Calendar();
-    }
+    public static Calendar Empty() => new Calendar();
 
     public void IncrementEventCount(DateOnly date)
     {
@@ -32,17 +29,12 @@ public class Calendar
         _calendar[date]--;
     }
 
-    public void SetEventCount(DateOnly date, int numEvents)
-    {
-        _calendar[date] = numEvents;
-    }
+    public void SetEventCount(DateOnly date, int numEvents) => _calendar[date] = numEvents;
 
-    public int GetNumEventsOnDay(DateTimeOffset dateTime)
-    {
-        return _calendar.TryGetValue(DateOnly.FromDateTime(dateTime.Date), out var numEvents)
+    public int GetNumEventsOnDay(DateTimeOffset dateTime) => 
+        _calendar.TryGetValue(DateOnly.FromDateTime(dateTime.Date), out var numEvents)
             ? numEvents
             : 0;
-    }
 
     private Calendar()
     {

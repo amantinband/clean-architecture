@@ -29,10 +29,7 @@ public class ReminderEmailBackgroundService(
         return Task.CompletedTask;
     }
 
-    public void Dispose()
-    {
-        _timer?.Dispose();
-    }
+    public void Dispose() => _timer?.Dispose();
 
     /// <summary>
     /// TODO: there are many edge cases that aren't caught here. This is an immediate nice to have implementation for now.

@@ -14,10 +14,7 @@ public class WebAppFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLifet
 {
     private SqliteTestDatabase _testDatabase = null!;
 
-    public AppHttpClient CreateAppHttpClient()
-    {
-        return new AppHttpClient(CreateClient());
-    }
+    public AppHttpClient CreateAppHttpClient() => new AppHttpClient(CreateClient());
 
     public Task InitializeAsync() => Task.CompletedTask;
 
@@ -28,10 +25,7 @@ public class WebAppFactory : WebApplicationFactory<IAssemblyMarker>, IAsyncLifet
         return Task.CompletedTask;
     }
 
-    public void ResetDatabase()
-    {
-        _testDatabase.ResetDatabase();
-    }
+    public void ResetDatabase() => _testDatabase.ResetDatabase();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {

@@ -15,8 +15,7 @@ public sealed class JwtBearerTokenValidationConfiguration(IOptions<JwtSettings> 
 
     public void Configure(string? name, JwtBearerOptions options) => Configure(options);
 
-    public void Configure(JwtBearerOptions options)
-    {
+    public void Configure(JwtBearerOptions options) =>
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -28,5 +27,4 @@ public sealed class JwtBearerTokenValidationConfiguration(IOptions<JwtSettings> 
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
         };
-    }
 }

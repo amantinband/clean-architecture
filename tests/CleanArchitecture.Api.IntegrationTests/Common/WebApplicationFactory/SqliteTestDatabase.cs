@@ -40,13 +40,7 @@ public class SqliteTestDatabase : IDisposable
         InitializeDatabase();
     }
 
-    public void Dispose()
-    {
-        Connection.Close();
-    }
+    public void Dispose() => Connection.Close();
 
-    private SqliteTestDatabase(string connectionString)
-    {
-        Connection = new SqliteConnection(connectionString);
-    }
+    private SqliteTestDatabase(string connectionString) => Connection = new SqliteConnection(connectionString);
 }

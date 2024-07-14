@@ -11,9 +11,8 @@ public static class TokenRequestFactory
         string email = Constants.User.Email,
         SubscriptionType? subscriptionType = null,
         List<string>? permissions = null,
-        List<string>? roles = null)
-    {
-        return new(
+        List<string>? roles = null) =>
+        new(
             id ?? Constants.User.Id,
             firstName,
             lastName,
@@ -21,5 +20,4 @@ public static class TokenRequestFactory
             subscriptionType ?? SubscriptionType.Basic,
             permissions ?? Constants.User.Permissions,
             roles ?? Constants.User.Roles);
-    }
 }

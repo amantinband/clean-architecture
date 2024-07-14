@@ -8,12 +8,10 @@ public static class SubscriptionRequestFactory
         string firstName = Constants.User.FirstName,
         string lastName = Constants.User.LastName,
         string emailName = Constants.User.Email,
-        SubscriptionType? subscriptionType = null)
-    {
-        return new(
+        SubscriptionType? subscriptionType = null) =>
+        new(
             firstName,
             lastName,
             emailName,
             subscriptionType ?? SubscriptionType.Basic);
-    }
 }
