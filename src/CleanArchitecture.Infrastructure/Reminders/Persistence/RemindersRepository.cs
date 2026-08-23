@@ -1,6 +1,6 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Reminders;
-using CleanArchitecture.Infrastructure.Common;
+using CleanArchitecture.Infrastructure.Common.Persistence;
 
 using Microsoft.EntityFrameworkCore;
 

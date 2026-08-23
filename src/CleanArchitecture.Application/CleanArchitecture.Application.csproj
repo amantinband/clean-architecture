@@ -9,4 +9,8 @@
     <PackageReference Include="FluentValidation.AspNetCore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Auth\Events\" />
+  </ItemGroup>
+
 </Project>

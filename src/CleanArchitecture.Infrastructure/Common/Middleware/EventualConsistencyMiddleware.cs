@@ -1,4 +1,5 @@
 using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Infrastructure.Common.Persistence;
 
 using MediatR;
 

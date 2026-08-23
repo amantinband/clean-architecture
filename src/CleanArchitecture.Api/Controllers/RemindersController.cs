@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 using CleanArchitecture.Application.Reminders.Commands.DeleteReminder;
 using CleanArchitecture.Application.Reminders.Commands.DismissReminder;
 using CleanArchitecture.Application.Reminders.Commands.SetReminder;
@@ -67,9 +69,12 @@ public class RemindersController(ISender _mediator) : ApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> ListReminders(Guid userId, Guid subscriptionId)
+    public async Task<IActionResult> ListReminders(
+        [FromQuery] Guid userId,
+        [FromQuery] Guid subscriptionId,
+        [FromQuery] string keyword)
     {
-        var query = new ListRemindersQuery(userId, subscriptionId);
+        var query = new ListRemindersQuery(userId, subscriptionId, keyword);
 
         var result = await _mediator.Send(query);
 

@@ -2,6 +2,7 @@ using CleanArchitecture.Application.Common.Behaviors;
 
 using FluentValidation;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Application;

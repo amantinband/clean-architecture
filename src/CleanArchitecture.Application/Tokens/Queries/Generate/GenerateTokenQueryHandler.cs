@@ -7,22 +7,13 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Tokens.Queries.Generate;
 
-public class GenerateTokenQueryHandler(
-    IJwtTokenGenerator _jwtTokenGenerator)
-        : IRequestHandler<GenerateTokenQuery, ErrorOr<GenerateTokenResult>>
+public class GenerateTokenQueryHandler(IJwtTokenGenerator _jwtTokenGenerator) : IRequestHandler<GenerateTokenQuery, ErrorOr<GenerateTokenResult>>
 {
-    public Task<ErrorOr<GenerateTokenResult>> Handle(GenerateTokenQuery query, CancellationToken cancellationToken)
+    public async Task<ErrorOr<GenerateTokenResult>> Handle(GenerateTokenQuery query, CancellationToken cancellationToken)
     {
         var id = query.Id ?? Guid.NewGuid();
 
-        var token = _jwtTokenGenerator.GenerateToken(
-            id,
-            query.FirstName,
-            query.LastName,
-            query.Email,
-            query.SubscriptionType,
-            query.Permissions,
-            query.Roles);
+        var token = await _jwtTokenGenerator.GenerateTokenAsync(id, query.Permissions, query.Roles, cancellationToken);
 
         var authResult = new GenerateTokenResult(
             id,
@@ -32,6 +23,6 @@ public class GenerateTokenQueryHandler(
             query.SubscriptionType,
             token);
 
-        return Task.FromResult(ErrorOrFactory.From(authResult));
+        return ErrorOrFactory.From(authResult);
     }
 }

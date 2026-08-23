@@ -1,6 +1,7 @@
+
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Users;
-using CleanArchitecture.Infrastructure.Common;
+using CleanArchitecture.Infrastructure.Common.Persistence;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,20 @@ public class UsersRepository(AppDbContext _dbContext) : IUsersRepository
     {
         await _dbContext.AddAsync(user, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<User?>> GetByEmailsAsync(List<string> emails)
+    {
+        return await _dbContext.Users
+            .Include(user => user.Subscription)
+            .Where(user => emails.Contains(user.Email)).ToListAsync();
+    }
+
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        return await _dbContext.Users
+        .Include(user => user.Subscription)
+        .FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken)

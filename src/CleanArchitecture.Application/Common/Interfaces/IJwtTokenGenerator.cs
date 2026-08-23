@@ -4,12 +4,7 @@ namespace CleanArchitecture.Application.Common.Interfaces;
 
 public interface IJwtTokenGenerator
 {
-    string GenerateToken(
-        Guid id,
-        string firstName,
-        string lastName,
-        string email,
-        SubscriptionType subscriptionType,
-        List<string> permissions,
-        List<string> roles);
+    Task<string> GenerateTokenAsync(Guid userId, IEnumerable<string>? permissions = null, IEnumerable<string>? roles = null, CancellationToken cancellationToken = default);
+
+    Task<(string AccessToken, string RefreshToken)> RefreshTokenAsync(string refreshToken, Guid userId, IEnumerable<string>? permissions = null, IEnumerable<string>? roles = null, CancellationToken cancellationToken = default);
 }

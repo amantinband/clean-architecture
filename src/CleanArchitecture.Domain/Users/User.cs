@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Reminders;
 using CleanArchitecture.Domain.Subscriptions;
@@ -25,6 +27,11 @@ public class User : Entity
 
     public string LastName { get; } = null!;
 
+    /// <summary>
+    /// Hashed password, using PBKDF2.
+    /// </summary>
+    public string? HashedPassword { get; }
+
     public User(
         Guid id,
         string firstName,
@@ -40,6 +47,25 @@ public class User : Entity
         Subscription = subscription;
         _calendar = calendar ?? Calendar.Empty();
     }
+
+    //public bool ValidatePassword(string password)
+    //{
+    //    if (HashedPassword is null)
+    //    {
+    //        return false;
+    //    }
+
+    //    var salt = Guid.NewGuid().ToByteArray();
+
+    //    var computedHash = Rfc2898DeriveBytes.Pbkdf2(
+    //        password,
+    //        salt,
+    //        iterations: 100_000,
+    //        HashAlgorithmName.SHA512,
+    //        outputLength: 32);
+
+    //    bool isValid = CryptographicOperations.FixedTimeEquals(computedHash, );
+    //}
 
     public ErrorOr<Success> SetReminder(Reminder reminder)
     {

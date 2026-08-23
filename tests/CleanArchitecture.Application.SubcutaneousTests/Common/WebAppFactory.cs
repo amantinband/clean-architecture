@@ -1,5 +1,5 @@
 using CleanArchitecture.Api;
-using CleanArchitecture.Infrastructure.Common;
+using CleanArchitecture.Infrastructure.Common.Persistence;
 using CleanArchitecture.Infrastructure.Security.CurrentUserProvider;
 
 using Microsoft.AspNetCore.Hosting;

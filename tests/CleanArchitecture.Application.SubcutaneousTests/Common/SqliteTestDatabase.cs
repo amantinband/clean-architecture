@@ -1,4 +1,4 @@
-using CleanArchitecture.Infrastructure.Common;
+using CleanArchitecture.Infrastructure.Common.Persistence;
 
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;

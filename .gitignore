@@ -482,3 +482,5 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+/src/CleanArchitecture.Api/CleanArchitecture.sqlite
+/.editorconfig
